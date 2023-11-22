@@ -1,42 +1,20 @@
-/# powershell-5.1
+# powershell-5.1
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-# powershell-7.3
+# powershell-7.4
 Set-Alias -Name pw -Value "C:\Program Files\PowerShell\7\pwsh.exe"
 
-function nps ($args){
-	start-Process notepads $args
-}
-function initTypicalEditor{
-	# TextAdept - editing android related, shell,..
-	#Set-Alias -Name tadep -Value 'D:\Program Files\TextAdept\textadept.exe' -Scope Global #-Option AllScope
-	# geany - shell related linux notes.
-	#Set-Alias -Name ge -Value 'D:\Program Files\geany\bin\geany.exe' -Scope Global #-Option AllScope
-	# Cudatext - haven't touched but pretty fast.
-	#Set-Alias -Name ctxt -Value 'D:\Program Files\Cudatext\cudatext.exe' -Scope Global #-Option AllScope
-	# lapce - haven't touched but pretty fast.
-	#Set-Alias -Name lapc -Value 'D:\Program Files\lapce\lapce.exe' -Scope Global #-Option AllScope
-	# helix
-	# Set-Alias -Name helix -Value 'D:\Program Files\helix\hx.exe' -Scope Global #-Option AllScope
-	# Vim
-	# Set-Alias -Name vim -Value 'D:\Program Files\Vim\vim90\gvim.exe' -Scope Global #-Option AllScope
-		
-	
+function initTypicalEditor{	
 	#joplin
 	Set-Alias -Name jopl -Value 'C:\Program Files\Joplin\Joplin.exe' -Scope Global
 	# sublime - python in android.
 	Set-Alias -Name subl -Value 'D:\ProgramFileNoSpace\Sublime Text\subl' -Scope Global #-Option AllScope
 	# notepad++ - editing powershell file
-	Set-Alias -Name np -Value 'D:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
 	Set-Alias -Name npp -Value np -Scope Global #-Option AllScope
-	#np1 - notepads
-	Set-Alias -Name np1 -Value nps -Scope Global
 	# notepad2 - edit single powershell files
-	Set-Alias -Name np2 -Value 'D:\Program Files\Notepad2\Notepad2.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name np2 -Value 'C:\Program Files\Notepad2\Notepad2.exe' -Scope Global #-Option AllScope
 	# notepad3 - edit single powershell files
-	Set-Alias -Name np3 -Value 'D:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
-	#micro as well. -> 
-	# vietpad .NET -> typing VN character and strings.
-	# Set-Alias -Name vnp -Value 'D:\Program Files\VietPad.NET\VietPad.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name np3 -Value 'C:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
 }
 
 function initAutomate{
@@ -45,27 +23,16 @@ function initAutomate{
 }
 
 function initIDE{
-	# brackets alias
-	Set-Alias -Name brk -Value 'D:\Program Files\Brackets\Brackets.exe' -Scope Global #-Option AllScope
-	# vscodium
-	Set-Alias -Name codi -Value 'D:\Program Files\VSCodium\bin\codium' -Scope Global #-Option AllScope
 	# vscode, but maybe we don't need that.
-	Set-Alias -Name vsco -Value 'D:\ProgramFileNoSpace\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
+	Set-Alias -Name vsco -Value 'C:\Users\grout\AppData\Local\Programs\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
 	# visual studio
-	Set-Alias -Name vist -Value 'D:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
+	# Set-Alias -Name vist -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name devenv -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
 	# keil UV4
-	Set-Alias -Name uv4 -Value 'D:\Program Files\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
 	# pms
 	Set-alias -name pms -Value "C:\PADAUK_Tool\0.97C9\FPPA IDE.exe" -Scope Global
-	
-	# dev-cpp
-	# Set-Alias -Name dcpp -Value 'D:\Program Files\Embarcadero\Dev-Cpp\devcpp.exe'
-	# komodo IDE
-	# Set-Alias -Name kide -Value 'D:\Program Files\ActiveState Komodo IDE 12\komodo.exe'
-	# komodo Edit
-	# Set-Alias -Name komd -Value 'D:\Program Files\ActiveState Komodo Edit 12\komodo.exe'
 }
-
 
 function initShellApp{
 	#Set-Alias -Name tran -Value transInArch -Scope Global
@@ -75,36 +42,32 @@ function initSSH{
 }
 
 function initGuiApp{
-	#clean keyboard?
-	Set-alias -Name iwck -Value "D:\ProgramData\Visual Studio\ahk\repos\I-wanna-clean-keyboard\iwck-VNT.exe" -Scope Global
-	# WingetUI?
-	Set-Alias -Name wgui -Value "D:\Program Files\WingetUI\wingetui.exe" -Scope Global
+	# #clean keyboard?
+	# Set-alias -Name iwck -Value "D:\ProgramData\Visual Studio\ahk\repos\I-wanna-clean-keyboard\iwck-VNT.exe" -Scope Global
+	# # WingetUI?
+	# Set-Alias -Name wgui -Value "D:\Program Files\WingetUI\wingetui.exe" -Scope Global
 	# Devtoys
 	#Set-Alias -Name devt -Value "C:\Program Files\WindowsApps\64360VelerSoftware.DevToys_1.0.13.0_x64__j80j2txgjg9dj\DevToys.exe"
 	Set-Alias -Name devt -Value "start-Process -FilePath devtoys://" -Scope Global
 	# WSL Toolbox
 	Set-Alias -Name wslt -Value "D:\Program Files\WSL Toolbox\toolbox.exe" -Scope Global
 	# btop4win. there is ntop as well.
-	Set-Alias -Name btop -value "D:\Program Files\btop4win\btop4win.exe" -Scope Global
-	# psexec
-	Set-Alias -Name psexec -Value "D:\ProgramData\PSTools\psexec.exe" -Scope Global
+	Set-Alias -Name btop -value "C:\Program Files\btop4win\btop4win.exe" -Scope Global
+	# # psexec
+	# Set-Alias -Name psexec -Value "D:\ProgramData\PSTools\psexec.exe" -Scope Global
 	# AdvancedRun
-	Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
-	# powertoys
-	Set-alias -name ptoy -Value "D:\Program Files\PowerToys\PowerToys.exe" -Scope Global
-	# taskbar activate
-	Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
-	# evkey
-	Set-alias -name evkey -Value "C:\Users\ADMIN\Desktop\Misc Prog\EVKey64.exe" -Scope Global
+	# Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
+	# # taskbar activate
+	# Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
 }
 
 function initMediaPlayer{
-	# Everyonepiano
-	Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
+	# # Everyonepiano
+	# Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
 	# VLC
 	Set-Alias -Name vlc -Value "vlc.exe" -Scope Global
 	# ifranview
-	Set-Alias -Name iview -Value "D:\Program Files\IrfanView\i_view64.exe" -Scope Global
+	Set-Alias -Name iview -Value "C:\Program Files\IrfanView\i_view64.exe" -Scope Global
 }
 
 
@@ -151,19 +114,11 @@ function transInArch{
 	wsl -d arch2308 bash -c 'gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell'
 	#wsl -d arch2308 bash -c 'gawk -f < (trans) > -shell'
 }
-
-function initBurningProgram{
-	cd $env:AvrDir
-	cmd /c "D:/ProgramFileNoSpace\MyMiscArduinofile\ATTiny\Bat_file\attiny5.bat"
-}
-
 function P7{
 	#oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	if((whoami) -notmatch "nt") {
-		Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-		Invoke-Expression (& { (zoxide init powershell | Out-String) })
-		oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/clean-detailed.omp.json" | Invoke-Expression
-	}
+	Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+	Invoke-Expression (& { (zoxide init powershell | Out-String) })
+	Invoke-Expression (&starship init powershell)
 	cd $env:VSDir
 	initGuiApp
 	initChat
@@ -173,12 +128,32 @@ Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
 
 function MoreTerminalModule{
+	#External pwsh module
 	Import-Module -Name F7History -Scope Global
 	Import-Module -Name Terminal-Icons -Scope Global
 	Import-Module -Name PSFzf -Scope Global
-	Import-Module -Name ($env:p7settingDir+"TerminalStartDevSession") -Scope Global
+	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
+	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' 
+	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	#example (get-process notepad*)[0].MainWindowHandle | Move-Window (Get-CurrentDesktop) | Out-Null
+	
+	
+	
+	$Env:gkPath = "$env:LOCALAPPDATA\gitkraken\"
+	$Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
+	$diradd = @($Env:gkPath,$Env:sourceTreePath)
+	foreach($d in $diradd){
+		$Env:Path += ";"+$d;
+	}
+	
+	
+	# Self-made module
+	Import-Module -Name ($env:p7settingDir+"quickMathPwsh") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"terminalQuickAction") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"filesUtilities") -Scope Global
 	#clear
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
@@ -191,10 +166,7 @@ function syssh{
 }
 
 $text_arr = "np","subl","jopl"
-#,"ge","ctxt","subl","lapc"
-#"lxl","helix","vim","np3","ge"
-$ide_arr  = "brk","codi","vsco","vist"#"kide","komd"
-#$startcode = subl
+$ide_arr  = "brk","codi","vsco","vist"
 
 
 function return_alias_def ($str = "np",$name_only = 1){
@@ -292,21 +264,26 @@ function initProfileEnv{ #for environment variable.
 
 	#If not set ProgramFilesD
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
-	$Env:VSDir = "D:\ProgramData\Visual Studio"
+	$Env:VSDir = "C:\ProgramDataD\Visual Studio"
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
-	$Env:ProgramFilesD = "D:\Program Files"
+	$Env:ProgramFilesD = "C:\ProgramFilesD"
 	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
-	$Env:sublimeDir = "D:\ProgramFileNoSpace\Sublime Text"
-	$Env:vlcDir = "D:\Program Files\VideoLAN\VLC\"
-	$Env:p7settingDir = "D:\ProgramData\Visual Studio\powershell\settings\"
+	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
+	$Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
+	$Env:vlcDir = "C:\Program Files\VideoLAN\VLC\"
+	$Env:p7settingDir = "C:\ProgramDataD\Visual Studio\powershell\settings\"
 	$Env:CommercialDir = "D:\ProgramData\Mua ban TQ - VN\"
 	$Env:ahkDirD = $env:VSDir+"\ahk\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
-	$Env:ngrokDir = "D:\ProgramData\Visual Studio\ssh_http\bin\"
+	# $Env:komorebiDir = "C:\Program Files\komorebi\bin\"
+	$Env:ngrokDir = "C:\ProgramDataD\Visual Studio\ssh_http\bin\"
+	$Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
-	$Env:ProgramFilesD,$Env:mozillaDir,$Env:sublimeDir,$env:vlcDir,
-	$Env:p7settingDir,$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
-	$Env:ngrokDir)
+	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
+	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
+	$Env:ChromeDir,$Env:ngrokDir
+	# ,$Env:komorebiDir
+	)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
 	}
@@ -322,20 +299,6 @@ function initChat{ #for environment variable.
 	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
 
 }
-function androidDevEnv{
-	$Env:P7AndroidDir = "D:\ProgramData\Visual Studio\powershell\Proj\ADB_P7\"
-	$Env:BinAndroidDir = "D:\ProgramData\Visual Studio\pyhelpers\ADB_Scrcpy\bin\scrcpy\"
-	$diradd = @($Env:P7AndroidDir,$Env:BinAndroidDir)
-	foreach($d in $diradd){
-		$Env:Path += ";"+$d;
-	}
-	
-	Import-Module -Name ($env:P7AndroidDir+"ADB_BasicModule") -Scope Global
-
-}
-Set-Alias -Name andDev -Value androidDevEnv
-
-
 #p7in
 initProfileEnv
 initTypicalEditor
