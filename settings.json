@@ -43,11 +43,10 @@
         {
             "command": 
             {
-                "action": "splitPane",
-                "split": "down",
-                "splitMode": "duplicate"
+                "action": "moveFocus",
+                "direction": "previousInOrder"
             },
-            "keys": "alt+shift+s"
+            "keys": "ctrl+alt+shift+minus"
         },
         {
             "command": "togglePaneZoom",
@@ -56,10 +55,11 @@
         {
             "command": 
             {
-                "action": "moveFocus",
-                "direction": "previousInOrder"
+                "action": "splitPane",
+                "split": "down",
+                "splitMode": "duplicate"
             },
-            "keys": "ctrl+alt+shift+minus"
+            "keys": "alt+shift+s"
         },
         {
             "command": "unbound",
@@ -88,6 +88,10 @@
         {
             "command": "unbound",
             "keys": "ctrl+v"
+        },
+        {
+            "command": "unbound",
+            "keys": "ctrl+k"
         },
         {
             "command": 
@@ -158,6 +162,13 @@
         {
             "command": "toggleBroadcastInput",
             "keys": "win+ctrl+alt+i"
+        },
+        {
+            "command": 
+            {
+                "action": "clearBuffer",
+                "clear": "all"
+            }
         }
     ],
     "alwaysShowNotificationIcon": false,
@@ -199,8 +210,8 @@
         "list": 
         [
             {
-                "adjustIndistinguishableColors": "always",
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\purple_p7.jpg",
+                "adjustIndistinguishableColors": "never",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\purple_p7.jpg",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
@@ -208,74 +219,54 @@
                 "experimental.retroTerminalEffect": false,
                 "font": 
                 {
-                    "face": "BlexMono Nerd Font",
-                    "size": 8.0,
+                    "face": "Iosevka Nerd Font Propo",
+                    "size": 13.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": false,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-psm.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-psm.png",
                 "intenseTextStyle": "all",
                 "name": "P7_PurpleBackground",
                 "padding": "0",
                 "suppressApplicationTitle": true
             },
             {
-                "adjustIndistinguishableColors": "always",
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\0921cb27d5604b464218a64ae88a3f43c7b7371a.png",
+                "adjustIndistinguishableColors": "never",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\orange_p7.jpg",
                 "closeOnExit": "never",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "face": "AurulentSansM Nerd Font",
-                    "size": 10.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{45a4205c-f120-5c3d-94bf-ff6c9f61a50f}",
-                "hidden": false,
-                "historySize": 9291,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\mg2jrlv479305ao2qbcm23gqtf-fdb664896813919e5903213d436e9f6b.png",
-                "name": "ubuntu2307",
-                "padding": "0",
-                "source": "Windows.Terminal.Wsl",
-                "tabTitle": "Ubuntu 230722"
-            },
-            {
-                "adjustIndistinguishableColors": "always",
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\orange_p7.jpg",
-                "closeOnExit": "never",
+                "colorScheme": "One Half Dark",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
                 "cursorShape": "bar",
                 "experimental.retroTerminalEffect": false,
                 "font": 
                 {
-                    "face": "BlexMono Nerd Font",
-                    "size": 8.0,
+                    "face": "Iosevka Nerd Font Mono",
+                    "size": 13.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ba}",
                 "hidden": false,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-format.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-format.png",
                 "name": "P7_OrangeBackground",
                 "padding": "0"
             },
             {
-                "adjustIndistinguishableColors": "always",
-                "backgroundImage": "D:\\ProgramData\\Visual Studio\\powershell\\note\\Background and Icon\\Background\\Autorun Background\\android_1920x1080.jpg",
+                "adjustIndistinguishableColors": "never",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\archblue.jpg",
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
                 "cursorShape": "bar",
                 "experimental.retroTerminalEffect": false,
                 "font": 
                 {
-                    "face": "AurulentSansM Nerd Font",
+                    "face": "Iosevka Nerd Font Mono",
                     "size": 10.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ff}",
                 "hidden": false,
-                "icon": "D:\\ProgramData\\Visual Studio\\powershell\\note\\Background and Icon\\Ico File for Life\\orig\\android-icon.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\android-icon.png",
                 "name": "P7_Android",
                 "padding": "0"
             },
@@ -287,21 +278,9 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "closeOnExit": "never",
-                "font": 
-                {
-                    "face": "BitstromWera Nerd Font Mono",
-                    "size": 10.0
-                },
-                "guid": "{04c8c2ee-a069-52c5-9a96-f83ed68024d6}",
-                "hidden": false,
-                "name": "Developer PowerShell for VS 2022",
-                "source": "Windows.Terminal.VisualStudio"
-            },
-            {
-                "adjustIndistinguishableColors": "always",
+                "adjustIndistinguishableColors": "never",
                 "altGrAliasing": true,
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\ssh-without-password-linux-feature-940x587.jpg",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\ssh-without-password-linux-feature-940x587.jpg",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
@@ -310,14 +289,14 @@
                 "font": 
                 {
                     "cellHeight": "1.1",
-                    "face": "Mononoki Nerd Font",
+                    "face": "Iosevka Nerd Font Propo",
                     "size": 10.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{b70afaf5-8b79-4d40-b449-b37aab2a504a}",
                 "hidden": false,
                 "historySize": 9001,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\ssh.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\ssh.png",
                 "intenseTextStyle": "all",
                 "name": "ssh_1",
                 "padding": "0",
@@ -325,9 +304,9 @@
                 "suppressApplicationTitle": true
             },
             {
-                "adjustIndistinguishableColors": "always",
+                "adjustIndistinguishableColors": "never",
                 "altGrAliasing": true,
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\peakpx (1).jpg",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (1).jpg",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
@@ -336,14 +315,14 @@
                 "font": 
                 {
                     "cellHeight": "1.1",
-                    "face": "Mononoki Nerd Font",
-                    "size": 11.0,
+                    "face": "Iosevka Nerd Font Propo",
+                    "size": 13.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{fc686e90-3f39-4c57-989e-381054fb7970}",
                 "hidden": false,
                 "historySize": 9001,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\linux.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\linux.png",
                 "intenseTextStyle": "all",
                 "name": "ssh_4",
                 "padding": "0",
@@ -351,9 +330,9 @@
                 "suppressApplicationTitle": true
             },
             {
-                "adjustIndistinguishableColors": "always",
+                "adjustIndistinguishableColors": "never",
                 "altGrAliasing": true,
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\wallpaperflare.com_wallpaper.jpg",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\wallpaperflare.com_wallpaper.jpg",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
@@ -363,13 +342,13 @@
                 {
                     "cellHeight": "1.1",
                     "face": "Mononoki Nerd Font",
-                    "size": 10.0,
+                    "size": 13.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{d9b78221-c7cf-4b4c-b15e-f37e13ec3471}",
                 "hidden": false,
                 "historySize": 9001,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\smartphone.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\smartphone.png",
                 "intenseTextStyle": "all",
                 "name": "ssh_2",
                 "padding": "0",
@@ -377,9 +356,9 @@
                 "suppressApplicationTitle": true
             },
             {
-                "adjustIndistinguishableColors": "always",
+                "adjustIndistinguishableColors": "never",
                 "altGrAliasing": true,
-                "backgroundImage": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Background\\Autorun Background\\peakpx (2).jpg",
+                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (2).jpg",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
@@ -388,19 +367,30 @@
                 "font": 
                 {
                     "cellHeight": "1.1",
-                    "face": "Mononoki Nerd Font",
-                    "size": 11.0,
+                    "face": "Iosevka Nerd Font Propo",
+                    "size": 13.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{b2df50d2-0345-4803-9f11-28d934f6068d}",
                 "hidden": false,
                 "historySize": 9001,
-                "icon": "C:\\Users\\ADMIN\\Desktop\\Background and Icon\\Ico File for Life\\orig\\distributor-logo-kali-linux.512x502.png",
+                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\distributor-logo-kali-linux.512x502.png",
                 "intenseTextStyle": "all",
                 "name": "ssh_3",
                 "padding": "0",
                 "snapOnInput": true,
                 "suppressApplicationTitle": true
+            },
+            {
+                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+                "hidden": false,
+                "name": "Command Prompt"
+            },
+            {
+                "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
+                "hidden": false,
+                "name": "Nushell",
+                "source": "nu"
             }
         ]
     },
@@ -589,6 +579,29 @@
             "selectionBackground": "#FFFFFF",
             "white": "#D3D7CF",
             "yellow": "#C4A000"
+        },
+        {
+            "background": "#300A24",
+            "black": "#171421",
+            "blue": "#0037DA",
+            "brightBlack": "#767676",
+            "brightBlue": "#08458F",
+            "brightCyan": "#2C9FB3",
+            "brightGreen": "#26A269",
+            "brightPurple": "#A347BA",
+            "brightRed": "#C01C28",
+            "brightWhite": "#F2F2F2",
+            "brightYellow": "#A2734C",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#3A96DD",
+            "foreground": "#FFFFFF",
+            "green": "#26A269",
+            "name": "Ubuntu-22.04-ColorScheme",
+            "purple": "#881798",
+            "red": "#C21A23",
+            "selectionBackground": "#FFFFFF",
+            "white": "#CCCCCC",
+            "yellow": "#A2734C"
         },
         {
             "background": "#300A24",
