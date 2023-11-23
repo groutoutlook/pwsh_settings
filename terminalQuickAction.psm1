@@ -10,9 +10,16 @@ function Set-Buffer-Width-To-Screen-Width {
     $ui.BufferSize = $bufferSize
 }
 
+
+function cdClip($demandURI = (Get-Clipboard)){
+	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
+	cd $finalURI
+}
+
+
 function term($which = "win"){
 	if($which -eq "and"){
-		$command = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "anddev && p7 && p7mod"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "anddev && p7 && p7mod"'
+		$command = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
 		start wt "$command"
 	}
 	elseif($which -eq "win"){
