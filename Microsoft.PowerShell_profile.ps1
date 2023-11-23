@@ -84,7 +84,7 @@ function google-search {
 		$args | % { $query = $query + "$_+" }
 	}
 	$url = $query.Substring(0, $query.Length - 1)
-	start "$url"
+	start chrome "$url"
 }
 
 #https://translate.google.com/?sl=en&tl=zh-CN&op=translate
@@ -142,8 +142,12 @@ function MoreTerminalModule{
 	
 	
 	$Env:gkPath = "$env:LOCALAPPDATA\gitkraken\"
-	$Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
-	$diradd = @($Env:gkPath,$Env:sourceTreePath)
+	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
+	$Env:SMergePath = "C:\Program Files\Sublime Merge"
+	$diradd = @($Env:gkPath,
+	$Env:SMergePath
+	# $Env:sourceTreePath,
+	)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
 	}
@@ -152,8 +156,8 @@ function MoreTerminalModule{
 	# Self-made module
 	Import-Module -Name ($env:p7settingDir+"quickMathPwsh") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global
-	Import-Module -Name ($env:p7settingDir+"terminalQuickAction") -Scope Global
-	Import-Module -Name ($env:p7settingDir+"filesUtilities") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickTerminalAction") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickFilePathAction") -Scope Global
 	#clear
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
