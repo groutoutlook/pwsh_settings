@@ -1,8 +1,5 @@
-
-function retty {
-    Set-Buffer-Width-To-Screen-Width
-    Clear-Host
-}
+using namespace System.Collections.Generic
+# import-module -Name VirtualDesktop
 
 function Set-Buffer-Width-To-Screen-Width {
     $h = Get-Host
@@ -11,10 +8,6 @@ function Set-Buffer-Width-To-Screen-Width {
     $windowSize = $ui.WindowSize
     $bufferSize.Width = $windowSize.Width
     $ui.BufferSize = $bufferSize
-}
-
-function pipi($control_string){
-	Start-Process "py -m pip install $controll_stirng"
 }
 
 function term($which = "win"){
