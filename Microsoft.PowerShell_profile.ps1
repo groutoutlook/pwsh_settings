@@ -154,7 +154,7 @@ function MoreTerminalModule{
 	
 	
 	# Self-made module
-	Import-Module -Name ($env:p7settingDir+"quickMathPwsh") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickMathAction") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickTerminalAction") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickFilePathAction") -Scope Global
