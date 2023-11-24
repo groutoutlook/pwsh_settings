@@ -1,4 +1,4 @@
-Import-Module -Name Prelude
+# Import-Module -Name Prelude
 
 
 function toHex($number){
