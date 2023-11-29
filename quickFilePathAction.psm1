@@ -5,14 +5,17 @@
 $global:at_dir = "C:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "C:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 
-function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0)
+function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
 {
-	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
+	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h",
 	if ($paramIncluded -match "Star"){
 		$listSourceFiles+="RGB_LargeStar.cpp","RGB3D_StarParam.h"
 	}
 	elseif ($paramIncluded -match "Pine"){
 		$listSourceFiles+="RGB3D_PineTree*"
+	}
+	if($EngineIncluded -eq 1){
+		$listSourceFiles+="RGB_Object*","RGB_Multiple*"
 	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
@@ -36,6 +39,7 @@ $timer.Enabled = $true
 $timer.Interval = $interval
 $timer.AutoReset = $true
 
+
 function Add-Prefix-Titles($prefix) {
   Get-Process | ? {$_.mainWindowTitle -and $_.mainWindowTitle -notlike "$($prefix)*"} | %{
     [Win32]::SetWindowText($_.mainWindowHandle, "$prefix - $($_.mainWindowTitle)")
@@ -58,8 +62,8 @@ public static class Win32 {
 }
 "@
 
-function Change-Window-Titles($oldName , $newName, $addOldTitle = 0){
- Get-Process | ? {$_.mainWindowTitle -and $_.mainWindowTitle -match "$($oldName)*"} | %{
+function ChangeWindowTitles($oldName , $newName, $addOldTitle = 0){
+ Get-Process | ? {$_.mainWindowTitle -and ($_.mainWindowTitle -match "$($oldName)*")} | %{
 	 
 	if($addOldTitle -eq 1){
 		$suffix  = $_.mainWindowTitle 
@@ -70,6 +74,22 @@ function Change-Window-Titles($oldName , $newName, $addOldTitle = 0){
 }
 
 
+
+function LoopChangeWindowTitles($oldName , $newName, $addOldTitle = 0){
+
+	$interval = 1000
+
+	$timer = New-Object System.Timers.Timer
+
+	$timer.Enabled = $true
+	$timer.Interval = $interval
+	$timer.AutoReset = $true
+
+
+	Register-ObjectEvent -InputObject $timer -EventName Elapsed -Action {
+		ChangeWindowTitles $oldName $newName $addOldTitle
+	}
+}
 
 
 
