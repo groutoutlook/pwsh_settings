@@ -7,16 +7,18 @@ $global:mm_dir = "C:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 
 function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
 {
-	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h",
+	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
 	if ($paramIncluded -match "Star"){
 		$listSourceFiles+="RGB_LargeStar.cpp","RGB3D_StarParam.h"
 	}
 	elseif ($paramIncluded -match "Pine"){
 		$listSourceFiles+="RGB3D_PineTree*"
 	}
+	
 	if($EngineIncluded -eq 1){
 		$listSourceFiles+="RGB_Object*","RGB_Multiple*"
 	}
+	
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
 	foreach($files in $listSourceFiles){
