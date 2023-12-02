@@ -47,6 +47,7 @@ function androidDevEnv{
 }
 Set-Alias -Name andDev -Value androidDevEnv
 
-function explr {
-	explorer (pwd)
+function explr($inputPath = (pwd)) {
+	explorer $inputPath
 }
+Set-Alias -Name expl -Value explr -Scope Global
