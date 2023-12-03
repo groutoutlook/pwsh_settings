@@ -11,7 +11,9 @@ Write-Host('{0:X}' -f $number)
 
 function reverse
 { 
- $arr = @($input)
+param([String[]] $inputArr)
+ $arr = @($inputArr)
  [array]::reverse($arr)
- $arr
+ [string]$resarr = $arr -join  ","
+ echo $resarr
 }
