@@ -1,9 +1,7 @@
 
-
-
-
 $global:at_dir = "C:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "C:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
+$global:fmd_dir = "C:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
 
 function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
 {
@@ -13,6 +11,12 @@ function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\
 	}
 	elseif ($paramIncluded -match "Pine"){
 		$listSourceFiles+="RGB3D_PineTree*"
+	}
+	elseif ($paramIncluded -match "Tail"){
+		$listSourceFiles+="RGB3D_Tail*"
+	}
+	elseif ($paramIncluded -match "Firework"){
+		$listSourceFiles+="RGB3D_Firework*"
 	}
 	
 	if($EngineIncluded -eq 1){
