@@ -18,11 +18,13 @@ function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\
 	elseif ($paramIncluded -match "Firework"){
 		$listSourceFiles+="RGB3D_Firework*"
 	}
-	
-	if($EngineIncluded -eq 1){
-		$listSourceFiles+="RGB_Object*","RGB_Multiple*"
+	elseif ($paramIncluded -match "Panel"){
+		$listSourceFiles+="RGB3D_Panel*"
 	}
 	
+	if($EngineIncluded -eq 1){
+		$listSourceFiles+="RGB_Object*","RGB_Multiple*","RGB_Area*"
+	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
 	foreach($files in $listSourceFiles){
