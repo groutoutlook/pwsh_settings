@@ -23,7 +23,7 @@ function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\
 	}
 	
 	if($EngineIncluded -eq 1){
-		$listSourceFiles+="RGB_Object*","RGB_Multiple*","RGB_Area*"
+		$listSourceFiles+="RGB_Object*","RGB_Multiple*","RGB_Area*","RGB_Background*"
 	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
