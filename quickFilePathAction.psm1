@@ -1,9 +1,9 @@
 
-$global:at_dir = "C:\ProgramDataD\Artery\Proj\TEST\src\"
-$global:mm_dir = "C:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
-$global:fmd_dir = "C:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
+$global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
+$global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
+$global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
 
-function copyFilestoKeil($Destination, $Source = "C:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
+function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
 {
 	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
 	if ($paramIncluded -match "Star"){

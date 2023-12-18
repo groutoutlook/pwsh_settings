@@ -59,11 +59,13 @@ function initGuiApp{
 	# Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
 	# # taskbar activate
 	# Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
+	#
 }
 
 function initMediaPlayer{
 	# # Everyonepiano
 	# Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
+Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 	# VLC
 	Set-Alias -Name vlc -Value "vlc.exe" -Scope Global
 	# ifranview
@@ -84,7 +86,7 @@ function google-search {
 		$args | % { $query = $query + "$_+" }
 	}
 	$url = $query.Substring(0, $query.Length - 1)
-	start chrome "$url"
+	start "$url"
 }
 
 #https://translate.google.com/?sl=en&tl=zh-CN&op=translate
@@ -268,19 +270,19 @@ function initProfileEnv{ #for environment variable.
 
 	#If not set ProgramFilesD
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
-	$Env:VSDir = "C:\ProgramDataD\Visual Studio"
+	$Env:VSDir = "D:\ProgramDataD\Visual Studio"
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
 	$Env:ProgramFilesD = "C:\ProgramFilesD"
 	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
 	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
 	$Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
 	$Env:vlcDir = "C:\Program Files\VideoLAN\VLC\"
-	$Env:p7settingDir = "C:\ProgramDataD\Visual Studio\powershell\settings\"
-	$Env:CommercialDir = "D:\ProgramData\Mua ban TQ - VN\"
-	$Env:ahkDirD = $env:VSDir+"\ahk\"
+	$Env:p7settingDir = "D:\ProgramDataD\powershell\settings\"
+	$Env:CommercialDir = "D:\ProgramDataD\Mua ban TQ - VN\"
+	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
 	# $Env:komorebiDir = "C:\Program Files\komorebi\bin\"
-	$Env:ngrokDir = "C:\ProgramDataD\Visual Studio\ssh_http\bin\"
+	$Env:ngrokDir = "D:\ProgramDataD\Visual Studio\ssh_http\bin\"
 	$Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
