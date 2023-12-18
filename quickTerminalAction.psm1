@@ -35,8 +35,8 @@ function term($which = "win"){
 	#kawt "P7_P"	
 }
 function androidDevEnv{
-	$Env:P7AndroidDir = "C:\ProgramDataD\Visual Studio\powershell\Proj\ADB_P7\"
-	$Env:BinAndroidDir = "C:\ProgramDataD\Visual Studio\pyhelpers\ADB_Scrcpy\bin\scrcpy\"
+	$Env:P7AndroidDir = "D:\ProgramDataD\powershell\Proj\ADB_P7\"
+	$Env:BinAndroidDir = "D:\ProgramDataD\pyhelpers\ADB_Scrcpy\bin\scrcpy\"
 	$diradd = @($Env:P7AndroidDir,$Env:BinAndroidDir)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
