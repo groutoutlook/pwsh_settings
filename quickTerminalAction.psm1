@@ -17,6 +17,10 @@ function cdClip($demandURI = (Get-Clipboard)){
 
 }
 
+function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
+	hx $specific_path 
+}
+Set-Alias -Name viconf -Value editNvimConfig
 
 function term($which = "win"){
 	if($which -eq "and"){
