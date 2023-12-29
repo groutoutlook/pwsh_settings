@@ -10,6 +10,11 @@ function Set-Buffer-Width-To-Screen-Width {
     $ui.BufferSize = $bufferSize
 }
 
+function p7edit($fileName = "quickTerminalAction.psm1") {
+	cd "$env:p7settingDir"
+	np ".\$fileName"
+}
+Set-Alias -Name npp7 -Value p7edit -Scope Global
 
 function cdClip($demandURI = (Get-Clipboard)){
 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent

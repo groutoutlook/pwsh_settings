@@ -72,6 +72,10 @@ Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys+
 	Set-Alias -Name iview -Value "C:\Program Files\IrfanView\i_view64.exe" -Scope Global
 }
 
+function p7env{
+	np $PROFILE.AllUsersCurrentHost
+}
+
 
 function google-search {
 	if($args[0] -match "yt"){
@@ -132,7 +136,7 @@ Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 function MoreTerminalModule{
 	#External pwsh module
 	Import-Module -Name F7History -Scope Global
-	Import-Module -Name Terminal-Icons -Scope Global
+	# Import-Module -Name Terminal-Icons -Scope Global
 	Import-Module -Name PSFzf -Scope Global
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' 
@@ -140,8 +144,6 @@ function MoreTerminalModule{
 	Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	#example (get-process notepad*)[0].MainWindowHandle | Move-Window (Get-CurrentDesktop) | Out-Null
-	
-	
 	
 	$Env:gkPath = "$env:LOCALAPPDATA\gitkraken\"
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
@@ -272,7 +274,8 @@ function initProfileEnv{ #for environment variable.
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
 	$Env:VSDir = "D:\ProgramDataD\Visual Studio"
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
-	$Env:ProgramFilesD = "C:\ProgramFilesD"
+	$Env:ProgramFilesD = "D:\ProgramFilesD"
+	$Env:ProgramDataD = "D:\ProgramDataD"
 	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
 	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
 	$Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
@@ -282,12 +285,12 @@ function initProfileEnv{ #for environment variable.
 	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
 	# $Env:komorebiDir = "C:\Program Files\komorebi\bin\"
-	$Env:ngrokDir = "D:\ProgramDataD\Visual Studio\ssh_http\bin\"
+	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
 	$Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
 	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
-	$Env:ChromeDir,$Env:ngrokDir
+	$Env:ChromeDir,$Env:kicadDir
 	# ,$Env:komorebiDir
 	)
 	foreach($d in $diradd){
