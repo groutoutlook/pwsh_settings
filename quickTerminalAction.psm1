@@ -24,6 +24,36 @@ function cdcb{
 	cd (gcb) #Get-Clipboard default alias.
 }
 
+ function getDateTime{
+  return (get-date).TimeOfDay.ToString()
+ }
+
+ function checkFileStatus($filePath)
+    {
+        write-host (getDateTime) "[ACTION][FILECHECK] Checking if" $filePath "is locked"
+        $fileInfo = New-Object System.IO.FileInfo $filePath
+
+        try 
+        {
+            $fileStream = $fileInfo.Open( [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read )
+            write-host (getDateTime) "[ACTION][FILEAVAILABLE]" $filePath
+            return $true
+        }
+        catch
+        {
+            write-host (getDateTime) "[ACTION][FILELOCKED] $filePath is locked"
+            return $false
+        }
+    }
+	
+function keilLoad(){
+	$project_dir = "$global:fmd_dir\2023-06-01 Project.uvprojx"
+	while($true){
+		uv4 $project_dir -f -j0 -l flash_log.txt && sleep 4 `
+		&& cat .\flash_log.txt && sleep 1 
+		}
+}
+
 
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
 	hx $specific_path 
