@@ -19,8 +19,11 @@ Set-Alias -Name npp7 -Value p7edit -Scope Global
 function cdClip($demandURI = (Get-Clipboard)){
 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
 	cd $finalURI
-
 }
+function cdcb{
+	cd (gcb) #Get-Clipboard default alias.
+}
+
 
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
 	hx $specific_path 
