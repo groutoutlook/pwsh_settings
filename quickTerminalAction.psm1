@@ -1,5 +1,6 @@
 using namespace System.Collections.Generic
 # import-module -Name VirtualDesktop
+Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1 # for RefreshEnv
 
 function Set-Buffer-Width-To-Screen-Width {
     $h = Get-Host
