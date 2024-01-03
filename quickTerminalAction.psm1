@@ -49,8 +49,8 @@ function cdcb{
 function keilLoad(){
 	$project_dir = "$global:fmd_dir\2023-06-01 Project.uvprojx"
 	while($true){
-		uv4 $project_dir -f -j0 -l flash_log.txt && sleep 4 `
-		&& cat .\flash_log.txt && sleep 1 
+		uv4 $project_dir -f -j0 -l flash_log.txt && sleep 2 `
+		&& cat .\flash_log.txt && sleep 1
 		}
 }
 
