@@ -90,7 +90,8 @@
   # [merge "npm-merge-driver"]
   # name = automatically merge npm lockfiles
   # driver = npx npm-merge-driver merge %A %O %B %P
-[mergetool]
+  tool = smerge
+[mergetool "smerge"]
   # Clean up backup files created by merge tools on tool exit
   keepBackup = false
   # Clean up temp files created by merge tools on tool exit
