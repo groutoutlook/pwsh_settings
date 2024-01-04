@@ -130,7 +130,7 @@ function ScrMain($emulator = $global:mainphone,  $xcoor = 1300){
 		else{
 			$winTitle = $emulator
 		}
-		scrcpy -s $emulator --video-codec=h264 --video-bit-rate=2M --audio-output-buffer=20 --window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle --raw-key-events &
+		(scrcpy -s $emulator --video-codec=h264 --video-bit-rate=2M --audio-output-buffer=20 --window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle --raw-key-events &) | Out-Null
 }
 
 
@@ -140,7 +140,7 @@ function ScrAux($emulator = $global:auxphone,  $xcoor = 0){
 		else{
 			$winTitle = $emulator
 		}
-		scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --audio-output-buffer=25 --window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle --raw-key-events &
+		(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --audio-output-buffer=25 --window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle --raw-key-events &) | Out-Null
 }
 
 

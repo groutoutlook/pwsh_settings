@@ -65,17 +65,24 @@ function initGuiApp{
 function initMediaPlayer{
 	# # Everyonepiano
 	# Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
-Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
+	Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 	# VLC
 	Set-Alias -Name vlc -Value "vlc.exe" -Scope Global
 	# ifranview
 	Set-Alias -Name iview -Value "C:\Program Files\IrfanView\i_view64.exe" -Scope Global
 }
 
-function p7env{
-	np $PROFILE.AllUsersCurrentHost
+$global:p7Profile = $PROFILE.AllUsersCurrentHost
+function p7Env{
+	np $p7Profile
 }
 
+function backupEnv{
+	(cp $p7Profile "$Env:p7settingDir")
+	(cp ~/.gitconfig "$Env:p7settingDir")
+	echo ".gitconfig and p7 profile copied."
+}
+Set-Alias -Name p7Backup -Value backupEnv
 
 function google-search {
 	if($args[0] -match "yt"){
@@ -283,6 +290,7 @@ function initProfileEnv{ #for environment variable.
 	$Env:p7settingDir = "D:\ProgramDataD\powershell\settings\"
 	$Env:CommercialDir = "D:\ProgramDataD\Mua ban TQ - VN\"
 	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
+	$Env:SysInternalSuite = "D:\Program Files\SysinternalsSuite\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
 	# $Env:komorebiDir = "C:\Program Files\komorebi\bin\"
 	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
@@ -290,7 +298,7 @@ function initProfileEnv{ #for environment variable.
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
 	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
-	$Env:ChromeDir,$Env:kicadDir
+	$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 	# ,$Env:komorebiDir
 	)
 	foreach($d in $diradd){
