@@ -2,7 +2,6 @@
 $global:mainphone = "d5664d5e"
 $global:auxphone = "R3CN90L0VFB"
 #oppoA9
-($global:srl = adbList)
 
 
 function ADB_getSerialList(){
@@ -13,6 +12,15 @@ function ADB_getSerialList(){
 
 Set-Alias -Name adbList -Value ADB_getSerialList -Scope Global
 
+function checkLocalIP($devs = $global:srl){
+	$iplist=@()
+	foreach($emulator in $devs){
+		$iplist += (adb -s $emulator shell 'ifconfig | grep -o "addr:.*Bcast" | grep -Eo "[0-9].*\ "').Trim() # -> https://devblogs.microsoft.com/scripting/trim-your-strings-with-powershell/
+	}
+	return $iplist
+}
+($global:srl = adbList)
+($global:iplist = checkLocalIP)
 
 function newDev{
 	($global:srl = adblist)
@@ -23,15 +31,7 @@ function offscr(){
 		adb shell input keyevent 26
 }
 
-function checkLocalIP($devs = $global:srl){
-	$iplist=@()
-	foreach($emulator in $devs){
-		$iplist += (adb -s $emulator shell 'ifconfig | grep -o "addr:.*Bcast" | grep -Eo "[0-9].*\ "').Trim() # -> https://devblogs.microsoft.com/scripting/trim-your-strings-with-powershell/
-	}
-	return $iplist
-}
 
-($global:iplist = checkLocalIP)
 
 function connectAllIP($devs = $global:iplist){
 	$iplist=@()
