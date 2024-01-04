@@ -7,6 +7,13 @@ function quickInitGit{
 	git init && git add * && gitmoji -c
 }
 
+function browse-Remote{
+	chrome (git remote get-url origin)
+}
+
+
+
+
 function copyFilesFromOnlineRepos($URI = "", $gitDoc = "" , $OutFile =""){
 	if($URI -eq ""){$processedURI = [URI](Get-Clipboard)}
 	else{$processedURI = [URI]$URI }
