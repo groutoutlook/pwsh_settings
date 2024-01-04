@@ -136,13 +136,24 @@ function ScrMain($emulator = $global:mainphone,  $xcoor = 1300){
 
 function ScrAux($emulator = $global:auxphone,  $xcoor = 0){
 		#
-		if($emulator -eq $global:auxphone){ $winTitle = "ZFold2_1"}
-		else{
-			$winTitle = $emulator
-		}
-		(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --audio-output-buffer=25 --window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle --raw-key-events &) | Out-Null
+	if($emulator -eq $global:auxphone){ $winTitle = "ZFold2_1"}
+	else{
+		$winTitle = $emulator
+	}
+	(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --audio-output-buffer=25 `
+	--window-x="$xcoor" --window-y=0  --window-borderless --window-title $winTitle `
+	--raw-key-events &) | Out-Null
 }
 
+function camAux($emulator = $global:auxphone,  $xcoor = 0){
+	if($emulator -eq $global:auxphone){ $winTitle = "Camera_ZFold2_1"}
+	else{
+		$winTitle = $emulator
+	}
+	(scrcpy -s $emulator --video-source=camera --camera-id=1 `
+	--audio-output-buffer=25 --window-x="$xcoor" --window-y=0 `
+	 --window-borderless --window-title $winTitle &) | Out-Null
+}
 
 function ScrNoti($emulator = $global:mainphone,  $xcoor = 1300){
 		#1450
