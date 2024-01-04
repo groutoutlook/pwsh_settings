@@ -85,7 +85,8 @@ function androidDevEnv{
 		$Env:Path += ";"+$d;
 	}
 	
-	Import-Module -Name ($env:P7AndroidDir+"ADB_BasicModule") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"ADB_BasicModule") -Scope Global
+	# Import-Module -Name ($env:P7AndroidDir+"ADB_BasicModule") -Scope Global
 
 }
 Set-Alias -Name andDev -Value androidDevEnv
