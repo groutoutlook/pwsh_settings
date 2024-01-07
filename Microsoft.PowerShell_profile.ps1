@@ -268,7 +268,7 @@ function initProfileEnv{ #for environment variable.
 	$Env:ProgramDataD = "D:\ProgramDataD"
 	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
 	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
-	$Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
+	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
 	$Env:vlcDir = "C:\Program Files\VideoLAN\VLC\"
 	$Env:p7settingDir = "D:\ProgramDataD\powershell\settings\"
 	$Env:CommercialDir = "D:\ProgramDataD\Mua ban TQ - VN\"
@@ -277,12 +277,13 @@ function initProfileEnv{ #for environment variable.
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
 	$Env:hledgerDir = "D:\Program Files\hledger"
 	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
-	$Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
+	$Env:sqlite3Dir = "D:\Program Files\sqlite3\"
+	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
 	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
 	$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
-	$Env:hledgerDir
+	$Env:hledgerDir,$Env:sqlite3Dir,
 	)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
