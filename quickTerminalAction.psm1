@@ -2,7 +2,7 @@ using namespace System.Collections.Generic
 # import-module -Name VirtualDesktop
 Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1 # for RefreshEnv
 
-function Set-Buffer-Width-To-Screen-Width {
+function SetBufferWidthToScreenWidth {
     $h = Get-Host
     $ui = $h.UI.RawUI
     $bufferSize = $ui.BufferSize
@@ -50,7 +50,7 @@ function cdcb{
 function keilLoad(){
 	$project_dir = "$global:fmd_dir\2023-06-01 Project.uvprojx"
 	while($true){
-		uv4 $project_dir -f -j0 -l flash_log.txt && sleep 2 `
+		uv4 $project_dir -f -j0 -l "$global:fmd_dir\flash_log.txt" && sleep 2 `
 		&& cat .\flash_log.txt && sleep 1
 		}
 }
@@ -59,7 +59,8 @@ function keilLoad(){
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
 	hx $specific_path 
 }
-Set-Alias -Name viconf -Value editNvimConfig
+#Set-Alias -Name viconf -Value editNvimConfig
+Set-Alias -Name nvimconf -Value editNvimConfig
 
 function term($which = "win"){
 	if($which -eq "and"){

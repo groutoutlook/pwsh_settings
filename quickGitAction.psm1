@@ -7,7 +7,7 @@ function quickInitGit{
 	git init && git add * && gitmoji -c
 }
 
-function browse-Remote{
+function openWebRemote{
 	chrome (git remote get-url origin)
 }
 

@@ -19,10 +19,6 @@
             "command": "paste"
         },
         {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
             "command": 
             {
                 "action": "splitPane",
@@ -41,16 +37,8 @@
             "keys": "alt+shift+a"
         },
         {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "previousInOrder"
-            },
-            "keys": "ctrl+alt+shift+minus"
-        },
-        {
-            "command": "togglePaneZoom",
-            "keys": "ctrl+alt+z"
+            "command": "find",
+            "keys": "ctrl+shift+f"
         },
         {
             "command": 
@@ -60,6 +48,18 @@
                 "splitMode": "duplicate"
             },
             "keys": "alt+shift+s"
+        },
+        {
+            "command": "togglePaneZoom",
+            "keys": "ctrl+alt+z"
+        },
+        {
+            "command": 
+            {
+                "action": "moveFocus",
+                "direction": "previousInOrder"
+            },
+            "keys": "ctrl+alt+shift+minus"
         },
         {
             "command": "unbound",
@@ -96,15 +96,6 @@
         {
             "command": 
             {
-                "action": "splitPane",
-                "split": "right",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+d"
-        },
-        {
-            "command": 
-            {
                 "action": "moveFocus",
                 "direction": "nextInOrder"
             },
@@ -113,6 +104,15 @@
         {
             "command": "toggleFocusMode",
             "keys": "win+ctrl+alt+f"
+        },
+        {
+            "command": 
+            {
+                "action": "splitPane",
+                "split": "right",
+                "splitMode": "duplicate"
+            },
+            "keys": "alt+shift+d"
         },
         {
             "command": 
@@ -198,7 +198,8 @@
         "defaults": 
         {
             "antialiasingMode": "grayscale",
-            "colorScheme": "Campbell",
+            "colorScheme": "Tango Dark",
+            "cursorShape": "doubleUnderscore",
             "elevate": true,
             "hidden": false,
             "opacity": 40,
@@ -211,16 +212,17 @@
         [
             {
                 "adjustIndistinguishableColors": "never",
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\purple_p7.jpg",
+                "backgroundImage": "desktopWallpaper",
                 "backgroundImageOpacity": 0.64,
                 "closeOnExit": "never",
+                "colorScheme": "Tango Dark",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
                 "cursorShape": "bar",
                 "experimental.retroTerminalEffect": false,
                 "font": 
                 {
-                    "face": "Iosevka Nerd Font Propo",
-                    "size": 13.0,
+                    "face": "Iosevka Nerd Font Mono",
+                    "size": 12.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -235,13 +237,13 @@
                 "adjustIndistinguishableColors": "never",
                 "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\orange_p7.jpg",
                 "closeOnExit": "never",
-                "colorScheme": "One Half Dark",
+                "colorScheme": "Tango Dark",
                 "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
                 "cursorShape": "bar",
                 "experimental.retroTerminalEffect": false,
                 "font": 
                 {
-                    "face": "Iosevka Nerd Font Mono",
+                    "face": "Victor Mono",
                     "size": 13.0,
                     "weight": "semi-bold"
                 },
@@ -261,7 +263,7 @@
                 "font": 
                 {
                     "face": "Iosevka Nerd Font Mono",
-                    "size": 10.0,
+                    "size": 12.0,
                     "weight": "semi-bold"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ff}",
@@ -387,10 +389,16 @@
                 "name": "Command Prompt"
             },
             {
-                "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
+                "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
                 "hidden": false,
-                "name": "Nushell",
-                "source": "nu"
+                "name": "Visual Studio Debug Console",
+                "source": "VSDebugConsole"
+            },
+            {
+                "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
+                "hidden": false,
+                "name": "Debian",
+                "source": "Windows.Terminal.Wsl"
             }
         ]
     },
