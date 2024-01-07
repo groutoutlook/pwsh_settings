@@ -59,7 +59,7 @@ function keilLoad(){
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
 	hx $specific_path 
 }
-#Set-Alias -Name viconf -Value editNvimConfig
+#set-Alias -Name viconf -Value editNvimConfig
 Set-Alias -Name nvimconf -Value editNvimConfig
 
 function term($which = "win"){
