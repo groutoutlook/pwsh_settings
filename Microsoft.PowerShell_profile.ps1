@@ -100,33 +100,9 @@ function google-search {
 	start "$url"
 }
 
-#https://translate.google.com/?sl=en&tl=zh-CN&op=translate
-function google-translate-tab(
-	$text = "Placeholder",
-	$sourceLang = "zh-CN",
-	$resLang = "en",
-	$opWord = "translate")
-{
-	if($sourceLang -eq "en"){
-		if($resLang -eq "en"){
-			$resLang = "zh-CN"
-		}
-	}
-	$query = 'https://translate.google.com/'
-	$url = ('{0}?sl={1}&tl={2}&text={3}&op={4}' -f $query,$sourceLang,$resLang,$text,$opWord)
-	start "$url"
-	
-}
 Set-Alias -Name gos -Value google-search
+Set-Alias -Name gso -Value google-search
 
-
-Set-Alias -Name gotr -Value google-translate-tab
-Set-Alias -Name trans -Value google-translate-tab
-
-function transInArch{
-	wsl -d arch2308 bash -c 'gawk -f <(curl -Ls --compressed https://git.io/translate) -- -shell'
-	#wsl -d arch2308 bash -c 'gawk -f < (trans) > -shell'
-}
 function P7{
 	#oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
@@ -142,9 +118,9 @@ Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 
 function MoreTerminalModule{
 	#External pwsh module
-	Import-Module -Name F7History -Scope Global
+	Import-Module -Name F7History -Scope Global 
 	# Import-Module -Name Terminal-Icons -Scope Global
-	Import-Module -Name PSFzf -Scope Global
+	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' 
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
@@ -165,8 +141,8 @@ function MoreTerminalModule{
 	
 	
 	# Self-made module
-	Import-Module -Name ($env:p7settingDir+"quickMathAction") -Scope Global
-	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickMathAction") 
+	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global 
 	Import-Module -Name ($env:p7settingDir+"quickTerminalAction") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickFilePathAction") -Scope Global
 	#clear
@@ -274,6 +250,13 @@ function profileHelper{
 	get-command -Module *profile* | % {get-alias -Definition $_.name -ea 0}
 }
 Set-Alias -Name pHelp -Value profileHelper
+function addPath($dirList){
+	
+	foreach($d in $dirList){
+		$d = Resolve-Path $d
+		$Env:Path += ";"+$d;
+	}
+}
 
 function initProfileEnv{ #for environment variable.
 

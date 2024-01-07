@@ -1,6 +1,6 @@
 [user]
 	name = groutoutlook
-	email = groutlloyd@outlook.com
+	email = 150989799+groutoutlook@users.noreply.github.com
 	# Put this in your ~/.gitconfig or ~/.config/git/config
 # Windows users: "~" is your profile's home directory, e.g. C:\Users\<YourName>
 [color]
@@ -159,3 +159,8 @@
 [mergetool "sourcetree"]
 	cmd = "'' "
 	trustExitCode = true
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
