@@ -106,7 +106,7 @@ Set-Alias -Name gso -Value google-search
 function P7{
 	#oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-	Invoke-Expression (& { (zoxide init powershell | Out-String) })
+	# Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Invoke-Expression (&starship init powershell)
 	cd $env:VSDir
 	initGuiApp
@@ -115,6 +115,14 @@ function P7{
 }
 Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
+function Invoke-Tere() {
+    $result = . (Get-Command -CommandType Application tere) $args
+    if ($result) {
+        Set-Location $result
+    }
+}
+Set-Alias tere Invoke-Tere
+
 
 function MoreTerminalModule{
 	#External pwsh module
@@ -278,12 +286,15 @@ function initProfileEnv{ #for environment variable.
 	$Env:hledgerDir = "D:\Program Files\hledger"
 	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
 	$Env:sqlite3Dir = "D:\Program Files\sqlite3\"
+	
+	$Env:cargoDir = "C:\Users\COHOTECH\.cargo\bin"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
 	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
 	$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 	$Env:hledgerDir,$Env:sqlite3Dir,
+	$Env:cargoDir
 	)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
