@@ -184,7 +184,6 @@ function forwardUSBADB($emulator = $global:mainphone,  $remoteport = "tcp:8022",
 	 (adb -s $emulator forward $localport  $remoteport )
 }
 
-
 function typevn {
 	$string = ""
 	$srgs_ind = 0
@@ -201,7 +200,7 @@ function typevn {
 		if($srgs_ind -eq $args.Count) {
 			break;
 		}
-		$string = $string + "$ar";# + "\ ";
+		$string = $string + "$ar ";# + "\ ";
 		
 	}
 	# $args | % { $string = $string + "$_" + "\ " }
@@ -209,10 +208,11 @@ function typevn {
 	$text = $string
 	# echo $emulator;
 	set-clipboard $text
-	
+	adb -s $emulator  shell input keyevent 279
 	# (adb -s $emulator shell am broadcast -a ADB_INPUT_TEXT --es msg $text);
 	adb -s $emulator  shell input keyevent KEYCODE_ENTER; #Keyevent enter.
 }
+
 
 Set-Alias -Name vntype -Value typevn -Scope Global
 Set-Alias -Name vnty -Value typevn -Scope Global
