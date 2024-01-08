@@ -37,8 +37,11 @@ function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\
 
 function EmbedEnv(){
 	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
+	$Env:edgeDir = "C:\Users\COHOTECH\AppData\Local\Microsoft\Edge SxS\Application"
+	$Env:gotvDir = "D:\Program Files\GoTiengViet"
 	$diradd = @(
-	$Env:cubeCLIdir
+	$Env:cubeCLIdir,$env:edgeDir,
+	$Env:gotvDir
 	)
 	foreach($d in $diradd){
 		$Env:Path += ";"+$d;
@@ -46,7 +49,6 @@ function EmbedEnv(){
 }
 
 function keilLoad($uv4project = "$global:fmd_dir"){
-	EmbedEnv
 	cd $uv4project
 	$project_dir = "$uv4project\2023-06-01 Project.uvprojx"
 	while($true){
@@ -54,6 +56,7 @@ function keilLoad($uv4project = "$global:fmd_dir"){
 		&& cat .\flash_log.txt && sleep 1
 	}
 }
+EmbedEnv
 <#
 # Prefix to add to window titles.
 $prefix = "Top Secret"

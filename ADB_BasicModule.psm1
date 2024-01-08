@@ -201,7 +201,7 @@ function typevn {
 		if($srgs_ind -eq $args.Count) {
 			break;
 		}
-		$string = $string + "$ar" + "\ ";
+		$string = $string + "$ar";# + "\ ";
 		
 	}
 	# $args | % { $string = $string + "$_" + "\ " }
@@ -250,7 +250,3 @@ function typewe{
 Set-Alias -Name wetype -Value typewe -Scope Global
 Set-Alias -Name wety -Value typewe -Scope Global
 Set-Alias -Name tywe -Value typewe -Scope Global
-
-
-Set-Alias -Name gcl -Value Get-Clipboard -Scope Global
-Set-Alias -Name scl -Value Set-Clipboard -Scope Global
