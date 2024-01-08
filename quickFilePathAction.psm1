@@ -2,7 +2,7 @@
 $global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
-
+$global:st_dir = ""
 function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
 {
 	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
@@ -34,6 +34,26 @@ function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\
 	}
 }
 
+
+function EmbedEnv(){
+	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
+	$diradd = @(
+	$Env:cubeCLIdir
+	)
+	foreach($d in $diradd){
+		$Env:Path += ";"+$d;
+	}
+}
+
+function keilLoad($uv4project = "$global:fmd_dir"){
+	EmbedEnv
+	cd $uv4project
+	$project_dir = "$uv4project\2023-06-01 Project.uvprojx"
+	while($true){
+		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 2 `
+		&& cat .\flash_log.txt && sleep 1
+	}
+}
 <#
 # Prefix to add to window titles.
 $prefix = "Top Secret"
@@ -98,7 +118,6 @@ function LoopChangeWindowTitles($oldName , $newName, $addOldTitle = 0){
 		ChangeWindowTitles $oldName $newName $addOldTitle
 	}
 }
-
 
 
 Set-Alias -Name cpKeil -Value copyFilestoKeil -Scope Global

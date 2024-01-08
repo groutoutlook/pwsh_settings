@@ -290,11 +290,12 @@ function initProfileEnv{ #for environment variable.
 	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
 	$Env:SysInternalSuite = "D:\Program Files\SysinternalsSuite\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
-	$Env:hledgerDir = "D:\Program Files\hledger"
 	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
+
+
 	$Env:sqlite3Dir = "D:\Program Files\sqlite3\"
-	
 	$Env:cargoDir = "C:\Users\COHOTECH\.cargo\bin"
+	$Env:hledgerDir = "D:\Program Files\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
