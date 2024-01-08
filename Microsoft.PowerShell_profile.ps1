@@ -78,9 +78,16 @@ function p7Env{
 }
 
 function backupEnv{
-	(cp $p7Profile "$Env:p7settingDir")
-	(cp ~/.gitconfig "$Env:p7settingDir")
-	echo ".gitconfig and p7 profile copied."
+	$terminalSettings = "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
+	$dotfiles = @(
+		$p7Profile,
+		"~/.gitconfig",
+		$terminalSettings
+	)
+	foreach($dotfile in $dotfiles){
+		(cp $dotfile "$Env:p7settingDir")
+		echo "$dotfile backed up"
+	}
 }
 Set-Alias -Name p7Backup -Value backupEnv
 
