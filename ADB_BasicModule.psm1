@@ -162,19 +162,21 @@ function ScrNoti($emulator = $global:mainphone,  $xcoor = 1300){
 			$winTitle = $emulator
 		}
 		$winTitle = "Noti_"+$winTitle
-		(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --no-audio --window-x="$xcoor" --window-y=0  --crop=580:120:0:0 --window-borderless --window-title $winTitle --raw-key-events &)
-		sleep -ms 1000
-		$jobList = (Get-Job)
-		foreach($job in $jobList){
-			if($job.command -match "--crop"){
-				if($job.State -eq "Running"){
-					Write-host "ok noti ran"
-				}
-				else{
-					Write-host "no noti end."
-				}
-			} 
-		}
+		(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --no-audio `
+		--window-x="$xcoor" --window-y=0  --crop=580:120:0:0 `
+		--window-borderless --window-title $winTitle --raw-key-events &) | Out-Null
+		# sleep -ms 1000
+		# $jobList = (Get-Job)
+		# foreach($job in $jobList){
+			# if($job.command -match "--crop"){
+				# if($job.State -eq "Running"){
+					# Write-host "ok noti ran"
+				# }
+				# else{
+					# Write-host "no noti end."
+				# }
+			# } 
+		# }
 }
 
 
