@@ -7,7 +7,7 @@ function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\
 {
 	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
 	if ($paramIncluded -match "Star"){
-		$listSourceFiles+="RGB_LargeStar.cpp","RGB3D_StarParam.h"
+		$listSourceFiles+="RGB3D_Star*"
 	}
 	elseif ($paramIncluded -match "Pine"){
 		$listSourceFiles+="RGB3D_PineTree*"
