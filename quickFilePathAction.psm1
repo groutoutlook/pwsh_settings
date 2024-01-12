@@ -52,7 +52,7 @@ function keilLoad($uv4project = "$global:fmd_dir"){
 	cd $uv4project
 	$project_dir = "$uv4project\2023-06-01 Project.uvprojx"
 	while($true){
-		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 2 `
+		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
 		&& cat .\flash_log.txt && sleep 1
 	}
 }

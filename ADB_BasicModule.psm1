@@ -163,7 +163,7 @@ function ScrNoti($emulator = $global:mainphone,  $xcoor = 1300){
 		}
 		$winTitle = "Noti_"+$winTitle
 		(scrcpy -s $emulator --video-codec=h265 --video-bit-rate=2M --no-audio `
-		--window-x="$xcoor" --window-y=0  --crop=580:120:0:0 `
+		--window-x="$xcoor" --window-y=0  --crop=580:160:0:0 `
 		--window-borderless --window-title $winTitle --raw-key-events &) | Out-Null
 		# sleep -ms 1000
 		# $jobList = (Get-Job)
