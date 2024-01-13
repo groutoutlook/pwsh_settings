@@ -47,14 +47,6 @@ function cdcb{
         }
     }
 	
-function keilLoad(){
-	$project_dir = "$global:fmd_dir\2023-06-01 Project.uvprojx"
-	while($true){
-		uv4 $project_dir -f -j0 -l "$global:fmd_dir\flash_log.txt" && sleep 2 `
-		&& cat .\flash_log.txt && sleep 1
-		}
-}
-
 
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
 	hx $specific_path 
@@ -98,3 +90,7 @@ function explr($inputPath = (pwd)) {
 	explorer $inputPath
 }
 Set-Alias -Name expl -Value explr -Scope Global
+
+
+
+
