@@ -3,7 +3,12 @@ $global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
 $global:st_dir = ""
-function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", $paramIncluded = 0, $EngineIncluded = 0)
+function copyFilestoKeil(
+	$Destination, 
+	$Source = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", 
+	$paramIncluded = 0, 
+	$EngineIncluded = 0,
+	$SequenceIncluded = 0)
 {
 	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
 	if ($paramIncluded -match "Star"){
@@ -24,6 +29,10 @@ function copyFilestoKeil($Destination, $Source = "D:\ProgramDataD\Visual Studio\
 	
 	if($EngineIncluded -eq 1){
 		$listSourceFiles+="RGB_Object*","RGB_Multiple*","RGB_Area*","RGB_Background*"
+	}
+	
+	if($SequenceIncluded -eq 1){
+		$listSourceFiles+="RGB3D_ProgramSequence*",
 	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
