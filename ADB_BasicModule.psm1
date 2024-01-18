@@ -31,6 +31,11 @@ function offscr(){
 		adb shell input keyevent 26
 }
 
+function openPhoneDir($emulator = $global:mainphone, 
+	$path = "This PC\OPPO A9 2020\Internal shared storage\Download\Zalo"){
+	expl $path
+}
+Set-Alias -Name zldl -Value openPhoneDir -Scope Global
 
 
 function connectAllIP($devs = $global:iplist){

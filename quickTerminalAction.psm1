@@ -11,10 +11,20 @@ function SetBufferWidthToScreenWidth {
     $ui.BufferSize = $bufferSize
 }
 
-function p7edit($fileName = "quickTerminalAction.psm1") {
+function p7edit($options = "quick") {
+	if($options -match "quick"){
+		$fileName = "quickTerminalAction.psm1"
+	}
+	elseif($options -match "file"){
+		$fileName = "quickFilePathAction.psm1"
+	}
+	elseif($options -match "and"){
+		$fileName = "ADB_BasicModule.psm1"
+	}
 	cd "$env:p7settingDir"
 	np ".\$fileName"
 }
+
 Set-Alias -Name npp7 -Value p7edit -Scope Global
 
 function cdClip($demandURI = (Get-Clipboard)){
@@ -85,10 +95,23 @@ function androidDevEnv{
 
 }
 Set-Alias -Name andDev -Value androidDevEnv
+Add-Type -AssemblyName System.Windows.Forms
 
 function explr($inputPath = (pwd)) {
-	explorer $inputPath
+	if($inputPath -match "This PC") {
+		explorer 
+		Start-Sleep 0.5
+		scb $inputPath
+		[System.Windows.Forms.SendKeys]::SendWait("^l")
+		Start-Sleep 0.1
+		[System.Windows.Forms.SendKeys]::SendWait("^v{ENTER}")
+		echo "ahk then?"
+	}
+	else {
+		explorer $inputPath
+	}
 }
+
 Set-Alias -Name expl -Value explr -Scope Global
 
 
