@@ -32,7 +32,7 @@ function copyFilestoKeil(
 	}
 	
 	if($SequenceIncluded -eq 1){
-		$listSourceFiles+="RGB3D_ProgramSequence*",
+		$listSourceFiles+="RGB3D_ProgramSequence*"
 	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific

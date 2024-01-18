@@ -145,12 +145,19 @@ function ScrAux($emulator = $global:auxphone,  $xcoor = 0){
 	--raw-key-events &) | Out-Null
 }
 
-function camAux($emulator = $global:auxphone,  $xcoor = 0){
+function camAux($emulator = $global:auxphone,  $xcoor = 0, $audioOption = 0){
 	if($emulator -eq $global:auxphone){ $winTitle = "Camera_ZFold2_1"}
 	else{
 		$winTitle = $emulator
 	}
+	if($audioOption -eq 0){
+		$audioSelection = "--no-audio"
+	}
+	else {
+		$audioSelection = ""
+		}
 	(scrcpy -s $emulator --video-source=camera --camera-id=1 `
+	$audioSelection `
 	--audio-output-buffer=25 --window-x="$xcoor" --window-y=0 `
 	 --window-borderless --window-title $winTitle &) | Out-Null
 }
