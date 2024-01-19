@@ -2,7 +2,7 @@
 $global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
-$global:st_dir = ""
+$global:st_dir = "D:\ProgramDataD\ST\Proj\EvalBoardTest\EvalBoardTest\"
 $global:vs_dir_debug = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\x64\Debug"
 function copyFilestoKeil(
 	$Destination, 
