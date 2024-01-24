@@ -2,7 +2,7 @@
 $global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
-$global:st_dir = "D:\ProgramDataD\ST\Proj\EvalBoardTest\EvalBoardTest\"
+$global:st_dir = "D:\ProgramDataD\ST\repo\STM32CubeH7\Projects\NUCLEO-H745ZI-Q\Examples\TIM\TIM_PWMOutput\STM32CubeIDE\CM7\RGB_SOURCE\"
 $global:vs_dir_debug = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\x64\Debug"
 function copyFilestoKeil(
 	$Destination, 
@@ -57,6 +57,9 @@ function EmbedEnv(){
 		$Env:Path += ";"+$d;
 	}
 }
+function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited"){
+	expl $path
+}
 
 
 function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3"){
@@ -90,6 +93,12 @@ function keilLoad($uv4project = "$global:fmd_dir"){
 	}
 }
 EmbedEnv
+
+$global:imgPath = "D:\ProgramDataD\Animation\Proj\final"
+
+
+
+
 <#
 # Prefix to add to window titles.
 $prefix = "Top Secret"
