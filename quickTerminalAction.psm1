@@ -2,36 +2,42 @@ using namespace System.Collections.Generic
 # import-module -Name VirtualDesktop
 Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1 # for RefreshEnv
 
-function SetBufferWidthToScreenWidth {
-    $h = Get-Host
-    $ui = $h.UI.RawUI
-    $bufferSize = $ui.BufferSize
-    $windowSize = $ui.WindowSize
-    $bufferSize.Width = $windowSize.Width
-    $ui.BufferSize = $bufferSize
+function SetBufferWidthToScreenWidth
+{
+	$h = Get-Host
+	$ui = $h.UI.RawUI
+	$bufferSize = $ui.BufferSize
+	$windowSize = $ui.WindowSize
+	$bufferSize.Width = $windowSize.Width
+	$ui.BufferSize = $bufferSize
 }
 
-function p7edit($options = "quick") {
-	if($options -match "quick"){
+function p7edit($options = "quick")
+{
+	if($options -match "quick")
+	{
 		$fileName = "quickTerminalAction.psm1"
-	}
-	elseif($options -match "file"){
+	} elseif($options -match "file")
+	{
 		$fileName = "quickFilePathAction.psm1"
-	}
-	elseif($options -match "and"){
+	} elseif($options -match "and")
+	{
 		$fileName = "ADB_BasicModule.psm1"
 	}
 	cd "$env:p7settingDir"
-	np ".\$fileName"
+	nvim ".\$fileName"
+	#hx ".\$fileName"
 }
 
 Set-Alias -Name npp7 -Value p7edit -Scope Global
 
-function cdClip($demandURI = (Get-Clipboard)){
+function cdClip($demandURI = (Get-Clipboard))
+{
 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
 	cd $finalURI
 }
-function cdcb{
+function cdcb
+{
 	cd (gcb) #Get-Clipboard default alias.
 }
 
@@ -39,10 +45,12 @@ function cdcb{
 function hvdic(
 	$phrase,
 	$space_split = 1
-){	
+)
+{	
 	$query = 'https://hvdic.thivien.net/whv/'
 	
-	if($space_split -eq 1){
+	if($space_split -eq 1)
+ {
 		$phrase.ToCharArray() | % { 
 			$link = $query + "$_" 
 			$url = $link.Substring(0, $link.Length)
@@ -51,58 +59,63 @@ function hvdic(
 	}
 }
 
- function getDateTime{
-  return (get-date).TimeOfDay.ToString()
- }
+function getDateTime
+{
+	return (get-date).TimeOfDay.ToString()
+}
 
- function checkFileStatus($filePath)
-    {
-        write-host (getDateTime) "[ACTION][FILECHECK] Checking if" $filePath "is locked"
-        $fileInfo = New-Object System.IO.FileInfo $filePath
+function checkFileStatus($filePath)
+{
+	write-host (getDateTime) "[ACTION][FILECHECK] Checking if" $filePath "is locked"
+	$fileInfo = New-Object System.IO.FileInfo $filePath
 
-        try 
-        {
-            $fileStream = $fileInfo.Open( [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read )
-            write-host (getDateTime) "[ACTION][FILEAVAILABLE]" $filePath
-            return $true
-        }
-        catch
-        {
-            write-host (getDateTime) "[ACTION][FILELOCKED] $filePath is locked"
-            return $false
-        }
-    }
+	try 
+	{
+		$fileStream = $fileInfo.Open( [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read )
+		write-host (getDateTime) "[ACTION][FILEAVAILABLE]" $filePath
+		return $true
+	} catch
+	{
+		write-host (getDateTime) "[ACTION][FILELOCKED] $filePath is locked"
+		return $false
+	}
+}
 	
 
-function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim"){
+function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim")
+{
 	hx $specific_path 
 }
 #set-Alias -Name viconf -Value editNvimConfig
 Set-Alias -Name nvimconf -Value editNvimConfig
 
-function term($which = "win"){
-	if($which -eq "and"){
+function term($which = "win")
+{
+	if($which -eq "and")
+	{
 		$command = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
 		start wt "$command"
-	}
-	elseif($which -eq "win"){
+	} elseif($which -eq "win")
+	{
 		start wt '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"'
-	}
-	elseif($which -eq "ssh"){
+	} elseif($which -eq "ssh")
+	{
 		start wt '-F new-tab -p "ssh" split-pane --size 0.5 -V -p "ssh_1" ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" pwsh -NoExit -Command "anddev && p7 && p7mod"'
-	}
-	elseif($which -eq "lin"){
+	} elseif($which -eq "lin")
+	{
 		start wt '-F new-tab -p "ssh_3" split-pane --size 0.5 -V -p "ssh_3" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_4" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_4" pwsh -NoExit -Command "p7 && p7mod"'
 	}
 	#kawt "P7_P"	
 }
-function androidDevEnv{
+function androidDevEnv
+{
 	$Env:P7AndroidDir = "D:\ProgramDataD\powershell\Proj\ADB_P7\"
 	$Env:BinAndroidDir = "D:\ProgramDataD\pyhelpers\ADB_Scrcpy\bin\scrcpy\"
 	$diradd = @(
-	$Env:P7AndroidDir,$Env:BinAndroidDir
+		$Env:P7AndroidDir,$Env:BinAndroidDir
 	)
-	foreach($d in $diradd){
+	foreach($d in $diradd)
+	{
 		$Env:Path += ";"+$d;
 	}
 	
@@ -113,8 +126,10 @@ function androidDevEnv{
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
 
-function explr($inputPath = (pwd)) {
-	if($inputPath -match "This PC") {
+function explr($inputPath = (pwd))
+{
+	if($inputPath -match "This PC")
+	{
 		explorer 
 		Start-Sleep 0.5
 		scb $inputPath
@@ -122,8 +137,8 @@ function explr($inputPath = (pwd)) {
 		Start-Sleep 0.2
 		[System.Windows.Forms.SendKeys]::SendWait("^v{ENTER}")
 		echo "ahk then?"
-	}
-	else {
+	} else
+	{
 		explorer $inputPath
 	}
 }

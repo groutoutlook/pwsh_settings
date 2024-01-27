@@ -13,32 +13,36 @@ function copyFilestoKeil(
 	$SequenceIncluded = 0)
 {
 	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
-	if ($paramIncluded -match "Star"){
+	if ($paramIncluded -match "Star")
+	{
 		$listSourceFiles+="RGB3D_Star*"
-	}
-	elseif ($paramIncluded -match "Pine"){
+	} elseif ($paramIncluded -match "Pine")
+	{
 		$listSourceFiles+="RGB3D_PineTree*"
-	}
-	elseif ($paramIncluded -match "Tail"){
+	} elseif ($paramIncluded -match "Tail")
+	{
 		$listSourceFiles+="RGB3D_Tail*"
-	}
-	elseif ($paramIncluded -match "Firework"){
+	} elseif ($paramIncluded -match "Firework")
+	{
 		$listSourceFiles+="RGB3D_Firework*"
-	}
-	elseif ($paramIncluded -match "Panel"){
+	} elseif ($paramIncluded -match "Panel")
+	{
 		$listSourceFiles+="RGB3D_Panel*"
 	}
 	
-	if($EngineIncluded -eq 1){
+	if($EngineIncluded -eq 1)
+ {
 		$listSourceFiles+="RGB_Object*","RGB_Multiple*","RGB_Area*","RGB_Background*"
 	}
 	
-	if($SequenceIncluded -eq 1){
+	if($SequenceIncluded -eq 1)
+ {
 		$listSourceFiles+="RGB3D_ProgramSequence*"
 	}
 	$vendorSpecific = $Destination.Split("\")[2]
 	echo $vendorSpecific
-	foreach($files in $listSourceFiles){
+	foreach($files in $listSourceFiles)
+	{
 		$constructedDir = "$Source$files"
 		cp $constructedDir $Destination
 		echo "files dir is $constructedDir"
@@ -46,51 +50,60 @@ function copyFilestoKeil(
 }
 
 
-function EmbedEnv(){
+function EmbedEnv()
+{
 	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
 	$Env:edgeDir = "C:\Users\COHOTECH\AppData\Local\Microsoft\Edge SxS\Application"
 	$Env:gotvDir = "D:\Program Files\GoTiengViet"
 	$diradd = @(
-	$Env:cubeCLIdir,$env:edgeDir,
-	$Env:gotvDir
+		$Env:cubeCLIdir,$env:edgeDir,
+		$Env:gotvDir
 	)
-	foreach($d in $diradd){
+	foreach($d in $diradd)
+	{
 		$Env:Path += ";"+$d;
 	}
 }
-function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited"){
+function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
+{
 	expl $path
 }
 
 
-function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3"){
+function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
+{
 	$sd_used = ((Get-PSDrive -PSProvider FileSystem -Name $drive_name).Used) #or we can index [2] then.
-	if($sd_used -ge 1000000){
-	echo "have file."
-	}
-	elseif(($sd_used -le 1000000) -and ($sd_used -ne $null)){
-	echo "no file."
-	cp "$data_file" ("$drive_name"+":") 
-	echo "copied"
-	}
-	else{
-	echo "no disk."
+	if($sd_used -ge 1000000)
+	{
+		echo "have file."
+	} elseif(($sd_used -le 1000000) -and ($sd_used -ne $null))
+	{
+		echo "no file."
+		cp "$data_file" ("$drive_name"+":") 
+		echo "copied"
+	} else
+	{
+		echo "no disk."
 	}
 }
 
-function LoopSDCardLoad(){
-	while($true){
+function LoopSDCardLoad()
+{
+	while($true)
+	{
 		SDCardCheckAndLoad
 		sleep 1
 	}
 }
 
-function keilLoad($uv4project = "$global:fmd_dir"){
+function keilLoad($uv4project = "$global:fmd_dir")
+{
 	cd $uv4project
 	$project_dir = "$uv4project\2023-06-01 Project.uvprojx"
-	while($true){
+	while($true)
+	{
 		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
-		&& cat .\flash_log.txt && sleep 1
+			&& cat .\flash_log.txt && sleep 1
 	}
 }
 EmbedEnv
@@ -136,20 +149,24 @@ public static class Win32 {
 }
 "@
 
-function ChangeWindowTitles($oldName , $newName, $addOldTitle = 0){
+function ChangeWindowTitles($oldName , $newName, $addOldTitle = 0)
+{
  Get-Process | ? {$_.mainWindowTitle -and ($_.mainWindowTitle -match "$($oldName)*")} | %{
 	 
-	if($addOldTitle -eq 1){
-		$suffix  = $_.mainWindowTitle 
+		if($addOldTitle -eq 1)
+  {
+			$suffix  = $_.mainWindowTitle 
+		} else
+		{ $suffix = ""
+		}
+		[Win32]::SetWindowText($_.mainWindowHandle, "$newName $suffix")
 	}
-	else{ $suffix = ""}
-    [Win32]::SetWindowText($_.mainWindowHandle, "$newName $suffix")
-  }
 }
 
 
 
-function LoopChangeWindowTitles($oldName , $newName, $addOldTitle = 0){
+function LoopChangeWindowTitles($oldName , $newName, $addOldTitle = 0)
+{
 
 	$interval = 1000
 
