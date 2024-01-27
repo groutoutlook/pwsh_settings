@@ -35,6 +35,22 @@ function cdcb{
 	cd (gcb) #Get-Clipboard default alias.
 }
 
+
+function hvdic(
+	$phrase,
+	$space_split = 1
+){	
+	$query = 'https://hvdic.thivien.net/whv/'
+	
+	if($space_split -eq 1){
+		$phrase.ToCharArray() | % { 
+			$link = $query + "$_" 
+			$url = $link.Substring(0, $link.Length)
+			start "$url"
+		}
+	}
+}
+
  function getDateTime{
   return (get-date).TimeOfDay.ToString()
  }
@@ -103,7 +119,7 @@ function explr($inputPath = (pwd)) {
 		Start-Sleep 0.5
 		scb $inputPath
 		[System.Windows.Forms.SendKeys]::SendWait("^l")
-		Start-Sleep 0.1
+		Start-Sleep 0.2
 		[System.Windows.Forms.SendKeys]::SendWait("^v{ENTER}")
 		echo "ahk then?"
 	}
