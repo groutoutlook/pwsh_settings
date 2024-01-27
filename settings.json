@@ -1,703 +1,673 @@
 {
-    "$help": "https://aka.ms/terminal-documentation",
-    "$schema": "https://aka.ms/terminal-profiles-schema-preview",
-    "actions": 
-    [
-        {
-            "command": 
-            {
-                "action": "copy",
-                "singleLine": false
-            },
-            "keys": "ctrl+c"
-        },
-        {
-            "command": "toggleAlwaysOnTop",
-            "keys": "win+ctrl+alt+t"
-        },
-        {
-            "command": "paste"
-        },
-        {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "up",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+w"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "left",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+a"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "down",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+s"
-        },
-        {
-            "command": "togglePaneZoom",
-            "keys": "ctrl+alt+z"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "previousInOrder"
-            },
-            "keys": "ctrl+alt+shift+minus"
-        },
-        {
-            "command": "unbound",
-            "keys": "i"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+alt+shift+z"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+alt+shift+d"
-        },
-        {
-            "command": "unbound",
-            "keys": "win+ctrl+alt+d"
-        },
-        {
-            "command": "unbound",
-            "keys": "f11"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+alt+shift+f1"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+v"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+k"
-        },
-        {
-            "command": "unbound",
-            "keys": "alt+enter"
-        },
-        {
-            "command": "unbound",
-            "keys": "enter"
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "right",
-                "splitMode": "duplicate"
-            },
-            "keys": "alt+shift+d"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "nextInOrder"
-            },
-            "keys": "ctrl+alt+shift+plus"
-        },
-        {
-            "command": "toggleFocusMode",
-            "keys": "win+ctrl+alt+f"
-        },
-        {
-            "command": 
-            {
-                "action": "swapPane",
-                "direction": "right"
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane"
-            },
-            "keys": "win+ctrl+alt+p"
-        },
-        {
-            "command": 
-            {
-                "action": "swapPane",
-                "direction": "nextInOrder"
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "swapPane",
-                "direction": "previous"
-            },
-            "keys": "win+ctrl+alt+z"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "first"
-            },
-            "keys": "ctrl+shift+insert"
-        },
-        {
-            "command": 
-            {
-                "action": "moveFocus",
-                "direction": "first"
-            },
-            "keys": "ctrl+alt+shift+1"
-        },
-        {
-            "command": "toggleBroadcastInput",
-            "keys": "win+ctrl+alt+i"
-        },
-        {
-            "command": 
-            {
-                "action": "clearBuffer",
-                "clear": "all"
-            }
-        }
-    ],
-    "alwaysShowNotificationIcon": false,
-    "alwaysShowTabs": true,
-    "autoHideWindow": false,
-    "confirmCloseAllTabs": false,
-    "copyFormatting": "all",
-    "copyOnSelect": true,
-    "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-    "experimental.rendering.forceFullRepaint": false,
-    "experimental.rendering.software": false,
-    "focusFollowMouse": false,
-    "initialCols": 120,
-    "initialPosition": "1,1",
-    "initialRows": 29,
-    "language": "en-US",
-    "largePasteWarning": false,
-    "multiLinePasteWarning": false,
-    "newTabMenu": 
-    [
-        {
-            "type": "remainingProfiles"
-        }
-    ],
-    "profiles": 
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema-preview",
+  "actions": [
     {
-        "defaults": 
-        {
-            "antialiasingMode": "grayscale",
-            "colorScheme": "Tango Dark",
-            "cursorShape": "doubleUnderscore",
-            "elevate": true,
-            "hidden": false,
-            "opacity": 40,
-            "startingDirectory": "~",
-            "suppressApplicationTitle": true,
-            "useAcrylic": true,
-            "useAtlasEngine": true
-        },
-        "list": 
-        [
-            {
-                "adjustIndistinguishableColors": "never",
-                "backgroundImage": "desktopWallpaper",
-                "backgroundImageOpacity": 0.64,
-                "closeOnExit": "never",
-                "colorScheme": "Tango Dark",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "face": "Iosevka Nerd Font Mono",
-                    "size": 12.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "hidden": false,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-psm.png",
-                "intenseTextStyle": "all",
-                "name": "P7_PurpleBackground",
-                "padding": "0",
-                "suppressApplicationTitle": true
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\orange_p7.jpg",
-                "closeOnExit": "never",
-                "colorScheme": "Tango Dark",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "face": "Iosevka Nerd Font Mono",
-                    "size": 13.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ba}",
-                "hidden": false,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-format.png",
-                "name": "P7_OrangeBackground",
-                "padding": "0"
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\archblue.jpg",
-                "closeOnExit": "never",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "face": "Iosevka Nerd Font Mono",
-                    "size": 12.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ff}",
-                "hidden": false,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\android-icon.png",
-                "name": "P7_Android",
-                "padding": "0"
-            },
-            {
-                "closeOnExit": "never",
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-                "hidden": false,
-                "name": "Azure Cloud Shell",
-                "source": "Windows.Terminal.Azure"
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "altGrAliasing": true,
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\ssh-without-password-linux-feature-940x587.jpg",
-                "backgroundImageOpacity": 0.64,
-                "closeOnExit": "never",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "cellHeight": "1.1",
-                    "face": "Iosevka Nerd Font Propo",
-                    "size": 10.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{b70afaf5-8b79-4d40-b449-b37aab2a504a}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\ssh.png",
-                "intenseTextStyle": "all",
-                "name": "ssh_1",
-                "padding": "0",
-                "snapOnInput": true,
-                "suppressApplicationTitle": true
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "altGrAliasing": true,
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (1).jpg",
-                "backgroundImageOpacity": 0.64,
-                "closeOnExit": "never",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "cellHeight": "1.1",
-                    "face": "Iosevka Nerd Font Propo",
-                    "size": 13.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{fc686e90-3f39-4c57-989e-381054fb7970}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\linux.png",
-                "intenseTextStyle": "all",
-                "name": "ssh_4",
-                "padding": "0",
-                "snapOnInput": true,
-                "suppressApplicationTitle": true
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "altGrAliasing": true,
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\wallpaperflare.com_wallpaper.jpg",
-                "backgroundImageOpacity": 0.64,
-                "closeOnExit": "never",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "cellHeight": "1.1",
-                    "face": "Mononoki Nerd Font",
-                    "size": 13.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{d9b78221-c7cf-4b4c-b15e-f37e13ec3471}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\smartphone.png",
-                "intenseTextStyle": "all",
-                "name": "ssh_2",
-                "padding": "0",
-                "snapOnInput": true,
-                "suppressApplicationTitle": true
-            },
-            {
-                "adjustIndistinguishableColors": "never",
-                "altGrAliasing": true,
-                "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (2).jpg",
-                "backgroundImageOpacity": 0.64,
-                "closeOnExit": "never",
-                "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
-                "cursorShape": "bar",
-                "experimental.retroTerminalEffect": false,
-                "font": 
-                {
-                    "cellHeight": "1.1",
-                    "face": "Iosevka Nerd Font Propo",
-                    "size": 13.0,
-                    "weight": "semi-bold"
-                },
-                "guid": "{b2df50d2-0345-4803-9f11-28d934f6068d}",
-                "hidden": false,
-                "historySize": 9001,
-                "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\distributor-logo-kali-linux.512x502.png",
-                "intenseTextStyle": "all",
-                "name": "ssh_3",
-                "padding": "0",
-                "snapOnInput": true,
-                "suppressApplicationTitle": true
-            },
-            {
-                "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
-                "hidden": false,
-                "name": "Command Prompt"
-            },
-            {
-                "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
-                "hidden": false,
-                "name": "Visual Studio Debug Console",
-                "source": "VSDebugConsole"
-            },
-            {
-                "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
-                "hidden": false,
-                "name": "Debian",
-                "source": "Windows.Terminal.Wsl"
-            }
-        ]
+      "command": {
+        "action": "copy",
+        "singleLine": false
+      },
+      "keys": "ctrl+c"
     },
-    "schemes": 
-    [
-        {
-            "background": "#300A24",
-            "black": "#0C0C0C",
-            "blue": "#0037DA",
-            "brightBlack": "#767676",
-            "brightBlue": "#3B78FF",
-            "brightCyan": "#61D6D6",
-            "brightGreen": "#16C60C",
-            "brightPurple": "#B4009E",
-            "brightRed": "#E74856",
-            "brightWhite": "#F2F2F2",
-            "brightYellow": "#F9F1A5",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#3A96DD",
-            "foreground": "#CCCCCC",
-            "green": "#13A10E",
-            "name": "Campbell",
-            "purple": "#881798",
-            "red": "#C50F1F",
-            "selectionBackground": "#FFFFFF",
-            "white": "#CCCCCC",
-            "yellow": "#C19C00"
+    {
+      "command": "toggleAlwaysOnTop",
+      "keys": "win+ctrl+alt+t"
+    },
+    {
+      "command": "paste"
+    },
+    {
+      "command": "find",
+      "keys": "ctrl+shift+f"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "up",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+w"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "left",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+a"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "down",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+s"
+    },
+    {
+      "command": "togglePaneZoom",
+      "keys": "ctrl+alt+z"
+    },
+    {
+      "command": {
+        "action": "moveFocus",
+        "direction": "previousInOrder"
+      },
+      "keys": "ctrl+alt+shift+minus"
+    },
+    {
+      "command": "unbound",
+      "keys": "i"
+    },
+    {
+      "command": "unbound",
+      "keys": "ctrl+alt+shift+z"
+    },
+    {
+      "command": "unbound",
+      "keys": "ctrl+alt+shift+d"
+    },
+    {
+      "command": "unbound",
+      "keys": "win+ctrl+alt+d"
+    },
+    {
+      "command": "unbound",
+      "keys": "f11"
+    },
+    {
+      "command": "unbound",
+      "keys": "ctrl+alt+shift+f1"
+    },
+    {
+      "command": "unbound",
+      "keys": "ctrl+v"
+    },
+    {
+      "command": "unbound",
+      "keys": "ctrl+k"
+    },
+    {
+      "command": "unbound",
+      "keys": "alt+enter"
+    },
+    {
+      "command": "unbound",
+      "keys": "enter"
+    },
+    {
+      "command": {
+        "action": "splitPane",
+        "split": "right",
+        "splitMode": "duplicate"
+      },
+      "keys": "alt+shift+d"
+    },
+    {
+      "command": {
+        "action": "moveFocus",
+        "direction": "nextInOrder"
+      },
+      "keys": "ctrl+alt+shift+plus"
+    },
+    {
+      "command": "toggleFocusMode",
+      "keys": "win+ctrl+alt+f"
+    },
+    {
+      "command": {
+        "action": "swapPane",
+        "direction": "right"
+      }
+    },
+    {
+      "command": {
+        "action": "splitPane"
+      },
+      "keys": "win+ctrl+alt+p"
+    },
+    {
+      "command": {
+        "action": "swapPane",
+        "direction": "nextInOrder"
+      }
+    },
+    {
+      "command": {
+        "action": "swapPane",
+        "direction": "previous"
+      },
+      "keys": "win+ctrl+alt+z"
+    },
+    {
+      "command": {
+        "action": "moveFocus",
+        "direction": "first"
+      },
+      "keys": "ctrl+shift+insert"
+    },
+    {
+      "command": {
+        "action": "moveFocus",
+        "direction": "first"
+      },
+      "keys": "ctrl+alt+shift+1"
+    },
+    {
+      "command": "toggleBroadcastInput",
+      "keys": "win+ctrl+alt+i"
+    },
+    {
+      "command": {
+        "action": "clearBuffer",
+        "clear": "all"
+      }
+    }
+  ],
+  "alwaysShowNotificationIcon": false,
+  "alwaysShowTabs": true,
+  "autoHideWindow": false,
+  "confirmCloseAllTabs": false,
+  "copyFormatting": "all",
+  "copyOnSelect": true,
+  "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+  "experimental.rendering.forceFullRepaint": false,
+  "experimental.rendering.software": false,
+  "focusFollowMouse": false,
+  "initialCols": 120,
+  "initialPosition": "1,1",
+  "initialRows": 29,
+  "language": "en-US",
+  "largePasteWarning": false,
+  "multiLinePasteWarning": false,
+  "newTabMenu": [
+    {
+      "type": "remainingProfiles"
+    }
+  ],
+  "profiles": {
+    "defaults": {
+      "antialiasingMode": "grayscale",
+      "colorScheme": "Tango Dark",
+      "cursorShape": "doubleUnderscore",
+      "elevate": true,
+      "hidden": false,
+      "opacity": 40,
+      "startingDirectory": "~",
+      "suppressApplicationTitle": true,
+      "useAcrylic": true,
+      "useAtlasEngine": true,
+      "scrollbarState": "hidden"
+    },
+    "list": [
+      {
+        "adjustIndistinguishableColors": "never",
+        "backgroundImage": "desktopWallpaper",
+        "backgroundImageOpacity": 0.64,
+        "closeOnExit": "never",
+        "colorScheme": "Tango Dark",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "face": "Iosevka Nerd Font Mono",
+          "size": 12.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#012456",
-            "black": "#0C0C0C",
-            "blue": "#0037DA",
-            "brightBlack": "#767676",
-            "brightBlue": "#3B78FF",
-            "brightCyan": "#61D6D6",
-            "brightGreen": "#16C60C",
-            "brightPurple": "#B4009E",
-            "brightRed": "#E74856",
-            "brightWhite": "#F2F2F2",
-            "brightYellow": "#F9F1A5",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#3A96DD",
-            "foreground": "#CCCCCC",
-            "green": "#13A10E",
-            "name": "Campbell Powershell",
-            "purple": "#881798",
-            "red": "#C50F1F",
-            "selectionBackground": "#FFFFFF",
-            "white": "#CCCCCC",
-            "yellow": "#C19C00"
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+        "hidden": false,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-psm.png",
+        "intenseTextStyle": "all",
+        "name": "P7_PurpleBackground",
+        "padding": "0",
+        "suppressApplicationTitle": true
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\orange_p7.jpg",
+        "closeOnExit": "never",
+        "colorScheme": "Tango Dark",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "face": "Iosevka Nerd Font Mono",
+          "size": 13.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#282C34",
-            "black": "#282C34",
-            "blue": "#61AFEF",
-            "brightBlack": "#5A6374",
-            "brightBlue": "#61AFEF",
-            "brightCyan": "#56B6C2",
-            "brightGreen": "#98C379",
-            "brightPurple": "#C678DD",
-            "brightRed": "#E06C75",
-            "brightWhite": "#DCDFE4",
-            "brightYellow": "#E5C07B",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#56B6C2",
-            "foreground": "#DCDFE4",
-            "green": "#98C379",
-            "name": "One Half Dark",
-            "purple": "#C678DD",
-            "red": "#E06C75",
-            "selectionBackground": "#FFFFFF",
-            "white": "#DCDFE4",
-            "yellow": "#E5C07B"
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ba}",
+        "hidden": false,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\file-type-powershell-format.png",
+        "name": "P7_OrangeBackground",
+        "padding": "0"
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\archblue.jpg",
+        "closeOnExit": "never",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "face": "Iosevka Nerd Font Mono",
+          "size": 12.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#FAFAFA",
-            "black": "#383A42",
-            "blue": "#0184BC",
-            "brightBlack": "#4F525D",
-            "brightBlue": "#61AFEF",
-            "brightCyan": "#56B5C1",
-            "brightGreen": "#98C379",
-            "brightPurple": "#C577DD",
-            "brightRed": "#DF6C75",
-            "brightWhite": "#FFFFFF",
-            "brightYellow": "#E4C07A",
-            "cursorColor": "#4F525D",
-            "cyan": "#0997B3",
-            "foreground": "#383A42",
-            "green": "#50A14F",
-            "name": "One Half Light",
-            "purple": "#A626A4",
-            "red": "#E45649",
-            "selectionBackground": "#FFFFFF",
-            "white": "#FAFAFA",
-            "yellow": "#C18301"
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44ff}",
+        "hidden": false,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\android-icon.png",
+        "name": "P7_Android",
+        "padding": "0"
+      },
+      {
+        "closeOnExit": "never",
+        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+        "hidden": false,
+        "name": "Azure Cloud Shell",
+        "source": "Windows.Terminal.Azure"
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "altGrAliasing": true,
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\ssh-without-password-linux-feature-940x587.jpg",
+        "backgroundImageOpacity": 0.64,
+        "closeOnExit": "never",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "cellHeight": "1.1",
+          "face": "Iosevka Nerd Font Propo",
+          "size": 10.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#002B36",
-            "black": "#002B36",
-            "blue": "#268BD2",
-            "brightBlack": "#073642",
-            "brightBlue": "#839496",
-            "brightCyan": "#93A1A1",
-            "brightGreen": "#586E75",
-            "brightPurple": "#6C71C4",
-            "brightRed": "#CB4B16",
-            "brightWhite": "#FDF6E3",
-            "brightYellow": "#657B83",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#2AA198",
-            "foreground": "#839496",
-            "green": "#859900",
-            "name": "Solarized Dark",
-            "purple": "#D33682",
-            "red": "#DC322F",
-            "selectionBackground": "#FFFFFF",
-            "white": "#EEE8D5",
-            "yellow": "#B58900"
+        "guid": "{b70afaf5-8b79-4d40-b449-b37aab2a504a}",
+        "hidden": false,
+        "historySize": 9001,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\ssh.png",
+        "intenseTextStyle": "all",
+        "name": "ssh_1",
+        "padding": "0",
+        "snapOnInput": true,
+        "suppressApplicationTitle": true
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "altGrAliasing": true,
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (1).jpg",
+        "backgroundImageOpacity": 0.64,
+        "closeOnExit": "never",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "cellHeight": "1.1",
+          "face": "Iosevka Nerd Font Propo",
+          "size": 13.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#FDF6E3",
-            "black": "#002B36",
-            "blue": "#268BD2",
-            "brightBlack": "#073642",
-            "brightBlue": "#839496",
-            "brightCyan": "#93A1A1",
-            "brightGreen": "#586E75",
-            "brightPurple": "#6C71C4",
-            "brightRed": "#CB4B16",
-            "brightWhite": "#FDF6E3",
-            "brightYellow": "#657B83",
-            "cursorColor": "#002B36",
-            "cyan": "#2AA198",
-            "foreground": "#657B83",
-            "green": "#859900",
-            "name": "Solarized Light",
-            "purple": "#D33682",
-            "red": "#DC322F",
-            "selectionBackground": "#FFFFFF",
-            "white": "#EEE8D5",
-            "yellow": "#B58900"
+        "guid": "{fc686e90-3f39-4c57-989e-381054fb7970}",
+        "hidden": false,
+        "historySize": 9001,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\linux.png",
+        "intenseTextStyle": "all",
+        "name": "ssh_4",
+        "padding": "0",
+        "snapOnInput": true,
+        "suppressApplicationTitle": true
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "altGrAliasing": true,
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\wallpaperflare.com_wallpaper.jpg",
+        "backgroundImageOpacity": 0.64,
+        "closeOnExit": "never",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "cellHeight": "1.1",
+          "face": "Mononoki Nerd Font",
+          "size": 13.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#000000",
-            "black": "#000000",
-            "blue": "#3465A4",
-            "brightBlack": "#555753",
-            "brightBlue": "#729FCF",
-            "brightCyan": "#34E2E2",
-            "brightGreen": "#8AE234",
-            "brightPurple": "#AD7FA8",
-            "brightRed": "#EF2929",
-            "brightWhite": "#EEEEEC",
-            "brightYellow": "#FCE94F",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#06989A",
-            "foreground": "#D3D7CF",
-            "green": "#4E9A06",
-            "name": "Tango Dark",
-            "purple": "#75507B",
-            "red": "#CC0000",
-            "selectionBackground": "#FFFFFF",
-            "white": "#D3D7CF",
-            "yellow": "#C4A000"
+        "guid": "{d9b78221-c7cf-4b4c-b15e-f37e13ec3471}",
+        "hidden": false,
+        "historySize": 9001,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\smartphone.png",
+        "intenseTextStyle": "all",
+        "name": "ssh_2",
+        "padding": "0",
+        "snapOnInput": true,
+        "suppressApplicationTitle": true
+      },
+      {
+        "adjustIndistinguishableColors": "never",
+        "altGrAliasing": true,
+        "backgroundImage": "C:\\ProgramDataD\\Background and Icon\\Background\\Autorun Background\\peakpx (2).jpg",
+        "backgroundImageOpacity": 0.64,
+        "closeOnExit": "never",
+        "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+        "cursorShape": "bar",
+        "experimental.retroTerminalEffect": false,
+        "font": {
+          "cellHeight": "1.1",
+          "face": "Iosevka Nerd Font Propo",
+          "size": 13.0,
+          "weight": "semi-bold"
         },
-        {
-            "background": "#FFFFFF",
-            "black": "#000000",
-            "blue": "#3465A4",
-            "brightBlack": "#555753",
-            "brightBlue": "#729FCF",
-            "brightCyan": "#34E2E2",
-            "brightGreen": "#8AE234",
-            "brightPurple": "#AD7FA8",
-            "brightRed": "#EF2929",
-            "brightWhite": "#EEEEEC",
-            "brightYellow": "#FCE94F",
-            "cursorColor": "#000000",
-            "cyan": "#06989A",
-            "foreground": "#555753",
-            "green": "#4E9A06",
-            "name": "Tango Light",
-            "purple": "#75507B",
-            "red": "#CC0000",
-            "selectionBackground": "#FFFFFF",
-            "white": "#D3D7CF",
-            "yellow": "#C4A000"
-        },
-        {
-            "background": "#300A24",
-            "black": "#171421",
-            "blue": "#0037DA",
-            "brightBlack": "#767676",
-            "brightBlue": "#08458F",
-            "brightCyan": "#2C9FB3",
-            "brightGreen": "#26A269",
-            "brightPurple": "#A347BA",
-            "brightRed": "#C01C28",
-            "brightWhite": "#F2F2F2",
-            "brightYellow": "#A2734C",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#3A96DD",
-            "foreground": "#FFFFFF",
-            "green": "#26A269",
-            "name": "Ubuntu-22.04-ColorScheme",
-            "purple": "#881798",
-            "red": "#C21A23",
-            "selectionBackground": "#FFFFFF",
-            "white": "#CCCCCC",
-            "yellow": "#A2734C"
-        },
-        {
-            "background": "#300A24",
-            "black": "#171421",
-            "blue": "#0037DA",
-            "brightBlack": "#767676",
-            "brightBlue": "#08458F",
-            "brightCyan": "#2C9FB3",
-            "brightGreen": "#26A269",
-            "brightPurple": "#A347BA",
-            "brightRed": "#C01C28",
-            "brightWhite": "#F2F2F2",
-            "brightYellow": "#A2734C",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#3A96DD",
-            "foreground": "#FFFFFF",
-            "green": "#26A269",
-            "name": "Ubuntu-ColorScheme",
-            "purple": "#881798",
-            "red": "#C21A23",
-            "selectionBackground": "#FFFFFF",
-            "white": "#CCCCCC",
-            "yellow": "#A2734C"
-        },
-        {
-            "background": "#000000",
-            "black": "#000000",
-            "blue": "#000080",
-            "brightBlack": "#808080",
-            "brightBlue": "#0000FF",
-            "brightCyan": "#00FFFF",
-            "brightGreen": "#00FF00",
-            "brightPurple": "#FF00FF",
-            "brightRed": "#FF0000",
-            "brightWhite": "#FFFFFF",
-            "brightYellow": "#FFFF00",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#008080",
-            "foreground": "#C0C0C0",
-            "green": "#008000",
-            "name": "Vintage",
-            "purple": "#800080",
-            "red": "#800000",
-            "selectionBackground": "#FFFFFF",
-            "white": "#C0C0C0",
-            "yellow": "#808000"
-        }
-    ],
-    "showTabsInTitlebar": true,
-    "showTerminalTitleInTitlebar": true,
-    "startOnUserLogin": true,
-    "tabSwitcherMode": "inOrder",
-    "tabWidthMode": "equal",
-    "theme": "myDark",
-    "themes": 
-    [
-        {
-            "name": "myDark",
-            "tab": 
-            {
-                "background": null,
-                "iconStyle": "default",
-                "showCloseButton": "never",
-                "unfocusedBackground": null
-            },
-            "tabRow": 
-            {
-                "background": "#F01A50FF",
-                "unfocusedBackground": "#501A50AF"
-            },
-            "window": 
-            {
-                "applicationTheme": "dark",
-                "experimental.rainbowFrame": false,
-                "frame": null,
-                "unfocusedFrame": null,
-                "useMica": true
-            }
-        }
-    ],
-    "useAcrylicInTabRow": true,
-    "windowingBehavior": "useNew"
+        "guid": "{b2df50d2-0345-4803-9f11-28d934f6068d}",
+        "hidden": false,
+        "historySize": 9001,
+        "icon": "C:\\ProgramDataD\\Background and Icon\\Ico File for Life\\orig\\distributor-logo-kali-linux.512x502.png",
+        "intenseTextStyle": "all",
+        "name": "ssh_3",
+        "padding": "0",
+        "snapOnInput": true,
+        "suppressApplicationTitle": true
+      },
+      {
+        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+        "hidden": false,
+        "name": "Command Prompt"
+      },
+      {
+        "guid": "{16208362-94fc-5b1f-a491-5b2624d5ab56}",
+        "hidden": false,
+        "name": "Visual Studio Debug Console",
+        "source": "VSDebugConsole"
+      },
+      {
+        "guid": "{58ad8b0c-3ef8-5f4d-bc6f-13e4c00f2530}",
+        "hidden": false,
+        "name": "Debian",
+        "source": "Windows.Terminal.Wsl"
+      }
+    ]
+  },
+  "schemes": [
+    {
+      "background": "#300A24",
+      "black": "#0C0C0C",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#3B78FF",
+      "brightCyan": "#61D6D6",
+      "brightGreen": "#16C60C",
+      "brightPurple": "#B4009E",
+      "brightRed": "#E74856",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#F9F1A5",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#CCCCCC",
+      "green": "#13A10E",
+      "name": "Campbell",
+      "purple": "#881798",
+      "red": "#C50F1F",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#C19C00"
+    },
+    {
+      "background": "#012456",
+      "black": "#0C0C0C",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#3B78FF",
+      "brightCyan": "#61D6D6",
+      "brightGreen": "#16C60C",
+      "brightPurple": "#B4009E",
+      "brightRed": "#E74856",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#F9F1A5",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#CCCCCC",
+      "green": "#13A10E",
+      "name": "Campbell Powershell",
+      "purple": "#881798",
+      "red": "#C50F1F",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#C19C00"
+    },
+    {
+      "background": "#282C34",
+      "black": "#282C34",
+      "blue": "#61AFEF",
+      "brightBlack": "#5A6374",
+      "brightBlue": "#61AFEF",
+      "brightCyan": "#56B6C2",
+      "brightGreen": "#98C379",
+      "brightPurple": "#C678DD",
+      "brightRed": "#E06C75",
+      "brightWhite": "#DCDFE4",
+      "brightYellow": "#E5C07B",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#56B6C2",
+      "foreground": "#DCDFE4",
+      "green": "#98C379",
+      "name": "One Half Dark",
+      "purple": "#C678DD",
+      "red": "#E06C75",
+      "selectionBackground": "#FFFFFF",
+      "white": "#DCDFE4",
+      "yellow": "#E5C07B"
+    },
+    {
+      "background": "#FAFAFA",
+      "black": "#383A42",
+      "blue": "#0184BC",
+      "brightBlack": "#4F525D",
+      "brightBlue": "#61AFEF",
+      "brightCyan": "#56B5C1",
+      "brightGreen": "#98C379",
+      "brightPurple": "#C577DD",
+      "brightRed": "#DF6C75",
+      "brightWhite": "#FFFFFF",
+      "brightYellow": "#E4C07A",
+      "cursorColor": "#4F525D",
+      "cyan": "#0997B3",
+      "foreground": "#383A42",
+      "green": "#50A14F",
+      "name": "One Half Light",
+      "purple": "#A626A4",
+      "red": "#E45649",
+      "selectionBackground": "#FFFFFF",
+      "white": "#FAFAFA",
+      "yellow": "#C18301"
+    },
+    {
+      "background": "#002B36",
+      "black": "#002B36",
+      "blue": "#268BD2",
+      "brightBlack": "#073642",
+      "brightBlue": "#839496",
+      "brightCyan": "#93A1A1",
+      "brightGreen": "#586E75",
+      "brightPurple": "#6C71C4",
+      "brightRed": "#CB4B16",
+      "brightWhite": "#FDF6E3",
+      "brightYellow": "#657B83",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#2AA198",
+      "foreground": "#839496",
+      "green": "#859900",
+      "name": "Solarized Dark",
+      "purple": "#D33682",
+      "red": "#DC322F",
+      "selectionBackground": "#FFFFFF",
+      "white": "#EEE8D5",
+      "yellow": "#B58900"
+    },
+    {
+      "background": "#FDF6E3",
+      "black": "#002B36",
+      "blue": "#268BD2",
+      "brightBlack": "#073642",
+      "brightBlue": "#839496",
+      "brightCyan": "#93A1A1",
+      "brightGreen": "#586E75",
+      "brightPurple": "#6C71C4",
+      "brightRed": "#CB4B16",
+      "brightWhite": "#FDF6E3",
+      "brightYellow": "#657B83",
+      "cursorColor": "#002B36",
+      "cyan": "#2AA198",
+      "foreground": "#657B83",
+      "green": "#859900",
+      "name": "Solarized Light",
+      "purple": "#D33682",
+      "red": "#DC322F",
+      "selectionBackground": "#FFFFFF",
+      "white": "#EEE8D5",
+      "yellow": "#B58900"
+    },
+    {
+      "background": "#000000",
+      "black": "#000000",
+      "blue": "#3465A4",
+      "brightBlack": "#555753",
+      "brightBlue": "#729FCF",
+      "brightCyan": "#34E2E2",
+      "brightGreen": "#8AE234",
+      "brightPurple": "#AD7FA8",
+      "brightRed": "#EF2929",
+      "brightWhite": "#EEEEEC",
+      "brightYellow": "#FCE94F",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#06989A",
+      "foreground": "#D3D7CF",
+      "green": "#4E9A06",
+      "name": "Tango Dark",
+      "purple": "#75507B",
+      "red": "#CC0000",
+      "selectionBackground": "#FFFFFF",
+      "white": "#D3D7CF",
+      "yellow": "#C4A000"
+    },
+    {
+      "background": "#FFFFFF",
+      "black": "#000000",
+      "blue": "#3465A4",
+      "brightBlack": "#555753",
+      "brightBlue": "#729FCF",
+      "brightCyan": "#34E2E2",
+      "brightGreen": "#8AE234",
+      "brightPurple": "#AD7FA8",
+      "brightRed": "#EF2929",
+      "brightWhite": "#EEEEEC",
+      "brightYellow": "#FCE94F",
+      "cursorColor": "#000000",
+      "cyan": "#06989A",
+      "foreground": "#555753",
+      "green": "#4E9A06",
+      "name": "Tango Light",
+      "purple": "#75507B",
+      "red": "#CC0000",
+      "selectionBackground": "#FFFFFF",
+      "white": "#D3D7CF",
+      "yellow": "#C4A000"
+    },
+    {
+      "background": "#300A24",
+      "black": "#171421",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#08458F",
+      "brightCyan": "#2C9FB3",
+      "brightGreen": "#26A269",
+      "brightPurple": "#A347BA",
+      "brightRed": "#C01C28",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#A2734C",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#FFFFFF",
+      "green": "#26A269",
+      "name": "Ubuntu-22.04-ColorScheme",
+      "purple": "#881798",
+      "red": "#C21A23",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#A2734C"
+    },
+    {
+      "background": "#300A24",
+      "black": "#171421",
+      "blue": "#0037DA",
+      "brightBlack": "#767676",
+      "brightBlue": "#08458F",
+      "brightCyan": "#2C9FB3",
+      "brightGreen": "#26A269",
+      "brightPurple": "#A347BA",
+      "brightRed": "#C01C28",
+      "brightWhite": "#F2F2F2",
+      "brightYellow": "#A2734C",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#3A96DD",
+      "foreground": "#FFFFFF",
+      "green": "#26A269",
+      "name": "Ubuntu-ColorScheme",
+      "purple": "#881798",
+      "red": "#C21A23",
+      "selectionBackground": "#FFFFFF",
+      "white": "#CCCCCC",
+      "yellow": "#A2734C"
+    },
+    {
+      "background": "#000000",
+      "black": "#000000",
+      "blue": "#000080",
+      "brightBlack": "#808080",
+      "brightBlue": "#0000FF",
+      "brightCyan": "#00FFFF",
+      "brightGreen": "#00FF00",
+      "brightPurple": "#FF00FF",
+      "brightRed": "#FF0000",
+      "brightWhite": "#FFFFFF",
+      "brightYellow": "#FFFF00",
+      "cursorColor": "#FFFFFF",
+      "cyan": "#008080",
+      "foreground": "#C0C0C0",
+      "green": "#008000",
+      "name": "Vintage",
+      "purple": "#800080",
+      "red": "#800000",
+      "selectionBackground": "#FFFFFF",
+      "white": "#C0C0C0",
+      "yellow": "#808000"
+    }
+  ],
+  "showTabsInTitlebar": true,
+  "showTerminalTitleInTitlebar": true,
+  "startOnUserLogin": true,
+  "tabSwitcherMode": "inOrder",
+  "tabWidthMode": "equal",
+  "theme": "myDark",
+  "themes": [
+    {
+      "name": "myDark",
+      "tab": {
+        "background": null,
+        "iconStyle": "default",
+        "showCloseButton": "never",
+        "unfocusedBackground": null
+      },
+      "tabRow": {
+        "background": "#F01A50FF",
+        "unfocusedBackground": "#501A50AF"
+      },
+      "window": {
+        "applicationTheme": "dark",
+        "experimental.rainbowFrame": false,
+        "frame": null,
+        "unfocusedFrame": null,
+        "useMica": true
+      }
+    }
+  ],
+  "useAcrylicInTabRow": true,
+  "windowingBehavior": "useNew"
 }
