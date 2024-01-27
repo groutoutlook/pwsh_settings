@@ -74,7 +74,7 @@ function initMediaPlayer{
 
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
 function p7Env{
-	np $p7Profile
+	nvim $p7Profile
 }
 
 function backupEnv{
