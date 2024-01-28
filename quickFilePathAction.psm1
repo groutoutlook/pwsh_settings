@@ -3,7 +3,7 @@ $global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
 $global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
 $global:vs_dir_debug = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\x64\Debug"
-$global:st_dir = "D:\ProgramDataD\ST\repo\STM32CubeH7\Projects\NUCLEO-H745ZI-Q\Examples\GPIO\GPIO_EXTI\STM32CubeIDE\CM7\RGB_SOURCE\"
+$global:st_dir = "D:\ProgramDataD\ST\repo\STM32CubeH7\Projects\NUCLEO-H745ZI-Q\Examples\GPIO\GPIO_EXTI\STM32CubeIDE\CM7\RGB_SOURCE"
 function copyFilestoKeil(
 	$Destination, 
 	$Source = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\ConsoleApplication1\", 
