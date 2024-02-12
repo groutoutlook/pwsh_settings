@@ -3,7 +3,8 @@ Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell
 # powershell-7.4
 Set-Alias -Name pw -Value "C:\Program Files\PowerShell\7\pwsh.exe"
 
-function initTypicalEditor{	
+function initTypicalEditor
+{	
 	#joplin
 	Set-Alias -Name jopl -Value 'C:\Program Files\Joplin\Joplin.exe' -Scope Global
 	# sublime - python in android.
@@ -17,12 +18,14 @@ function initTypicalEditor{
 	Set-Alias -Name np3 -Value 'C:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
 }
 
-function initAutomate{
+function initAutomate
+{
 	Set-Alias -Name dto -Value "D:\Program Files\Ditto\Ditto" -Scope Global
 	Set-Alias -Name ahk -Value "C:\Program Files\AutoHotkey\UX\ui-dash.ahk" -Scope Global
 }
 
-function initIDE{
+function initIDE
+{
 	# vscode, but maybe we don't need that.
 	Set-Alias -Name vsco -Value 'C:\Users\grout\AppData\Local\Programs\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
 	# visual studio
@@ -34,14 +37,17 @@ function initIDE{
 	Set-alias -name pms -Value "C:\PADAUK_Tool\0.97C9\FPPA IDE.exe" -Scope Global
 }
 
-function initShellApp{
+function initShellApp
+{
 	#Set-Alias -Name tran -Value transInArch -Scope Global
 }
-function initSSH{
+function initSSH
+{
 	
 }
 
-function initGuiApp{
+function initGuiApp
+{
 	# #clean keyboard?
 	# Set-alias -Name iwck -Value "D:\ProgramData\Visual Studio\ahk\repos\I-wanna-clean-keyboard\iwck-VNT.exe" -Scope Global
 	# # WingetUI?
@@ -62,7 +68,8 @@ function initGuiApp{
 	#
 }
 
-function initMediaPlayer{
+function initMediaPlayer
+{
 	# # Everyonepiano
 	# Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
 	Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
@@ -73,33 +80,39 @@ function initMediaPlayer{
 }
 
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
-function p7Env{
+function p7Env
+{
 	nvim $p7Profile
 }
 
-function backupEnv{
+function backupEnv
+{
 	$terminalSettings = "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
 	$dotfiles = @(
 		$p7Profile,
 		"~/.gitconfig",
 		$terminalSettings
 	)
-	foreach($dotfile in $dotfiles){
+	foreach($dotfile in $dotfiles)
+	{
 		(cp $dotfile "$Env:p7settingDir")
 		echo "$dotfile backed up"
 	}
 }
 Set-Alias -Name p7Backup -Value backupEnv
 
-function google-search {
-	if($args[0] -match "yt"){
+function google-search
+{
+	if($args[0] -match "yt")
+	{
 		$query = 'https://www.youtube.com/results?search_query='
 		$reargs = $args | Select-Object -Skip 1
-		foreach($ar in $reargs){
+		foreach($ar in $reargs)
+		{
 			$query = $query + "$ar+"
 		}
-	}
-	else{
+	} else
+	{
 		$query = 'https://www.google.com/search?q='
 		$args | % { $query = $query + "$_+" }
 	}
@@ -110,7 +123,8 @@ function google-search {
 Set-Alias -Name gos -Value google-search
 Set-Alias -Name gso -Value google-search
 
-function P7{
+function P7
+{
 	#oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 	# Invoke-Expression (& { (zoxide init powershell | Out-String) })
@@ -122,16 +136,19 @@ function P7{
 }
 Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
-function Invoke-Tere() {
-    $result = . (Get-Command -CommandType Application tere) $args
-    if ($result) {
-        Set-Location $result
-    }
+function Invoke-Tere()
+{
+	$result = . (Get-Command -CommandType Application tere) $args
+	if ($result)
+	{
+		Set-Location $result
+	}
 }
 Set-Alias tere Invoke-Tere
 
 
-function MoreTerminalModule{
+function MoreTerminalModule
+{
 	#External pwsh module
 	Import-Module -Name F7History -Scope Global 
 	# Import-Module -Name Terminal-Icons -Scope Global
@@ -147,10 +164,11 @@ function MoreTerminalModule{
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
 	$Env:SMergePath = "C:\Program Files\Sublime Merge"
 	$diradd = @($Env:gkPath,
-	$Env:SMergePath
-	# $Env:sourceTreePath,
+		$Env:SMergePath
+		# $Env:sourceTreePath,
 	)
-	foreach($d in $diradd){
+	foreach($d in $diradd)
+	{
 		$Env:Path += ";"+$d;
 	}
 	
@@ -165,7 +183,8 @@ function MoreTerminalModule{
 Set-Alias -Name p7mod -Value MoreTerminalModule
 
 #open system shell
-function syssh{
+function syssh
+{
 	# AdvancedRun
 	Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
 	adrun /exefilename "C:\Program Files\PowerShell\7\pwsh.exe" /runas 4 /run
@@ -175,7 +194,8 @@ $text_arr = "np","subl","jopl"
 $ide_arr  = "brk","codi","vsco","vist"
 
 
-function return_alias_def ($str = "np",$name_only = 1){
+function return_alias_def ($str = "np",$name_only = 1)
+{
 	$path_prog = (GET-ALIAS | WHERE {$_.NAME -eq $str}).Definition
 	$name_prog = ($name_only -eq 1) ? [System.IO.Path]::GetFileNameWithoutExtension($path_prog) : $path_prog
 	return $name_prog
@@ -183,22 +203,25 @@ function return_alias_def ($str = "np",$name_only = 1){
 
 Set-Alias -Name rals -Value return_alias_def
 
-function closedIfopened($name_prog = "np"){
+function closedIfopened($name_prog = "np")
+{
 	$p = rals ($name_prog)
 	$p = Get-Process -Name ($p+"*") 
 	Stop-Process -InputObject $p  -ErrorAction SilentlyContinue
 	$res = (Get-Process | Where-Object {$p.HasExited})
-	if ($res -eq $null) {
+	if ($res -eq $null)
+	{
 		return 0;
-	}
-	else{
+	} else
+	{
 		return 1;
 	}
 }
 
 Set-Alias -Name kipo -Value closedIfopened
 
-function makeDev ($lightweight = 1, $prog_list = $text_arr){	
+function makeDev ($lightweight = 1, $prog_list = $text_arr)
+{	
 
 	$opened_list = New-Object System.Collections.Generic.List[System.Object]
 	$ide_opening_list = $prog_list.Where{ 
@@ -209,7 +232,8 @@ function makeDev ($lightweight = 1, $prog_list = $text_arr){
 		$_ -ne (($lightweight -eq 1) ? "vist" : "vsco") 
 	}
 	#>
-	foreach ($element in $ide_opening_list) {
+	foreach ($element in $ide_opening_list)
+	{
 		Start-Process -FilePath (gal -Name $element).Definition
 		$opened_list.Add($name_prog)
 	}
@@ -218,12 +242,15 @@ function makeDev ($lightweight = 1, $prog_list = $text_arr){
 }
 Set-Alias -Name mdev -Value makeDev
 
-function killDev ($lightweight = 1, $prog_list = $text_arr){
+function killDev ($lightweight = 1, $prog_list = $text_arr)
+{
 	$closed_list = New-Object System.Collections.Generic.List[System.Object]
 
 	$ide_opening_list = $prog_list.Where{ $_ -ne (($lightweight -eq 1)? "vist" : "vsco") }
-	foreach ($element in $ide_opening_list) {
-		if ((kipo $element) -eq 1){ 
+	foreach ($element in $ide_opening_list)
+	{
+		if ((kipo $element) -eq 1)
+		{ 
 			$closed_list.Add($element)
 		}
 	}
@@ -232,25 +259,30 @@ function killDev ($lightweight = 1, $prog_list = $text_arr){
 
 Set-Alias -Name kdev -Value killDev
 
-function cdwhere($files = "~"){
+function cdwhere($files = "~")
+{
 	cd (split-path (where.exe $files) -parent)
 }
 
-function killProcess($str = "p5"){
+function killProcess($str = "p5")
+{
 	#kill all running powershell.
-	if($str -eq "all"){
+	if($str -eq "all")
+	{
 		endDev
-	}
-	elseif ($str -ne $null) {
+	} elseif ($str -ne $null)
+	{
 		kipo  $str
 	}
 }
 
 Set-Alias -Name kpo -Value killProcess
 
-function profileHelper{
+function profileHelper
+{
 	
-	if((get-module -name "profile_*") -eq $null){
+	if((get-module -name "profile_*") -eq $null)
+ {
 		$old_path = pwd
 		$a = $PROFILE | Select-Object *Host*
 		$profile_ps1 = ($a).AllUsersCurrentHost 
@@ -265,15 +297,18 @@ function profileHelper{
 	get-command -Module *profile* | % {get-alias -Definition $_.name -ea 0}
 }
 Set-Alias -Name pHelp -Value profileHelper
-function addPath($dirList){
+function addPath($dirList)
+{
 	
-	foreach($d in $dirList){
+	foreach($d in $dirList)
+ {
 		$d = Resolve-Path $d
 		$Env:Path += ";"+$d;
 	}
 }
 
-function initProfileEnv{ #for environment variable.
+function initProfileEnv
+{ #for environment variable.
 
 	#If not set ProgramFilesD
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
@@ -291,6 +326,7 @@ function initProfileEnv{ #for environment variable.
 	$Env:SysInternalSuite = "D:\Program Files\SysinternalsSuite\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
 	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
+	$Env:venvsDir = "C:\Users\COHOTECH\AppData\Local\pipx\pipx\venvs\"
 
 
 	$Env:sqlite3Dir = "D:\Program Files\sqlite3\"
@@ -298,19 +334,21 @@ function initProfileEnv{ #for environment variable.
 	$Env:hledgerDir = "D:\Program Files\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
-	$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
-	$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
-	$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
-	$Env:hledgerDir,$Env:sqlite3Dir,
-	$Env:cargoDir
+		$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
+		$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
+		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
+		$Env:hledgerDir,$Env:sqlite3Dir,$Env:venvsDir,
+		$Env:cargoDir
 	)
-	foreach($d in $diradd){
+	foreach($d in $diradd)
+	{
 		$Env:Path += ";"+$d;
 	}
 	$Env:PSModulePath += ";" + $Env:p7settingDir 
 }
 
-function initChat{ #for environment variable.
+function initChat
+{ #for environment variable.
 	$Env:ZaloDir = "C:\Users\ADMIN\AppData\Local\Programs\Zalo/"
 	$Env:WeChatDir = "C:\Program Files (x86)\Tencent\WeChat"
 	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
