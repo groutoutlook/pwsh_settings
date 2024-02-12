@@ -114,7 +114,7 @@ function keilLoad($uv4project = "$global:fmd_dir")
 	}
 }
 EmbedEnv
-activateJrnl
+# activateJrnl
 $global:imgPath = "D:\ProgramDataD\Animation\Proj\final"
 
 
