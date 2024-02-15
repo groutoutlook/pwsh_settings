@@ -54,7 +54,6 @@ function EmbedEnv()
 	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
 	$Env:edgeDir = "C:\Users\COHOTECH\AppData\Local\Microsoft\Edge SxS\Application"
 	$Env:gotvDir = "D:\Program Files\GoTiengViet"
-	$Env:jrnlDir = "$Env:venvsDir\jrnl"
 	$diradd = @(
 		$Env:cubeCLIdir,$env:edgeDir,
 		$Env:gotvDir
@@ -69,12 +68,26 @@ function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
 	expl $path
 }
 
-
+$global:JrnlInEnv = 0
 function activateJrnl()
 {
+	$Env:jrnlDir = "$Env:venvsDir\jrnl"
 	Set-Location "$Env:jrnlDir\Scripts"
 	.\Activate.ps1
 	Set-Location -
+}
+
+function Jnl
+{
+	if($global:JrnlInEnv -eq 0)
+	{
+		activateJrnl
+		$global:JrnlInEnv = 1
+		jrnl $args
+	} else
+	{
+		jrnl $args
+	}
 }
 
 function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
