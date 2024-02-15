@@ -70,7 +70,7 @@ function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
 }
 
 
-function activateJrnl
+function activateJrnl()
 {
 	Set-Location "$Env:jrnlDir\Scripts"
 	.\Activate.ps1
