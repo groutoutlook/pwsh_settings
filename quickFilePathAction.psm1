@@ -11,22 +11,22 @@ function copyFilestoKeil(
 	$EngineIncluded = 0,
 	$SequenceIncluded = 0)
 {
-	$listSourceFiles = "RGB3D_Im*","RGB3D_FontNew.h","RGB3D_Param.h"
+	$listSourceFiles = "RGB3D_FontNew.h","RGB3D_Param.h"
 	if ($paramIncluded -match "Star")
 	{
 		$listSourceFiles+="RGB3D_Star*"
 	} elseif ($paramIncluded -match "Pine")
 	{
-		$listSourceFiles+="RGB3D_PineTree*"
+		$listSourceFiles+="RGB3D_PineTree*","RGB3D_Im*"
 	} elseif ($paramIncluded -match "Tail")
 	{
-		$listSourceFiles+="RGB3D_Tail*"
+		$listSourceFiles+="RGB3D_Tail*","RGB3D_Im*"
 	} elseif ($paramIncluded -match "Firework")
 	{
 		$listSourceFiles+="RGB3D_Firework*"
 	} elseif ($paramIncluded -match "Panel")
 	{
-		$listSourceFiles+="RGB3D_Panel*"
+		$listSourceFiles+="RGB3D_Panel*","RGB3D_Im*"
 	}
 	
 	if($EngineIncluded -eq 1)
