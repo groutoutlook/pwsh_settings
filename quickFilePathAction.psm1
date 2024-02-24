@@ -27,6 +27,9 @@ function copyFilestoKeil(
 	} elseif ($paramIncluded -match "Panel")
 	{
 		$listSourceFiles+="RGB3D_Panel*","RGB3D_Im*"
+	} elseif ($paramIncluded -match "Ray")
+	{
+		$listSourceFiles+="RGB3D_Ray*"
 	}
 	
 	if($EngineIncluded -eq 1)

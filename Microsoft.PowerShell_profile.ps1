@@ -53,12 +53,12 @@ function initGuiApp
 	# # WingetUI?
 	# Set-Alias -Name wgui -Value "D:\Program Files\WingetUI\wingetui.exe" -Scope Global
 	# Devtoys
-	#Set-Alias -Name devt -Value "C:\Program Files\WindowsApps\64360VelerSoftware.DevToys_1.0.13.0_x64__j80j2txgjg9dj\DevToys.exe"
-	Set-Alias -Name devt -Value "start-Process -FilePath devtoys://" -Scope Global
+	# Set-Alias -Name devt -Value "C:\Program Files\WindowsApps\64360VelerSoftware.DevToys_1.0.13.0_x64__j80j2txgjg9dj\DevToys.exe"
+	# Set-Alias -Name devt -Value "start-Process -FilePath devtoys://" -Scope Global
 	# WSL Toolbox
-	Set-Alias -Name wslt -Value "D:\Program Files\WSL Toolbox\toolbox.exe" -Scope Global
+	# Set-Alias -Name wslt -Value "D:\Program Files\WSL Toolbox\toolbox.exe" -Scope Global
 	# btop4win. there is ntop as well.
-	Set-Alias -Name btop -value "C:\Program Files\btop4win\btop4win.exe" -Scope Global
+	# Set-Alias -Name btop -value "C:\Program Files\btop4win\btop4win.exe" -Scope Global
 	# # psexec
 	# Set-Alias -Name psexec -Value "D:\ProgramData\PSTools\psexec.exe" -Scope Global
 	# AdvancedRun
@@ -66,6 +66,8 @@ function initGuiApp
 	# # taskbar activate
 	# Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
 	#
+	
+	. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 }
 
 function initMediaPlayer
@@ -353,10 +355,15 @@ function initChat
 	$Env:WeChatDir = "C:\Program Files (x86)\Tencent\WeChat"
 	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
 
-	Set-Alias -Name zl -Value "zalo.exe" -Scope Global #-Option AllScope
 	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
-
+	#Set-Alias -Name zl -Value "zalo.exe" -Scope Global #-Option AllScope
 }
+function zl()
+{
+	chrome https://chat.zalo.me
+} 
+
+
 #p7in
 initProfileEnv
 initTypicalEditor
