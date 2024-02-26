@@ -67,7 +67,6 @@ function initGuiApp
 	# Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
 	#
 	
-	. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 }
 
 function initMediaPlayer
@@ -364,6 +363,7 @@ function zl()
 } 
 
 
+. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 #p7in
 initProfileEnv
 initTypicalEditor
