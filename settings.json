@@ -207,7 +207,7 @@
         {
             "antialiasingMode": "grayscale",
             "colorScheme": "Tango Dark",
-            "cursorShape": "doubleUnderscore",
+            "cursorShape": "bar",
             "elevate": true,
             "hidden": false,
             "opacity": 40,

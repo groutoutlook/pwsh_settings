@@ -4,14 +4,15 @@
 
 
 
-function toHex($number){
-Write-Host('{0:X}' -f $number)
+function toHex($number)
+{
+ Write-Host('{0:X}' -f $number)
 }
 
 
 function reverse
 { 
-param([String[]] $inputArr)
+ param([String[]] $inputArr)
  $arr = @($inputArr)
  [array]::reverse($arr)
  [string]$resarr = $arr -join  ","
