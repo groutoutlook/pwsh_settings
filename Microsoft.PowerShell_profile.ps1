@@ -147,7 +147,16 @@ function Invoke-Tere()
 }
 Set-Alias tere Invoke-Tere
 
-
+function clockWindowsApp()
+{
+	Start-Process "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe"
+}
+Set-Alias -Name clock -Value clockWindowsApp
+function todoWindowsApp()
+{
+	Start-Process "C:\Program Files\WindowsApps\Microsoft.Todos*x64*\Todo.exe"
+}
+Set-Alias -Name todo -Value todoWindowsApp
 function MoreTerminalModule
 {
 	#External pwsh module
