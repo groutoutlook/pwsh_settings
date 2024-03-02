@@ -109,7 +109,11 @@ function term($which = "win")
 	} elseif($which -eq "lin")
 	{
 		start wt '-F new-tab -p "ssh_3" split-pane --size 0.5 -V -p "ssh_3" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_4" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_4" pwsh -NoExit -Command "p7 && p7mod"'
+	} elseif($which -eq "obs")
+	{
+		start wt '-F new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && jnl"'
 	}
+	
 	#kawt "P7_P"	
 }
 function androidDevEnv
