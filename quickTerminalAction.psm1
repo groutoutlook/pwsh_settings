@@ -12,7 +12,7 @@ function SetBufferWidthToScreenWidth
 	$ui.BufferSize = $bufferSize
 }
 
-function p7edit($options = "quick")
+function p7edit($options = "")
 {
 	if($options -match "quick")
 	{
@@ -23,6 +23,11 @@ function p7edit($options = "quick")
 	} elseif($options -match "and")
 	{
 		$fileName = "ADB_BasicModule.psm1"
+	} else
+	{
+		cd $env:p7settingDir
+		nvim .
+		return
 	}
 	cd "$env:p7settingDir"
 	nvim ".\$fileName"

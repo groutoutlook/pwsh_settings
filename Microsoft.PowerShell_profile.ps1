@@ -181,6 +181,28 @@ function MoreTerminalModule
 	Import-Module -Name ($env:p7settingDir+"quickFilePathAction") -Scope Global
 	#clear
 }
+$global:personalModuleList = @(
+	"quickMathAction",
+	"quickGitAction",
+	"quickTerminalAction",
+	"quickFilePathAction"
+)
+
+function Reload-Module-List
+{
+	param (
+		[array]$ModuleList = $global:personalModuleList,
+		[string]$ModulePath = $env:p7settingDir
+	)
+	foreach($ModuleName in $ModuleList)
+	{
+		Remove-Module -Name "$ModulePath$ModuleName" -ErrorAction SilentlyContinue
+		Import-Module -Name "$ModulePath$ModuleName" -Force 
+		Write-Output "$ModuleName reimported"
+	}
+}
+
+
 Set-Alias -Name p7mod -Value MoreTerminalModule
 
 #open system shell
@@ -326,7 +348,7 @@ function initProfileEnv
 	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
 	$Env:SysInternalSuite = "D:\Program Files\SysinternalsSuite\"
 	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
-	$Env:kicadDir = "D:\Program Files\KiCad\7.0\bin"
+	$Env:kicadDir = "D:\Program Files\KiCad\8.0\bin"
 	$Env:venvsDir = "C:\Users\COHOTECH\AppData\Local\pipx\pipx\venvs\"
 
 
