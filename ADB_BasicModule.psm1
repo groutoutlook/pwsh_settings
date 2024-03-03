@@ -127,7 +127,7 @@ function invokeShizuku($installed = 1)
 	
 	if($installed -eq 0)
  {
-		installallApk "D:\ProgramDataD\pyhelpers\ADB_Scrcpy\repos\shizuku-v13.5.1.r1025.ebb2a30-release.apk"
+		installallApk "D:\ProgramDataD\Python\proj\ADB_Scrcpy\repos\shizuku-v13.5.1.r1025.ebb2a30-release.apk"
 	}
 	
 	foreach($emulator in $srl)
