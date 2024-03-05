@@ -382,7 +382,7 @@ function initProfileEnv
 function initChat
 { #for environment variable.
 	$Env:ZaloDir = "C:\Users\ADMIN\AppData\Local\Programs\Zalo/"
-	$Env:WeChatDir = "C:\Program Files (x86)\Tencent\WeChat"
+	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
 	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
 
 	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
