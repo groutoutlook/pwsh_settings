@@ -70,7 +70,10 @@ function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
 {
 	expl $path
 }
-
+function syncthing()
+{
+	Start-Process https://localhost:8384
+}
 $global:JrnlInEnv = 0
 function activateJrnl()
 {
