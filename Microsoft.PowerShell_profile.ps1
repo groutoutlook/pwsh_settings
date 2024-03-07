@@ -385,7 +385,7 @@ function Show-Window
 		[Parameter(Mandatory)]
 		[string] $ProcessName
 	)
-	[alias("shw")]
+	
 
 	# As a courtesy, strip '.exe' from the name, if present.
 	$ProcessName = $ProcessName -replace '\.exe$'
@@ -398,6 +398,7 @@ function Show-Window
 
 	if (-not $procId)
 	{ Throw "No $ProcessName process with a non-empty window title found." 
+	 return 1
 	}
 
 	# Note: 
@@ -415,7 +416,7 @@ function obs
 {
 	Show-Window("Obsidian.exe")	
 }
-
+Set-Alias -Name shw -Value Show-Window
 
 
 function initChat
@@ -437,6 +438,17 @@ function hn()
 	Start-Process https://news.ycombinator.com/
 
 }
+
+function cd-
+{
+	Set-Location -
+}
+
+function cd+
+{
+	Set-Location +
+}
+
 
 . C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 #p7in
