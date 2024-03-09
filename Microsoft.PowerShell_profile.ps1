@@ -88,7 +88,7 @@ function p7Env
 
 function backupEnv
 {
-	$terminalSettings = "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
+	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
 	$dotfiles = @(
 		$p7Profile,
 		"~/.gitconfig",

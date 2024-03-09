@@ -74,6 +74,10 @@ function syncthing()
 {
 	Start-Process https://localhost:8384
 }
+function discord()
+{
+	. "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Discord Inc\discord.lnk"
+}
 $global:JrnlInEnv = 0
 function activateJrnl()
 {
