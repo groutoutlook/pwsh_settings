@@ -96,7 +96,7 @@ function backupEnv
 	)
 	foreach($dotfile in $dotfiles)
 	{
-		(cp $dotfile "$Env:p7settingDir")
+		(Copy-Item $dotfile "$Env:p7settingDir")
 		echo "$dotfile backed up"
 	}
 }
@@ -104,7 +104,13 @@ Set-Alias -Name p7Backup -Value backupEnv
 
 function google-search
 {
-	if($args[0] -match "yt")
+	$lookupSite = @{
+		"reddit" =  "site%3Areddit.com"
+		"rdt" =  "site%3Areddit.com"
+		"hackernews" =  "site%3Anews.ycombinator.com"
+		"hn" =  "site%3Anews.ycombinator.com"
+	}
+	if($args[0] -match "^yt")
 	{
 		$query = 'https://www.youtube.com/results?search_query='
 		$reargs = $args | Select-Object -Skip 1
@@ -114,11 +120,17 @@ function google-search
 		}
 	} else
 	{
+		$appendix = $lookupSite[$args[-1]]
+		if( $appendix -ne $null)
+		{
+			$args[-1] = $appendix
+		} 
+		
 		$query = 'https://www.google.com/search?q='
 		$args | % { $query = $query + "$_+" }
 	}
 	$url = $query.Substring(0, $query.Length - 1)
-	start "$url"
+	Start-Process "$url"
 }
 
 Set-Alias -Name gos -Value google-search
@@ -321,7 +333,7 @@ function profileHelper
 		cd ([System.IO.Directory]::GetParent($profile_ps1).ToString())
 		$module_name = "profile_p7_md"
 		$module_ext = ".psm1"
-		cp $profile_ps1 ((pwd).ToString() + "\" + $module_name + $module_ext)
+		Copy-Item $profile_ps1 ((pwd).ToString() + "\" + $module_name + $module_ext)
 		Import-Module ((pwd).ToString() + "\" + $module_name + $module_ext)
 		cd $old_path
 	}
