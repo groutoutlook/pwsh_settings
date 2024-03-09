@@ -222,7 +222,20 @@ function Reload-Module-List
 		Write-Output "$ModuleName reimported"
 	}
 }
-
+function reload-Profile($option = "env")
+{
+	if ($option -match "^all")
+	{
+		Reload-Module-List
+		. $PROFILE.AllUsersCurrentHost
+		echo "Reload profile and All module."
+	} else
+	{
+		. $PROFILE.AllUsersCurrentHost
+		echo "Reload pwsh Profile."
+	}
+}
+Set-Alias -Name repro -Value reload-Profile
 
 Set-Alias -Name p7mod -Value MoreTerminalModule
 
