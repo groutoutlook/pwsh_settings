@@ -89,7 +89,7 @@ function checkFileStatus($filePath)
 
 function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim")
 {
-	hx $specific_path 
+	nvim $specific_path 
 }
 #set-Alias -Name viconf -Value editNvimConfig
 Set-Alias -Name nvimconf -Value editNvimConfig

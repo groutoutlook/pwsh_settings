@@ -39,7 +39,8 @@ function initIDE
 
 function initShellApp
 {
-	#Set-Alias -Name tran -Value transInArch -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
+	. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 }
 function initSSH
 {
@@ -102,14 +103,21 @@ function backupEnv
 }
 Set-Alias -Name p7Backup -Value backupEnv
 
+$lookupSite = @{
+	"reddit" =  "site%3Areddit.com"
+	"rdt" =  "site%3Areddit.com"
+	"hackernews" =  "site%3Anews.ycombinator.com"
+	"hn" =  "site%3Anews.ycombinator.com"
+	"sov" = "site%3Astackoverflow.com"
+	"stex" = "site%3Astackexchange.com"
+	"su" = "site%3Asuperuser.com"
+}
+
+
+
+
 function google-search
 {
-	$lookupSite = @{
-		"reddit" =  "site%3Areddit.com"
-		"rdt" =  "site%3Areddit.com"
-		"hackernews" =  "site%3Anews.ycombinator.com"
-		"hn" =  "site%3Anews.ycombinator.com"
-	}
 	if($args[0] -match "^yt")
 	{
 		$query = 'https://www.youtube.com/results?search_query='
@@ -120,7 +128,7 @@ function google-search
 		}
 	} else
 	{
-		$appendix = $lookupSite[$args[-1]]
+		$appendix = $global:lookupSite[$args[-1]]
 		if( $appendix -ne $null)
 		{
 			$args[-1] = $appendix
@@ -206,6 +214,7 @@ $global:personalModuleList = @(
 	"quickMathAction",
 	"quickGitAction",
 	"quickTerminalAction",
+	"quickVimAction",
 	"quickFilePathAction"
 )
 
@@ -475,7 +484,6 @@ function cd+
 }
 
 
-. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
 #p7in
 initProfileEnv
 initTypicalEditor
