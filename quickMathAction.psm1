@@ -9,6 +9,13 @@ function toHex($number)
  Write-Host('{0:X}' -f $number)
 }
 
+function toBin($number)
+{
+ Write-Host('{0:B}' -f $number)
+}
+
+
+
 
 function reverse
 { 
