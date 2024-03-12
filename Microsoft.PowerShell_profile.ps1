@@ -20,7 +20,7 @@ function initTypicalEditor
 
 function initAutomate
 {
-	Set-Alias -Name dto -Value "D:\Program Files\Ditto\Ditto" -Scope Global
+	Set-Alias -Name dto -Value "$env:ProgramFilesD\Ditto\Ditto" -Scope Global
 	Set-Alias -Name ahk -Value "C:\Program Files\AutoHotkey\UX\ui-dash.ahk" -Scope Global
 }
 
@@ -53,20 +53,20 @@ function initGuiApp
 	# #clean keyboard?
 	# Set-alias -Name iwck -Value "D:\ProgramData\Visual Studio\ahk\repos\I-wanna-clean-keyboard\iwck-VNT.exe" -Scope Global
 	# # WingetUI?
-	# Set-Alias -Name wgui -Value "D:\Program Files\WingetUI\wingetui.exe" -Scope Global
+	# Set-Alias -Name wgui -Value "$env:ProgramFilesD\WingetUI\wingetui.exe" -Scope Global
 	# Devtoys
 	# Set-Alias -Name devt -Value "C:\Program Files\WindowsApps\64360VelerSoftware.DevToys_1.0.13.0_x64__j80j2txgjg9dj\DevToys.exe"
 	# Set-Alias -Name devt -Value "start-Process -FilePath devtoys://" -Scope Global
 	# WSL Toolbox
-	# Set-Alias -Name wslt -Value "D:\Program Files\WSL Toolbox\toolbox.exe" -Scope Global
+	# Set-Alias -Name wslt -Value "$env:ProgramFilesD\WSL Toolbox\toolbox.exe" -Scope Global
 	# btop4win. there is ntop as well.
 	# Set-Alias -Name btop -value "C:\Program Files\btop4win\btop4win.exe" -Scope Global
 	# # psexec
 	# Set-Alias -Name psexec -Value "D:\ProgramData\PSTools\psexec.exe" -Scope Global
 	# AdvancedRun
-	# Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
+	# Set-Alias -Name adrun -Value "$env:ProgramFilesD\AdvancedRun\AdvancedRun.exe" -Scope Global
 	# # taskbar activate
-	# Set-alias -name tbhide -Value "D:\Program Files\Taskbar Activate\TaskbarActivate.exe" -Scope Global
+	# Set-alias -name tbhide -Value "$env:ProgramFilesD\Taskbar Activate\TaskbarActivate.exe" -Scope Global
 	#
 	
 }
@@ -74,7 +74,7 @@ function initGuiApp
 function initMediaPlayer
 {
 	# # Everyonepiano
-	# Set-Alias -Name piano -Value "D:\Program Files\EveryonePiano\EveryonePiano.exe" -Scope Global
+	# Set-Alias -Name piano -Value "$env:ProgramFilesD\EveryonePiano\EveryonePiano.exe" -Scope Global
 	Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 	# VLC
 	Set-Alias -Name vlc -Value "vlc.exe" -Scope Global
@@ -248,6 +248,9 @@ function global:Reload-Profile($option = "env")
 	}
 }
 Set-Alias -Name repro -Value Reload-Profile
+Set-Alias -Name p7pro -Value Reload-Profile
+
+
 
 Set-Alias -Name p7mod -Value MoreTerminalModule
 
@@ -273,38 +276,37 @@ function addPath($dirList)
 	}
 }
 
-function initProfileEnv
+function global:initProfileEnv
 { #for environment variable.
 
 	#If not set ProgramFilesD
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
-	$Env:VSDir = "D:\ProgramData\Visual Studio"
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
-	$Env:ProgramFilesD = "D:\ProgramFilesD"
-	$Env:ProgramDataD = "D:\ProgramData"
-	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
-	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
+	$Env:ProgramFilesD = "D:\Program Files"
+	$Env:ProgramDataD = "D:\ProgramDataD"
+	$Env:VSDir = "$env:ProgramDataD/Visual Studio"
+	$Env:mozillaDir = "$Env:ProgramFilesD/Mozilla Firefox/"
+	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
-	$Env:vlcDir = "C:\Program Files\VideoLAN\VLC\"
-	$Env:p7settingDir = "D:\ProgramDataD\powershell\settings\"
-	$Env:CommercialDir = "D:\ProgramDataD\Mua ban TQ - VN\"
-	$Env:ahkDirD = "D:\ProgramDataD\ahk\"
-	$Env:SysInternalSuite = "D:\Program Files\SysinternalsSuite\"
-	$Env:OfficeDir = "C:\Program Files\Microsoft Office\Office16\"
-	$Env:kicadDir = "D:\Program Files\KiCad\8.0\bin"
-	$Env:venvsDir = "C:\Users\COHOTECH\AppData\Local\pipx\pipx\venvs\"
+	$Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
+	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
+	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
+	$Env:ahkDirD = "$env:ProgramDataD/ahk\"
+	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
+	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
+	$Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
 
-
-	$Env:sqlite3Dir = "D:\Program Files\sqlite3\"
-	$Env:cargoDir = "C:\Users\COHOTECH\.cargo\bin"
-	$Env:hledgerDir = "D:\Program Files\hledger"
+	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
+	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
+	$Env:cargoDir = "~\.cargo\bin"
+	$Env:hledgerDir = "$env:ProgramFilesD\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 		$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
-		$Env:CommercialDir,$Env:ahkDirD,$Env:OfficeDir,
+		$Env:ahkDirD,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
-		$Env:hledgerDir,$Env:sqlite3Dir,$Env:venvsDir,
-		$Env:cargoDir
+		$Env:hledgerDir,$Env:sqlite3Dir,
+		$Env:cargoDir,$env:LuaJitDir
 	)
 	foreach($d in $diradd)
 	{
