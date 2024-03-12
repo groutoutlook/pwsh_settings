@@ -373,14 +373,20 @@ function hn()
 
 }
 
-function cd-
+function cd- ($rep = 1)
 {
-	Set-Location -
+	foreach($i in (1..$rep))
+ {
+		Set-Location -
+	}
 }
 
-function cd+
+function cd+($rep = 1)
 {
-	Set-Location +
+	foreach($i in (1..$rep))
+ {
+		Set-Location +
+	}
 }
 
 
