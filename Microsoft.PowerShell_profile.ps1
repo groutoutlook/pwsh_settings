@@ -278,10 +278,10 @@ function initProfileEnv
 
 	#If not set ProgramFilesD
 	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
-	$Env:VSDir = "D:\ProgramDataD\Visual Studio"
+	$Env:VSDir = "D:\ProgramData\Visual Studio"
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
 	$Env:ProgramFilesD = "D:\ProgramFilesD"
-	$Env:ProgramDataD = "D:\ProgramDataD"
+	$Env:ProgramDataD = "D:\ProgramData"
 	$Env:mozillaDir = $Env:ProgramFilesD + "/Mozilla Firefox/"
 	$Env:ChromeDir="C:\Program Files\Google\Chrome\Application"
 	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
