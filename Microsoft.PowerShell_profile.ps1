@@ -6,16 +6,16 @@ Set-Alias -Name pw -Value "C:\Program Files\PowerShell\7\pwsh.exe"
 function initTypicalEditor
 {	
 	#joplin
-	Set-Alias -Name jopl -Value 'C:\Program Files\Joplin\Joplin.exe' -Scope Global
+	# Set-Alias -Name jopl -Value 'C:\Program Files\Joplin\Joplin.exe' -Scope Global
 	# sublime - python in android.
-	Set-Alias -Name subl -Value 'D:\ProgramFileNoSpace\Sublime Text\subl' -Scope Global #-Option AllScope
+	# Set-Alias -Name subl -Value 'D:\ProgramFileNoSpace\Sublime Text\subl' -Scope Global #-Option AllScope
 	# notepad++ - editing powershell file
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
 	Set-Alias -Name npp -Value np -Scope Global #-Option AllScope
 	# notepad2 - edit single powershell files
-	Set-Alias -Name np2 -Value 'C:\Program Files\Notepad2\Notepad2.exe' -Scope Global #-Option AllScope
+	# Set-Alias -Name np2 -Value 'C:\Program Files\Notepad2\Notepad2.exe' -Scope Global #-Option AllScope
 	# notepad3 - edit single powershell files
-	Set-Alias -Name np3 -Value 'C:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
+	# Set-Alias -Name np3 -Value 'C:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
 }
 
 function initAutomate
@@ -27,7 +27,7 @@ function initAutomate
 function initIDE
 {
 	# vscode, but maybe we don't need that.
-	Set-Alias -Name vsco -Value 'C:\Users\grout\AppData\Local\Programs\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
+	# Set-Alias -Name vsco -Value 'C:\Users\grout\AppData\Local\Programs\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
 	# visual studio
 	# Set-Alias -Name vist -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
 	Set-Alias -Name devenv -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
@@ -40,7 +40,8 @@ function initIDE
 function initShellApp
 {
 	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
-	. C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1
+	# function br must be placed on global drive.
+	. "C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1" 
 }
 function initSSH
 {
@@ -87,7 +88,7 @@ function p7Env
 	nvim $p7Profile
 }
 
-function backupEnv
+function global:Backup-Env
 {
 	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
 	$dotfiles = @(
@@ -100,8 +101,9 @@ function backupEnv
 		(Copy-Item $dotfile "$Env:p7settingDir")
 		echo "$dotfile backed up"
 	}
+	Set-Location $env:p7settingDir
 }
-Set-Alias -Name p7Backup -Value backupEnv
+Set-Alias -Name p7Backup -Value Backup-Env
 
 $lookupSite = @{
 	"reddit" =  "site%3Areddit.com"
@@ -226,12 +228,13 @@ function Reload-Module-List
 	)
 	foreach($ModuleName in $ModuleList)
 	{
+		# echo $ModuleName
 		Remove-Module -Name "$ModulePath$ModuleName" -ErrorAction SilentlyContinue
 		Import-Module -Name "$ModulePath$ModuleName" -Force 
 		Write-Output "$ModuleName reimported"
 	}
 }
-function reload-Profile($option = "env")
+function global:Reload-Profile($option = "env")
 {
 	if ($option -match "^all")
 	{
@@ -244,125 +247,22 @@ function reload-Profile($option = "env")
 		echo "Reload pwsh Profile."
 	}
 }
-Set-Alias -Name repro -Value reload-Profile
+Set-Alias -Name repro -Value Reload-Profile
 
 Set-Alias -Name p7mod -Value MoreTerminalModule
 
-#open system shell
-function syssh
-{
-	# AdvancedRun
-	Set-Alias -Name adrun -Value "D:\Program Files\AdvancedRun\AdvancedRun.exe" -Scope Global
-	adrun /exefilename "C:\Program Files\PowerShell\7\pwsh.exe" /runas 4 /run
-}
-
-$text_arr = "np","subl","jopl"
-$ide_arr  = "brk","codi","vsco","vist"
-
-
 function return_alias_def ($str = "np",$name_only = 1)
 {
-	$path_prog = (GET-ALIAS | WHERE {$_.NAME -eq $str}).Definition
+	$path_prog = (Get-Alias | Where-Object {$_.NAME -eq $str}).Definition
 	$name_prog = ($name_only -eq 1) ? [System.IO.Path]::GetFileNameWithoutExtension($path_prog) : $path_prog
 	return $name_prog
 }
-
 Set-Alias -Name rals -Value return_alias_def
-
-function closedIfopened($name_prog = "np")
-{
-	$p = rals ($name_prog)
-	$p = Get-Process -Name ($p+"*") 
-	Stop-Process -InputObject $p  -ErrorAction SilentlyContinue
-	$res = (Get-Process | Where-Object {$p.HasExited})
-	if ($res -eq $null)
-	{
-		return 0;
-	} else
-	{
-		return 1;
-	}
-}
-
-Set-Alias -Name kipo -Value closedIfopened
-
-function makeDev ($lightweight = 1, $prog_list = $text_arr)
-{	
-
-	$opened_list = New-Object System.Collections.Generic.List[System.Object]
-	$ide_opening_list = $prog_list.Where{ 
-		$_ -ne (($lightweight -eq 1) ? "vist" : "vsco") 
-	}
-	<#
-	$ide_opening_list = $prog_list.Where{ 
-		$_ -ne (($lightweight -eq 1) ? "vist" : "vsco") 
-	}
-	#>
-	foreach ($element in $ide_opening_list)
-	{
-		Start-Process -FilePath (gal -Name $element).Definition
-		$opened_list.Add($name_prog)
-	}
-	return $opened_list
-
-}
-Set-Alias -Name mdev -Value makeDev
-
-function killDev ($lightweight = 1, $prog_list = $text_arr)
-{
-	$closed_list = New-Object System.Collections.Generic.List[System.Object]
-
-	$ide_opening_list = $prog_list.Where{ $_ -ne (($lightweight -eq 1)? "vist" : "vsco") }
-	foreach ($element in $ide_opening_list)
-	{
-		if ((kipo $element) -eq 1)
-		{ 
-			$closed_list.Add($element)
-		}
-	}
-	return $closed_list
-}
-
-Set-Alias -Name kdev -Value killDev
 
 function cdwhere($files = "~")
 {
 	cd (split-path (where.exe $files) -parent)
 }
-
-function killProcess($str = "p5")
-{
-	#kill all running powershell.
-	if($str -eq "all")
-	{
-		endDev
-	} elseif ($str -ne $null)
-	{
-		kipo  $str
-	}
-}
-
-Set-Alias -Name kpo -Value killProcess
-
-function profileHelper
-{
-	
-	if((get-module -name "profile_*") -eq $null)
- {
-		$old_path = pwd
-		$a = $PROFILE | Select-Object *Host*
-		$profile_ps1 = ($a).AllUsersCurrentHost 
-		cd ([System.IO.Directory]::GetParent($profile_ps1).ToString())
-		$module_name = "profile_p7_md"
-		$module_ext = ".psm1"
-		Copy-Item $profile_ps1 ((pwd).ToString() + "\" + $module_name + $module_ext)
-		Import-Module ((pwd).ToString() + "\" + $module_name + $module_ext)
-		cd $old_path
-	}
-	get-command -module profile_*
-	get-command -Module *profile* | % {get-alias -Definition $_.name -ea 0}
-}
-Set-Alias -Name pHelp -Value profileHelper
 function addPath($dirList)
 {
 	
