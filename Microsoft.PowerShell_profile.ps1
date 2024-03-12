@@ -34,7 +34,7 @@ function initIDE
 	# keil UV4
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
 	# pms
-	Set-alias -name pms -Value "C:\PADAUK_Tool\0.97C9\FPPA IDE.exe" -Scope Global
+	Set-alias -name pms -Value "C:\PADAUK_Tool\*\FPPA IDE.exe" -Scope Global
 }
 
 function initShellApp
