@@ -1,21 +1,13 @@
 # powershell-5.1
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-# powershell-7.4
-Set-Alias -Name pw -Value "C:\Program Files\PowerShell\7\pwsh.exe"
 
 function initTypicalEditor
 {	
-	#joplin
-	# Set-Alias -Name jopl -Value 'C:\Program Files\Joplin\Joplin.exe' -Scope Global
 	# sublime - python in android.
 	# Set-Alias -Name subl -Value 'D:\ProgramFileNoSpace\Sublime Text\subl' -Scope Global #-Option AllScope
 	# notepad++ - editing powershell file
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
 	Set-Alias -Name npp -Value np -Scope Global #-Option AllScope
-	# notepad2 - edit single powershell files
-	# Set-Alias -Name np2 -Value 'C:\Program Files\Notepad2\Notepad2.exe' -Scope Global #-Option AllScope
-	# notepad3 - edit single powershell files
-	# Set-Alias -Name np3 -Value 'C:\Program Files\Notepad3\Notepad3.exe' -Scope Global #-Option AllScope
 }
 
 function initAutomate
@@ -26,10 +18,7 @@ function initAutomate
 
 function initIDE
 {
-	# vscode, but maybe we don't need that.
-	# Set-Alias -Name vsco -Value 'C:\Users\grout\AppData\Local\Programs\Microsoft VS Code\bin\code' -Scope Global #-Option AllScope
 	# visual studio
-	# Set-Alias -Name vist -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
 	Set-Alias -Name devenv -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
 	# keil UV4
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
@@ -51,36 +40,29 @@ function initSSH
 
 function initGuiApp
 {
-	# #clean keyboard?
-	# Set-alias -Name iwck -Value "D:\ProgramData\Visual Studio\ahk\repos\I-wanna-clean-keyboard\iwck-VNT.exe" -Scope Global
-	# # WingetUI?
-	# Set-Alias -Name wgui -Value "$env:ProgramFilesD\WingetUI\wingetui.exe" -Scope Global
-	# Devtoys
-	# Set-Alias -Name devt -Value "C:\Program Files\WindowsApps\64360VelerSoftware.DevToys_1.0.13.0_x64__j80j2txgjg9dj\DevToys.exe"
-	# Set-Alias -Name devt -Value "start-Process -FilePath devtoys://" -Scope Global
-	# WSL Toolbox
-	# Set-Alias -Name wslt -Value "$env:ProgramFilesD\WSL Toolbox\toolbox.exe" -Scope Global
-	# btop4win. there is ntop as well.
-	# Set-Alias -Name btop -value "C:\Program Files\btop4win\btop4win.exe" -Scope Global
-	# # psexec
-	# Set-Alias -Name psexec -Value "D:\ProgramData\PSTools\psexec.exe" -Scope Global
-	# AdvancedRun
-	# Set-Alias -Name adrun -Value "$env:ProgramFilesD\AdvancedRun\AdvancedRun.exe" -Scope Global
-	# # taskbar activate
-	# Set-alias -name tbhide -Value "$env:ProgramFilesD\Taskbar Activate\TaskbarActivate.exe" -Scope Global
-	#
 	
 }
+
+function initChat
+{ #for environment variable.
+	$Env:ZaloDir = "C:\Users\ADMIN\AppData\Local\Programs\Zalo/"
+	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
+	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
+
+	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
+	#Set-Alias -Name zl -Value "zalo.exe" -Scope Global #-Option AllScope
+}
+function zl()
+{
+	chrome https://chat.zalo.me
+} 
+
 
 function initMediaPlayer
 {
 	# # Everyonepiano
 	# Set-Alias -Name piano -Value "$env:ProgramFilesD\EveryonePiano\EveryonePiano.exe" -Scope Global
-	Set-Alias -Name mousekey -Value "${env:ahkDirD}proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
-	# VLC
-	Set-Alias -Name vlc -Value "vlc.exe" -Scope Global
-	# ifranview
-	Set-Alias -Name iview -Value "C:\Program Files\IrfanView\i_view64.exe" -Scope Global
+	Set-Alias -Name mousekey -Value "$env:ahkDirD\proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 }
 
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
@@ -119,16 +101,6 @@ function P7
 }
 Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
-function Invoke-Tere()
-{
-	$result = . (Get-Command -CommandType Application tere) $args
-	if ($result)
-	{
-		Set-Location $result
-	}
-}
-Set-Alias tere Invoke-Tere
-
 function clockWindowsApp()
 {
 	Start-Process "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe"
@@ -252,7 +224,7 @@ function global:initProfileEnv
 	$Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
-	$Env:ahkDirD = "$env:ProgramDataD/ahk\"
+	$Env:ahkDirD = "$env:ProgramDataD\ahk\"
 	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
@@ -264,7 +236,6 @@ function global:initProfileEnv
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 		$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
-		$Env:ahkDirD,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 		$Env:hledgerDir,$Env:sqlite3Dir,
 		$Env:cargoDir,$env:LuaJitDir
@@ -309,26 +280,12 @@ function Show-Window
 	$null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
 
+$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
 function obs
 {
-	Show-Window("Obsidian.exe")	
+	Show-Window("Obsidian.exe")
 }
 Set-Alias -Name shw -Value Show-Window
-
-
-function initChat
-{ #for environment variable.
-	$Env:ZaloDir = "C:\Users\ADMIN\AppData\Local\Programs\Zalo/"
-	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
-	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
-
-	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
-	#Set-Alias -Name zl -Value "zalo.exe" -Scope Global #-Option AllScope
-}
-function zl()
-{
-	chrome https://chat.zalo.me
-} 
 
 function hn()
 {
