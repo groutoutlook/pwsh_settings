@@ -39,6 +39,7 @@ function initIDE
 
 function initShellApp
 {
+	Import-Module -Name ($env:p7settingDir+"quickWebAction") -Scope Global 
 	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
 	# function br must be placed on global drive.
 	. "C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1" 
@@ -104,47 +105,6 @@ function global:Backup-Env
 	Set-Location $env:p7settingDir
 }
 Set-Alias -Name p7Backup -Value Backup-Env
-
-$lookupSite = @{
-	"reddit" =  "site%3Areddit.com"
-	"rdt" =  "site%3Areddit.com"
-	"hackernews" =  "site%3Anews.ycombinator.com"
-	"hn" =  "site%3Anews.ycombinator.com"
-	"sov" = "site%3Astackoverflow.com"
-	"stex" = "site%3Astackexchange.com"
-	"su" = "site%3Asuperuser.com"
-}
-
-
-
-
-function google-search
-{
-	if($args[0] -match "^yt")
-	{
-		$query = 'https://www.youtube.com/results?search_query='
-		$reargs = $args | Select-Object -Skip 1
-		foreach($ar in $reargs)
-		{
-			$query = $query + "$ar+"
-		}
-	} else
-	{
-		$appendix = $global:lookupSite[$args[-1]]
-		if( $appendix -ne $null)
-		{
-			$args[-1] = $appendix
-		} 
-		
-		$query = 'https://www.google.com/search?q='
-		$args | % { $query = $query + "$_+" }
-	}
-	$url = $query.Substring(0, $query.Length - 1)
-	Start-Process "$url"
-}
-
-Set-Alias -Name gos -Value google-search
-Set-Alias -Name gso -Value google-search
 
 function P7
 {
@@ -213,10 +173,11 @@ function MoreTerminalModule
 	#clear
 }
 $global:personalModuleList = @(
+	"quickWebAction",
+	"quickVimAction",
 	"quickMathAction",
 	"quickGitAction",
 	"quickTerminalAction",
-	"quickVimAction",
 	"quickFilePathAction"
 )
 
