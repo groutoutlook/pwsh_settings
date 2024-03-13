@@ -20,8 +20,8 @@ function :n($p7 = 0)
     pwsh -Noexit -Command "p7 && p7mod" && :q
   }
 }
-
-function :nm
+# since I want to type them faster. nm is kinda long.
+function :a
 {
   :n 7
 }
