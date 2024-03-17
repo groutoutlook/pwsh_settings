@@ -275,11 +275,11 @@
           "padding": "0"
         },
         {
-          "closeOnExit": "never",
-          "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+          "commandline": "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+          "guid": "{baa14a2d-2fe9-4719-8b44-79160e0de52c}",
           "hidden": false,
-          "name": "Azure Cloud Shell",
-          "source": "Windows.Terminal.Azure"
+          "icon": "ms-appx:///ProfileIcons/pwsh.png",
+          "name": "PowerShell User Privilige"
         },
         {
           "adjustIndistinguishableColors": "never",
@@ -393,6 +393,13 @@
           "hidden": false,
           "name": "Debian",
           "source": "Windows.Terminal.Wsl"
+        },
+        {
+          "closeOnExit": "never",
+          "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+          "hidden": false,
+          "name": "Azure Cloud Shell",
+          "source": "Windows.Terminal.Azure"
         }
       ]
     },

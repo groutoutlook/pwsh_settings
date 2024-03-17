@@ -40,21 +40,25 @@ function initSSH
 
 function initGuiApp
 {
-	
+	Set-Alias -Name ptoy -Value "C:\Program Files\PowerToys\PowerToys.exe" -Scope Global	
 }
 
 function initChat
 { #for environment variable.
-	$Env:ZaloDir = "C:\Users\ADMIN\AppData\Local\Programs\Zalo/"
 	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
 	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
 
 	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
-	#Set-Alias -Name zl -Value "zalo.exe" -Scope Global #-Option AllScope
 }
 function zl()
 {
+	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
+	echo "do you want to open zlc instead? It's in Chrome."
+}
+function zlc()
+{
 	chrome https://chat.zalo.me
+	echo "do you want to open zl instead? It's Desktop app."
 } 
 
 
