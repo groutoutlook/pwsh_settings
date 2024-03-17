@@ -52,12 +52,12 @@ function initChat
 }
 function zl()
 {
-	echo "do you want to open zlc instead? It's in Chrome."
+	Write-Output "do you want to open zlc instead? It's in Chrome."
 	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
 }
 function zlc()
 {
-	echo "do you want to open zl instead? It's Desktop app."
+	Write-Output "do you want to open zl instead? It's Desktop app."
 	chrome https://chat.zalo.me
 } 
 
@@ -70,15 +70,15 @@ function initMediaPlayer
 }
 
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
-function p7Env
+function global:p7Env
 {
 	$LastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
 	nvim $p7Profile
 	$NewLastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
 	if($NewLastWrite -ne $LastWrite)
 	{
-		p7Backup && cd $env:p7settingDir
-		echo "Env change, jump to backup"
+		p7Backup
+		Write-Host "Env change, jump to backup." -ForegroundColor Green
 	}
 }
 
@@ -93,7 +93,7 @@ function global:Backup-Env
 	foreach($dotfile in $dotfiles)
 	{
 		(Copy-Item $dotfile "$Env:p7settingDir")
-		echo "$dotfile backed up"
+		Write-Host "$dotfile backed up" -ForegroundColor Yellow
 	}
 	Set-Location $env:p7settingDir
 }
@@ -129,7 +129,7 @@ function MoreTerminalModule
 	# Import-Module -Name Terminal-Icons -Scope Global
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' 
+	Set-PsFzfOption -PSReadlinWrite-OutputrdProvider 'Ctrl+t' -PSReadlinWrite-OutputrdReverseHistory 'Ctrl+r' 
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
@@ -172,7 +172,7 @@ function Reload-Module-List
 	)
 	foreach($ModuleName in $ModuleList)
 	{
-		# echo $ModuleName
+		# Write-Output $ModuleName
 		Remove-Module -Name "$ModulePath$ModuleName" -ErrorAction SilentlyContinue
 		Import-Module -Name "$ModulePath$ModuleName" -Force 
 		Write-Output "$ModuleName reimported"
@@ -184,11 +184,11 @@ function global:Reload-Profile($option = "env")
 	{
 		Reload-Module-List
 		. $PROFILE.AllUsersCurrentHost
-		echo "Reload profile and All module."
+		Write-Output "Reload profile and All module."
 	} else
 	{
 		. $PROFILE.AllUsersCurrentHost
-		echo "Reload pwsh Profile."
+		Write-Output "Reload pwsh Profile."
 	}
 }
 Set-Alias -Name repro -Value Reload-Profile
