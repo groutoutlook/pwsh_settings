@@ -52,13 +52,13 @@ function initChat
 }
 function zl()
 {
-	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
 	echo "do you want to open zlc instead? It's in Chrome."
+	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
 }
 function zlc()
 {
-	chrome https://chat.zalo.me
 	echo "do you want to open zl instead? It's Desktop app."
+	chrome https://chat.zalo.me
 } 
 
 

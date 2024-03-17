@@ -57,6 +57,7 @@ function EmbedEnv()
 	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
 	$Env:edgeDir = "C:\Users\COHOTECH\AppData\Local\Microsoft\Edge SxS\Application"
 	$Env:gotvDir = "D:\Program Files\GoTiengViet"
+	$env:linuxEnvdir = "D:\ProgramDataD\Linux\proj\linux_env"
 	$diradd = @(
 		$Env:cubeCLIdir,$env:edgeDir,
 		$Env:gotvDir
