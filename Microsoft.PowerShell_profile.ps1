@@ -40,6 +40,7 @@ function initSSH
 
 function initGuiApp
 {
+	Set-Alias -Name pentab -Value "C:\Program Files\Pentablet\PenTablet.exe" -Scope Global
 	Set-Alias -Name ptoy -Value "C:\Program Files\PowerToys\PowerToys.exe" -Scope Global	
 }
 
