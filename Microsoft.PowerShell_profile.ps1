@@ -72,7 +72,14 @@ function initMediaPlayer
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
 function p7Env
 {
+	$LastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
 	nvim $p7Profile
+	$NewLastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
+	if($NewLastWrite -ne $LastWrite)
+	{
+		p7Backup && cd $env:p7settingDir
+		echo "Env change, jump to backup"
+	}
 }
 
 function global:Backup-Env
