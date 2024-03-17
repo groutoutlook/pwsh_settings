@@ -14,10 +14,10 @@ function :n($p7 = 0)
 {
   if($p7 -eq 0)
   {
-    pwsh && :q
+    pwsh && exit
   } else
   {
-    pwsh -Noexit -Command "p7 && p7mod" && :q
+    pwsh -Noexit -Command "p7 && p7mod && cd-" && exit
   }
 }
 # since I want to type them faster. nm is kinda long.

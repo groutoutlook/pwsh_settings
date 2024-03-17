@@ -140,8 +140,11 @@ EmbedEnv
 # activateJrnl
 $global:imgPath = "D:\ProgramDataD\Animation\Proj\final"
 
-
-
+function Copy-Cliff($directory = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\cliff.toml")
+{
+	Copy-Item $directory .
+}
+Set-Alias -Name cpcliff -Value Copy-Cliff 
 
 <#
 # Prefix to add to window titles.
