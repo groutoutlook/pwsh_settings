@@ -141,7 +141,7 @@ EmbedEnv
 # activateJrnl
 $global:imgPath = "D:\ProgramDataD\Animation\Proj\final"
 
-function Copy-Cliff($directory = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\cliff.toml")
+function Copy-Cliff($directory = "$env:p7settingDir\cliff.toml")
 {
 	Copy-Item $directory .
 }
