@@ -43,7 +43,7 @@
   # Global shared hooks directory
   # hooksPath = ~/.githooks
   # VSCode
-  editor = hx
+  editor = nvim
   # Don't consider trailing space change as a cause for merge conflicts
   whitespace = -trailing-space
 	autocrlf = true
