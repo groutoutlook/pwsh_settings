@@ -13,7 +13,9 @@ function initTypicalEditor
 function initAutomate
 {
 	Set-Alias -Name dto -Value "$env:ProgramFilesD\Ditto\Ditto" -Scope Global
-	Set-Alias -Name ahk -Value "C:\Program Files\AutoHotkey\UX\ui-dash.ahk" -Scope Global
+	Set-Alias -Name spy -Value "$env:ProgramFiles\AutoHotkey\UX\WindowSpy.ahk" -Scope Global
+	Set-Alias -Name ahk -Value "$env:ProgramFiles\AutoHotkey\UX\ui-dash.ahk" -Scope Global
+
 }
 
 function initIDE
