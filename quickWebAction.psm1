@@ -57,3 +57,17 @@ Set-Alias -Name ddg -Value DuckDuckGo
 Set-Alias -Name dg -Value DuckDuckGo
 
 
+function compSearch
+{
+
+	
+  $query = 'https://componentsearchengine.com/search?term='
+  $args | % { $query = $query + "$_+" }
+  $url = $query.Substring(0, $query.Length - 1)
+  Start-Process "$url"
+
+}
+Set-Alias -Name comps -Value compSearch
+
+
+
