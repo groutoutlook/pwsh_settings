@@ -208,10 +208,26 @@ function return_alias_def ($str = "np",$name_only = 1)
 }
 Set-Alias -Name rals -Value return_alias_def
 
-function cdwhere($files = "~")
+function Set-LocationWhere($files = "~")
 {
-	cd (split-path (where.exe $files) -parent)
+	$commandInfo = (get-Command $files)
+	switch -Exact ($commandInfo.CommandType)
+	{
+		"Application"
+		{
+			Set-Location (split-path (where.exe $files) -Parent)
+			; break; 
+		}
+		"Alias"
+		{
+			Set-Location (split-path (($commandInfo).Definition) -Parent)
+			; break;
+		}
+	}
 }
+
+Set-Alias -Name cdw -Value Set-LocationWhere
+Set-Alias -Name cdwhere -Value Set-LocationWhere
 function addPath($dirList)
 {
 	
