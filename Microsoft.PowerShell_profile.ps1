@@ -64,7 +64,7 @@ function zlc()
 	Write-Output "do you want to open zl instead? It's Desktop app."
 	chrome https://chat.zalo.me
 } 
-
+Set-Alias -Name clsm -Value clear 
 
 function initMediaPlayer
 {
