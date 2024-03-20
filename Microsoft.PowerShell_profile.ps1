@@ -42,8 +42,9 @@ function initSSH
 
 function initGuiApp
 {
-	Set-Alias -Name pentab -Value "C:\Program Files\Pentablet\PenTablet.exe" -Scope Global
-	Set-Alias -Name ptoy -Value "C:\Program Files\PowerToys\PowerToys.exe" -Scope Global
+	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global
+	Set-Alias -Name pentab -Value "$env:ProgramFiles\Pentablet\PenTablet.exe" -Scope Global
+	Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
 	Set-Alias -Name libload -Value "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
 
