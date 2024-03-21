@@ -14,6 +14,10 @@ function Search-Google
 {
   if($args[0] -match "^yt")
   {
+    if ($args[1] -match "^gcb")
+    {
+      $args[1] = (Get-Clipboard)
+    }
     $query = 'https://www.youtube.com/results?search_query='
     $reargs = $args | Select-Object -Skip 1
     foreach($ar in $reargs)
@@ -22,6 +26,10 @@ function Search-Google
     }
   } else
   {
+    if ($args[0] -match "^gcb")
+    {
+      $args[0] = (Get-Clipboard)
+    }
     $appendix = $global:lookupSite[$args[-1]]
     if( $appendix -ne $null)
     {
@@ -41,6 +49,11 @@ Set-Alias -Name gos -Value Search-Google
 
 function DuckDuckGo
 {
+
+  if ($args[0] -match "^gcb")
+  {
+    $args[0] = (Get-Clipboard)
+  }
   $appendix = $global:lookupSite[$args[-1]]
   if( $appendix -ne $null)
   {
