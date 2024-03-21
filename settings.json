@@ -184,7 +184,7 @@
     "autoHideWindow": false,
     "confirmCloseAllTabs": false,
     "copyFormatting": "all",
-    "copyOnSelect": false,
+    "copyOnSelect": true,
     "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
     "experimental.rendering.forceFullRepaint": false,
     "experimental.rendering.software": false,

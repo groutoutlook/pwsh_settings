@@ -51,9 +51,9 @@ function initGuiApp
 function initChat
 { #for environment variable.
 	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
-	$Env:Path += ";"+$env:ZaloDir+";"+$env:WeChatDir #add firefox to path.
-
-	Set-Alias -Name wec -Value "wechat.exe" -Scope Global #-Option AllScope
+	Set-Alias -Name wec -Value "$env:ProgramFiles\Tencent\WeChat\wechat.exe" -Scope Global #-Option AllScope
+	$Env:TelegramDir = 'D:\Program Files\Telegram'
+	Set-Alias -Name teleg -Value "$Env:TelegramDir\Telegram.exe" -Scope Global #-Option AllScope
 }
 function zl()
 {
