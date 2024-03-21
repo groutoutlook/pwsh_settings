@@ -249,8 +249,9 @@ function global:initProfileEnv
 	#$Env:GoDir = "C:\Program Files\Go\bin\"
 	$Env:ProgramFilesD = "D:\Program Files"
 	$Env:ProgramDataD = "D:\ProgramDataD"
-	$Env:VSDir = "$env:ProgramDataD/Visual Studio"
-	$Env:mozillaDir = "$Env:ProgramFilesD/Mozilla Firefox/"
+	$env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
+	$Env:VSDir = "$env:ProgramDataD\Visual Studio"
+	$Env:mozillaDir = "$Env:ProgramFilesD\Mozilla Firefox\"
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
 	$Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
@@ -267,7 +268,7 @@ function global:initProfileEnv
 	$Env:hledgerDir = "$env:ProgramFilesD\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
-		$Env:mozillaDir,$Env:PhotoshopDir,$env:vlcDir,
+		$Env:PhotoshopDir,$env:vlcDir,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 		$Env:hledgerDir,$Env:sqlite3Dir,
 		$Env:cargoDir,$env:LuaJitDir

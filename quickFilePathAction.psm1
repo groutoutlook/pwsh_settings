@@ -101,6 +101,9 @@ function Jnl
 	}
 }
 
+Set-Alias -Name jn -Value Jnl
+
+
 function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
 {
 	$sd_used = ((Get-PSDrive -PSProvider FileSystem -Name $drive_name).Used) #or we can index [2] then.
