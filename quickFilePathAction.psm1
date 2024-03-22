@@ -102,7 +102,7 @@ function Jnl
 }
 
 Set-Alias -Name jn -Value Jnl
-
+Set-Alias -Name j -Value Jnl
 
 function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
 {

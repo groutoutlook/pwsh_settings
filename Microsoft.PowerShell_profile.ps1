@@ -3,11 +3,7 @@ Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell
 
 function initTypicalEditor
 {	
-	# sublime - python in android.
-	# Set-Alias -Name subl -Value 'D:\ProgramFileNoSpace\Sublime Text\subl' -Scope Global #-Option AllScope
-	# notepad++ - editing powershell file
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
-	Set-Alias -Name npp -Value np -Scope Global #-Option AllScope
 }
 
 function initAutomate
@@ -24,8 +20,6 @@ function initIDE
 	Set-Alias -Name devenv -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
 	# keil UV4
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
-	# pms
-	Set-alias -name pms -Value "C:\PADAUK_Tool\*\FPPA IDE.exe" -Scope Global
 }
 
 function initShellApp
@@ -45,7 +39,7 @@ function initGuiApp
 	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global
 	Set-Alias -Name pentab -Value "$env:ProgramFiles\Pentablet\PenTablet.exe" -Scope Global
 	Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
-	Set-Alias -Name libload -Value "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
+	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
 
 function initChat
@@ -93,6 +87,7 @@ function global:Backup-Env
 	$dotfiles = @(
 		$p7Profile,
 		"~/.gitconfig",
+		"~/.gitignore_global"
 		$terminalSettings
 	)
 	foreach($dotfile in $dotfiles)
@@ -202,15 +197,6 @@ Set-Alias -Name p7pro -Value Reload-Profile
 
 
 Set-Alias -Name p7mod -Value MoreTerminalModule
-
-function return_alias_def ($str = "np",$name_only = 1)
-{
-	$path_prog = (Get-Alias | Where-Object {$_.NAME -eq $str}).Definition
-	$name_prog = ($name_only -eq 1) ? [System.IO.Path]::GetFileNameWithoutExtension($path_prog) : $path_prog
-	return $name_prog
-}
-Set-Alias -Name rals -Value return_alias_def
-
 function Set-LocationWhere($files = "~")
 {
 	$commandInfo = (get-Command $files)
