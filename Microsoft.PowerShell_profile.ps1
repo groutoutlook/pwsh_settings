@@ -306,6 +306,17 @@ function obs
 }
 Set-Alias -Name shw -Value Show-Window
 
+function omniSearchObsidian
+{
+	$query = ""
+	$args | % {
+		$query = $query + "$_%20"
+	}
+	Start-Process "obsidian://omnisearch?query=$query" &
+}
+
+Set-Alias -Name os: -Value omniSearchObsidian
+
 function hn()
 {
 	Start-Process https://news.ycombinator.com/
