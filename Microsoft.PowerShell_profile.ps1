@@ -90,12 +90,16 @@ function global:Backup-Env
 		"~/.gitignore_global"
 		$terminalSettings
 	)
+
 	foreach($dotfile in $dotfiles)
 	{
-		(Copy-Item $dotfile "$Env:p7settingDir")
+		(Copy-Item $dotfile "$Env:dotfilesRepo")
 		Write-Host "$dotfile backed up" -ForegroundColor Yellow
 	}
-	Set-Location $env:p7settingDir
+	Copy-Item $p7Profile "$env:p7settingDir"
+	
+
+	Set-Location $env:dotfilesRepo
 }
 Set-Alias -Name p7Backup -Value Backup-Env
 
