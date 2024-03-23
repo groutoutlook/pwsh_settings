@@ -46,6 +46,7 @@ function initChat
 { #for environment variable.
 	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
 	Set-Alias -Name wec -Value "$env:ProgramFiles\Tencent\WeChat\wechat.exe" -Scope Global #-Option AllScope
+	Set-Alias -Name discord -Value "$env:APPDATA\Roaming\Microsoft\Start Menu\Programs\Discord Inc\discord.lnk"
 	$Env:TelegramDir = 'D:\Program Files\Telegram'
 	Set-Alias -Name teleg -Value "$Env:TelegramDir\Telegram.exe" -Scope Global #-Option AllScope
 }
