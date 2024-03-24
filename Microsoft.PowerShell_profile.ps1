@@ -305,10 +305,11 @@ function Show-Window
 }
 
 $env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
-function obs
+function Switch-Obsidian
 {
 	Show-Window("Obsidian.exe")
 }
+Set-Alias -Name obsi -Value Switch-Obsidian
 Set-Alias -Name shw -Value Show-Window
 
 function omniSearchObsidian
@@ -321,6 +322,7 @@ function omniSearchObsidian
 }
 
 Set-Alias -Name os: -Value omniSearchObsidian
+Set-Alias -Name obs -Value omniSearchObsidian
 
 function hn()
 {

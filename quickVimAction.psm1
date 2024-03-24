@@ -10,7 +10,7 @@ function :q
 
 # Quick way to reload profile and turn back to the default pwsh
 # There's some other effects, so I may need to dig further I think?
-function :n($p7 = 0) 
+function :t($p7 = 0) 
 {
   if($p7 -eq 0)
   {
@@ -23,6 +23,11 @@ function :n($p7 = 0)
 # since I want to type them faster. nm is kinda long.
 function :a
 {
-  :n 7
+  :t 7
 }
 
+
+function :n($defaultPath = (Get-Location))
+{
+  nvim $defaultPath
+}

@@ -5,6 +5,7 @@ $global:lookupSite = @{
   "rd" =  "site%3Areddit.com"
   "hackernews" =  "site%3Anews.ycombinator.com"
   "hn" =  "site%3Anews.ycombinator.com"
+  "gh" =  "site%3Agithub.com"
   "sov" = "site%3Astackoverflow.com"
   "stex" = "site%3Astackexchange.com"
   "su" = "site%3Asuperuser.com"
@@ -44,6 +45,7 @@ function Search-Google
 }
 
 Set-Alias -Name gos -Value Search-Google
+Set-Alias -Name gg -Value Search-Google
 
 
 
@@ -72,8 +74,6 @@ Set-Alias -Name dg -Value DuckDuckGo
 
 function compSearch
 {
-
-	
   $query = 'https://componentsearchengine.com/search?term='
   $args | % { $query = $query + "$_+" }
   $url = $query.Substring(0, $query.Length - 1)
