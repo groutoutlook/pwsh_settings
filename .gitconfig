@@ -121,20 +121,20 @@
   default = upstream
   # When pushing, also push tags whose commit-ishs are now reachable upstream
   followTags = true
-# [rebase]
+ [rebase]
   # Rebase advanced usage.
   # Automagically reorder and prefix your commands while doing an interactive
   # rebase. This has to be used with `--fixup` and/or `--squash` options for
   # `git commit`.
-  # autoSquash = true
+  autoSquash = true
   # Automatically stash current WD and stage when running rebase
   # then you won't have to manually `git stash push` and `git stash pop`
   # after and before your rebase.
-  # autoStash = true
-# [rerere]
+  autoStash = true
+ [rerere]
   # If, like me, you like rerere, uncomment these
-  # autoupdate = true
-  # enabled = true
+  autoupdate = true
+  enabled = true
 [status]
   # Display submodule rev change summaries in status
   submoduleSummary = true
