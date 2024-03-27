@@ -15,7 +15,7 @@ function Search-Google
 {
   if($args[0] -match "^yt")
   {
-    if ($args[1] -match "^gcb")
+    if ($args[1] -match "^(?:cb|gcb)")
     {
       $args[1] = (Get-Clipboard)
     }
@@ -27,7 +27,7 @@ function Search-Google
     }
   } else
   {
-    if ($args[0] -match "^gcb")
+    if ($args[0] -match "^(?:cb|gcb)")
     {
       $args[0] = (Get-Clipboard)
     }
@@ -48,11 +48,31 @@ Set-Alias -Name gos -Value Search-Google
 Set-Alias -Name gg -Value Search-Google
 
 
+function hvdic(
+  $phrase,
+  $space_split = 1
+)
+{	
+  $query = 'https://hvdic.thivien.net/whv/'
+  if ($phrase -match "^(?:cb|gcb)")
+  {
+    $phrase = (Get-Clipboard)
+  }
+  if($space_split -eq 1)
+  {
+    $phrase.ToCharArray() | % { 
+      $link = $query + "$_" 
+      $url = $link.Substring(0, $link.Length)
+      start "$url"
+    }
+  }
+}
+
 
 function DuckDuckGo
 {
 
-  if ($args[0] -match "^gcb")
+  if ($args[0] -match "^(?:cb|gcb)")
   {
     $args[0] = (Get-Clipboard)
   }

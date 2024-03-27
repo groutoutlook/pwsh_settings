@@ -47,23 +47,6 @@ function cdcb
 }
 
 
-function hvdic(
-	$phrase,
-	$space_split = 1
-)
-{	
-	$query = 'https://hvdic.thivien.net/whv/'
-	
-	if($space_split -eq 1)
- {
-		$phrase.ToCharArray() | % { 
-			$link = $query + "$_" 
-			$url = $link.Substring(0, $link.Length)
-			start "$url"
-		}
-	}
-}
-
 function getDateTime
 {
 	return (get-date).TimeOfDay.ToString()
