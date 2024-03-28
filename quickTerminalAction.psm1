@@ -12,7 +12,7 @@ function SetBufferWidthToScreenWidth
 	$ui.BufferSize = $bufferSize
 }
 
-function p7edit($options = "")
+function Edit-Module($options = "")
 {
 	if($options -match "quick")
 	{
@@ -34,7 +34,7 @@ function p7edit($options = "")
 	#hx ".\$fileName"
 }
 
-Set-Alias -Name npp7 -Value p7edit -Scope Global
+Set-Alias -Name p7edit -Value Edit-Module -Scope Global
 
 function cdClip($demandURI = (Get-Clipboard))
 {
@@ -46,6 +46,14 @@ function cdcb
 	cd (gcb) #Get-Clipboard default alias.
 }
 
+function cddot($Path = $env:dotfilesRepo)
+{
+	cd $Path
+	if ($Path -eq "$env:dotfilesRepo")
+	{
+		Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
+	}
+}
 
 function getDateTime
 {

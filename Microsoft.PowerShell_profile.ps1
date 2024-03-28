@@ -254,6 +254,7 @@ function global:initProfileEnv
 	$Env:ahkDirD = "$env:ProgramDataD\ahk\"
 	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
+	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
 	$Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
 
 	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"

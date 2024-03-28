@@ -26,6 +26,14 @@ function :a
   :t 7
 }
 
+function :backup()
+{
+  Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
+  p7backup && Backup-Extensive
+}
+
+Set-Alias -Name :bak -Value :backup
+
 
 function :n($defaultPath = (Get-Location))
 {
