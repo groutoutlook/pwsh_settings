@@ -77,27 +77,25 @@ function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim")
 #set-Alias -Name viconf -Value editNvimConfig
 Set-Alias -Name nvimconf -Value editNvimConfig
 
+$CommandNewWt = @{
+	"win" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"'
+	"and" = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
+	"ssh" = '-f new-tab -p "ssh" split-pane --size 0.5 -V -p "ssh_1" ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" pwsh -NoExit -Command "anddev && p7 && p7mod"'
+	"lin" = '-f new-tab -p "P7_OrangeBackground" wsl'
+	"obs" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && cd $env:obsVault && jnl -3"'
+}
+
 function term($which = "win")
 {
-	if($which -eq "and")
+	$fetch_command = $CommandNewWt[$which]
+	if($fetch_command -ne $null)
 	{
-		$command = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
-		start wt "$command"
-	} elseif($which -eq "win")
+		Start-Process wt $fetch_command
+	} else
 	{
-		start wt '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"'
-	} elseif($which -eq "ssh")
-	{
-		start wt '-F new-tab -p "ssh" split-pane --size 0.5 -V -p "ssh_1" ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" pwsh -NoExit -Command "anddev && p7 && p7mod"'
-	} elseif($which -eq "lin")
-	{
-		start wt '-F new-tab -p "ssh_3" split-pane --size 0.5 -V -p "ssh_3" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_4" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_4" pwsh -NoExit -Command "p7 && p7mod"'
-	} elseif($which -eq "obs")
-	{
-		start wt '-F new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && jnl"'
+		Write-Error "Wrong syntax"
+		Write-Output $CommandNewWt
 	}
-	
-	#kawt "P7_P"	
 }
 function androidDevEnv
 {
