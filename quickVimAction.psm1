@@ -26,10 +26,10 @@ function :a
   :t 7
 }
 
-function :backup()
+function :backup($Verbose = $null)
 {
   Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
-  p7backup && Backup-Extensive
+  Backup-Environment $Verbose && Backup-Extensive $Verbose
 }
 
 Set-Alias -Name :bak -Value :backup

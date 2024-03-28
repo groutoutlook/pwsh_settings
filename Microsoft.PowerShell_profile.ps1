@@ -80,12 +80,20 @@ function global:p7Env
 	$NewLastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
 	if($NewLastWrite -ne $LastWrite)
 	{
-		p7Backup
+		Backup-Environment
 		Write-Host "Env change, jump to backup." -ForegroundColor Green
 	}
 }
+function Format-LimitLength($String,$limitString = 50)
+{
+	if($String.Length -gt $limitString)
+	{
+		$String = "(...)"+$String.Substring($String.Length - $limitString)
+	}
+	return $String
+}
 
-function global:Backup-Env
+function global:Backup-Environment($Verbose = $null)
 {
 	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
 	$dotfiles = @(
@@ -98,14 +106,18 @@ function global:Backup-Env
 	foreach($dotfile in $dotfiles)
 	{
 		(Copy-Item $dotfile "$Env:dotfilesRepo")
-		Write-Host "$dotfile backed up" -ForegroundColor Yellow
+		if($Verbose -le 0)
+		{
+			$dotfile = Format-LimitLength -String $dotfile
+		}
+		Write-Host "$dotfile backed up." -ForegroundColor Yellow
 	}
 	Copy-Item $p7Profile "$env:p7settingDir"
 	
 
 	Set-Location $env:dotfilesRepo
 }
-Set-Alias -Name p7Backup -Value Backup-Env
+Set-Alias -Name p7Backup -Value Backup-Environment
 
 function P7
 {
