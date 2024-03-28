@@ -1,6 +1,9 @@
 # powershell-5.1
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-
+function zsh
+{
+	wsl --cd ~
+}
 function initTypicalEditor
 {	
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope

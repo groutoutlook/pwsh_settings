@@ -9,6 +9,7 @@ $global:lookupSite = @{
   "sov" = "site%3Astackoverflow.com"
   "stex" = "site%3Astackexchange.com"
   "su" = "site%3Asuperuser.com"
+  "elec" = "site%3Aelectronic.stackexchange.com"
 }
 
 function Search-Google
