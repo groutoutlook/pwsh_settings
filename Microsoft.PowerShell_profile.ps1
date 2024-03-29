@@ -121,11 +121,10 @@ Set-Alias -Name p7Backup -Value Backup-Environment
 
 function P7
 {
-	#oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
+	# Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 	# Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Invoke-Expression (&starship init powershell)
-	cd $env:VSDir
 	initGuiApp
 	initChat
 	initMediaPlayer
@@ -149,7 +148,7 @@ function MoreTerminalModule
 	# Import-Module -Name Terminal-Icons -Scope Global
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-	Set-PsFzfOption -PSReadlinWrite-OutputrdProvider 'Ctrl+t' -PSReadlinWrite-OutputrdReverseHistory 'Ctrl+r' 
+	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	# Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
