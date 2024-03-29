@@ -40,3 +40,10 @@ function :n($defaultPath = (Get-Location))
   nvim $defaultPath
 }
 Set-Alias -Name :v -Value :n
+
+
+function :o()
+{
+  omniSearchObsidian $args
+}
+
