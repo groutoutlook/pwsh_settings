@@ -35,15 +35,65 @@ function :backup($Verbose = $null)
 Set-Alias -Name :bak -Value :backup
 
 
-function :n($defaultPath = (Get-Location))
+function :v()
 {
-  nvim $defaultPath
+  if ($args[0] -eq $null)
+  {
+    $args = "."
+  } else
+  {
+  }
+  nvim $args
 }
-Set-Alias -Name :v -Value :n
+
+$tableJournal = @{
+  "default" = "Journal.md"
+  1688 = "1_Markdown\note_Items\1688Journal.md"
+  "taobao" = "1_Markdown\note_Items\TaobaoJournal.md"
+  "item" = "_Markdown\note_Items\OtherItemsJournal.md"
+  "asset" = "1_Markdown\note_Items\AssetJournal.md"
+  "place" = "1_Markdown\note_Knowledge\note_Places\PlacesJournal.md"
+  "work" = "1_Markdown\note_Business\WorkJournal.md"
+  "lang" = "1_Markdown\note_algo_lang\0_LongJournal\LangJournal.md"
+  "prog" = "1_Markdown\note_algo_lang\0_LongJournal\ProgrammingJournal.md"
+  "comp" = "1_Markdown\note_Embedded\ComponentJournal.md"
+  "kicad" = "1_Markdown\note_Embedded\note_EDA\EDAJournal.md"
+  "eda" = "1_Markdown\note_Embedded\note_EDA\EDAJournal.md"
+  "hard" = "1_Markdown\note_Embedded\HardwareJournal.md"
+  "hw" = "1_Markdown\note_Embedded\HardwareJournal.md"
+  "soft" = "1_Markdown\note_software\0_LongJournal\SoftwareJournal.md"
+  "sw" = "1_Markdown\note_software\0_LongJournal\SoftwareJournal.md"
+  "acro" = "1_Markdown\note_Knowledge\AcronymJournal.md"
+  "vocab" = "1_Markdown\note_Knowledge\VocabJournal.md"
+  "flow" = "1_Markdown\note_Business\WorkflowJournal.md"
+  "wf" = "1_Markdown\note_Business\WorkflowJournal.md"
+  "workflow" = "1_Markdown\note_Business\WorkflowJournal.md"
+  "phr" = "1_Markdown\note_Knowledge\PhraseJournal.md"
+  "phrase" = "1_Markdown\note_Knowledge\PhraseJournal.md"
+  "nvim" = "1_Markdown\note_software\100001_Neovim.md"
+  "obs" = "1_Markdown\note_software\400002_Obsidian.md"
+}
+
+
+
 
 
 function :o()
 {
-  omniSearchObsidian $args
+  if($args[0] -eq $null)
+  {
+    Show-Window Obsidian
+  } else
+  {
+    $phrase = $tableJournal[$args[0]]
+    if($phrase -ne $null)
+    {
+      (Start-Process "obsidian://open?vault=Vault_2401&path=$phrase") | Out-Null
+    } else
+    {
+      omniSearchObsidian $args | Out-Null
+    }
+  }
 }
+
 
