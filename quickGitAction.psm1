@@ -45,6 +45,6 @@ function copyFilesFromOnlineRepos($URI = "", $gitDoc = "" , $OutFile ="")
  } else
 	{$destinationFile = $OutFile
  }
-	iwr -uri $processedURI -OutFile ./$destinationFile && bat ./$destinationFile
+	Invoke-WebRequest -uri $processedURI -OutFile ./$destinationFile && bat ./$destinationFile
 }
 Set-Alias -Name cpGit -Value copyFilesFromOnlineRepos -Scope Global

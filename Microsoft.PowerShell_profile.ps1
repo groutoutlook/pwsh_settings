@@ -64,7 +64,18 @@ function zlc()
 	chrome https://chat.zalo.me
 } 
 Set-Alias -Name clsm -Value clear 
-
+function goviet
+{
+	$currentGTVProcess = (Get-Process -Name GoTiengViet)
+	if($currentGTVProcess.Id -eq $null)
+	{
+		Start-Process "$env:GoTiengVietDir/GoTiengViet.exe"
+	} else
+	{
+		Stop-Process -Id $currentGTVProcess.Id 
+		Start-Process "$env:GoTiengVietDir/GoTiengViet.exe"
+	}
+}
 function initMediaPlayer
 {
 	# # Everyonepiano
@@ -267,7 +278,8 @@ function global:initProfileEnv
 	$Env:mozillaDir = "$Env:ProgramFilesD\Mozilla Firefox\"
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
-	$Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
+	# $Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
+	$Env:GoTiengVietDir = "D:\Program Files\GoTiengViet"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
 	$Env:ahkDirD = "$env:ProgramDataD\ahk\"
@@ -285,7 +297,8 @@ function global:initProfileEnv
 		$Env:PhotoshopDir,$env:vlcDir,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 		$Env:hledgerDir,$Env:sqlite3Dir,
-		$Env:cargoDir,$env:LuaJitDir
+		$Env:cargoDir,$env:LuaJitDir,
+		$Env:gotvDir
 	)
 	foreach($d in $diradd)
 	{
