@@ -133,14 +133,22 @@ Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
 function clockWindowsApp()
 {
-	Start-Process "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe"
+	Start-Process (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe")[-1]
 }
 Set-Alias -Name clock -Value clockWindowsApp
-function todoWindowsApp()
+# function todoWindowsApp()
+# {
+# 	Start-Process (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.Todos*x64*\Todo.exe")[-1]
+# }
+# Set-Alias -Name todo -Value todoWindowsApp
+#
+function Start-TerminalUserMode
 {
-	Start-Process "C:\Program Files\WindowsApps\Microsoft.Todos*x64*\Todo.exe"
+	$TerminalPath =	(Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_*x64*\wt.exe")[-1]
+	$terminalArgument = "$TerminalPath $args"
+	Start-Process explorer.exe -ArgumentList ($terminalArgument)
 }
-Set-Alias -Name todo -Value todoWindowsApp
+Set-Alias -Name wtuser -Value Start-TerminalUserMode
 function MoreTerminalModule
 {
 	#External pwsh module

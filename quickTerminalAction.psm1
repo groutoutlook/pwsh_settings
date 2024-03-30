@@ -12,26 +12,16 @@ function SetBufferWidthToScreenWidth
 	$ui.BufferSize = $bufferSize
 }
 
-function Edit-Module($options = "")
+function Edit-Module($options = $null)
 {
-	if($options -match "quick")
+	cd "$env:p7settingDir"
+	if($options -match "[A-Z]")
 	{
-		$fileName = "quickTerminalAction.psm1"
-	} elseif($options -match "file")
-	{
-		$fileName = "quickFilePathAction.psm1"
-	} elseif($options -match "and")
-	{
-		$fileName = "ADB_BasicModule.psm1"
+		neovide (Get-Location)
 	} else
 	{
-		cd $env:p7settingDir
-		nvim .
-		return
+		nvim (Get-Location)
 	}
-	cd "$env:p7settingDir"
-	nvim ".\$fileName"
-	#hx ".\$fileName"
 }
 
 Set-Alias -Name p7edit -Value Edit-Module -Scope Global
