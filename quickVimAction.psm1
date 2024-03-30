@@ -3,7 +3,7 @@
 
 function :q
 {
-  exit
+  Stop-Process -id $pid
 }
 
 
@@ -12,12 +12,14 @@ function :q
 # There's some other effects, so I may need to dig further I think?
 function :t($p7 = 0) 
 {
+  $old_pid = $pid
   if($p7 -eq 0)
   {
-    pwsh && exit
+    pwsh && Stop-Process -id $old_pid
   } else
   {
-    pwsh -Noexit -Command "p7 && p7mod && cd-" && exit
+    pwsh -Noexit -Command "p7 && p7mod" 
+    Stop-Process -id $old_pid 
   }
 }
 # since I want to type them faster. nm is kinda long.
