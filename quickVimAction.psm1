@@ -15,7 +15,9 @@ function :t($p7 = 0)
   $old_pid = $pid
   if($p7 -eq 0)
   {
-    pwsh && Stop-Process -id $old_pid
+    pwsh
+    Stop-Process -id $old_pid
+
   } else
   {
     pwsh -Noexit -Command "p7 && p7mod" 
