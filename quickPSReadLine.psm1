@@ -1,7 +1,7 @@
 
 
 # Setup for (^G) 
-$parameters = @{
+$ggSearchParameters = @{
   Key = 'Ctrl+g'
   BriefDescription = 'Google Mode'
   LongDescription = 'Maybe other search function, but who knows.'
@@ -24,7 +24,39 @@ $parameters = @{
   }
 }
 
-Set-PSReadLineKeyHandler @parameters
+# Setup for (^O) 
+$omniSearchParameters = @{
+  Key = 'Ctrl+o'
+  BriefDescription = 'Obsidian Mode'
+  LongDescription = 'Search Obsidian.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    $searchFunction = "omniSearchObsidian"
+    $SearchWithQuery = "$searchFunction $line"
+    #Store to history for future use.
+    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
+    Invoke-Expression $SearchWithQuery
+    # Can InvertLine() here to return empty line.
+    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+      
+  }
+}
+
+$HandlerParameters = @{
+  "ggHandler"   = $ggSearchParameters
+  "obsHandler"  = $omniSearchParameters
+}
+ForEach($handler in $HandlerParameters.Keys)
+{
+  $parameters = $HandlerParameters[$handler]
+  Set-PSReadLineKeyHandler @parameters
+}
 
 
 
