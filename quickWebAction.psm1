@@ -37,9 +37,10 @@ function Search-Google
     {
       $args[-1] = $appendix
     } 
+    $global:oldQuery = $args
 		
     $query = 'https://www.google.com/search?q='
-    $args | % { $query = $query + "$_+" }
+    $args | ForEach-Object { $query = $query + "$_+" }
   }
   $url = $query.Substring(0, $query.Length - 1)
   Start-Process "$url"

@@ -30,6 +30,7 @@ function initShellApp
 {
 	Import-Module -Name ($env:p7settingDir+"quickWebAction") -Scope Global 
 	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
+	Import-Module -Name ($env:p7settingDir+"quickPSReadLine") -Scope Global
 	# function br must be placed on global drive.
 	. "C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1" 
 }
@@ -164,7 +165,7 @@ Set-Alias -Name wtuser -Value Start-TerminalUserMode
 function MoreTerminalModule
 {
 	#External pwsh module
-	Import-Module -Name F7History -Scope Global 
+	# Import-Module -Name F7History -Scope Global 
 	# Import-Module -Name Terminal-Icons -Scope Global
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
@@ -172,7 +173,7 @@ function MoreTerminalModule
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	# Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
-	#example (get-process notepad*)[0].MainWindowHandle | Move-Window (Get-CurrentDesktop) | Out-Null
+	#example (get-process  notepad*)[0].MainWindowHandle | Move-Window (Get-CurrentDesktop) | Out-Null
 	
 	$Env:gkPath = "$env:LOCALAPPDATA\gitkraken\"
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
@@ -197,6 +198,8 @@ function MoreTerminalModule
 $global:personalModuleList = @(
 	"quickWebAction",
 	"quickVimAction",
+	"quickPSReadLine",
+	"quickReadlineAction",
 	"quickMathAction",
 	"quickGitAction",
 	"quickTerminalAction",
@@ -390,4 +393,5 @@ initTypicalEditor
 initShellApp
 initIDE
 initAutomate
+initSSH
 initSSH
