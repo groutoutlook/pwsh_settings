@@ -5,7 +5,7 @@ function :q
 {
   Stop-Process -id $pid
 }
-
+Set-Alias -Name qqq -Value :q
 
 
 # Quick way to reload profile and turn back to the default pwsh
@@ -50,6 +50,7 @@ function :v()
   nvim $args
 }
 
+$vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
   "default" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\Journal.md"
   1688 = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Items\1688Journal.md"
