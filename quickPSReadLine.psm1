@@ -49,9 +49,9 @@ $omniSearchParameters = @{
 }
 
 $quickEscParameters = @{
-  Key = 'jk'
-  BriefDescription = 'Obsidian Mode'
-  LongDescription = 'Search Obsidian.'
+  Key = 'Ctrl+k'
+  BriefDescription = 'Open Kicad'
+  LongDescription = 'Reserved key combo. Havent thought of any useful function to use with it.'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
 

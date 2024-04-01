@@ -21,7 +21,7 @@ function checkLocalIP($devs = $global:adbDevices)
 	}
 	return $iplist
 }
-($global:adbDevices = adbList)
+($global:adbDevices = ADB_getSerialList)
 ($global:iplist = checkLocalIP)
 
 function Update-DeviveList
