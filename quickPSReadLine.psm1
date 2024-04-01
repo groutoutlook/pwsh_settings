@@ -48,9 +48,28 @@ $omniSearchParameters = @{
   }
 }
 
+$quickEscParameters = @{
+  Key = 'jk'
+  BriefDescription = 'Obsidian Mode'
+  LongDescription = 'Search Obsidian.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    #Store to history for future use.
+    # Can InvertLine() here to return empty line.
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+      
+  }
+}
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "obsHandler"  = $omniSearchParameters
+  "escHandler"  = $quickEscParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {

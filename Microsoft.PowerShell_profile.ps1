@@ -199,7 +199,6 @@ $global:personalModuleList = @(
 	"quickWebAction",
 	"quickVimAction",
 	"quickPSReadLine",
-	"quickReadlineAction",
 	"quickMathAction",
 	"quickGitAction",
 	"quickTerminalAction",

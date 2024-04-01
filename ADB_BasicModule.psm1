@@ -11,9 +11,8 @@ function ADB_getSerialList()
 	return $serialList
 }
 
-Set-Alias -Name adbList -Value ADB_getSerialList -Scope Global
 
-function checkLocalIP($devs = $global:srl)
+function checkLocalIP($devs = $global:adbDevices)
 {
 	$iplist=@()
 	foreach($emulator in $devs)
@@ -22,14 +21,15 @@ function checkLocalIP($devs = $global:srl)
 	}
 	return $iplist
 }
-($global:srl = adbList)
+($global:adbDevices = adbList)
 ($global:iplist = checkLocalIP)
 
-function newDev
+function Update-DeviveList
 {
-	($global:srl = adblist)
+	($global:adbDevices = ADB_getSerialList)
 }
 
+Set-Alias -Name adbList -Value Update-DeviveList -Scope Global
 
 function offscr()
 {
@@ -63,7 +63,7 @@ function SSH_getHostName()
 
 function castADBShell($command)
 {
-	foreach($emulator in $global:srl)
+	foreach($emulator in $global:adbDevices)
 	{adb -s $emulator shell $command
  }
 }
@@ -79,7 +79,7 @@ function initSSH($sshlist = $global:iplist)
 	}
 }
 
-function scrAll($devs = $global:srl, $x_space = 450)
+function scrAll($devs = $global:adbDevices, $x_space = 450)
 {
 	$ind=0
 	$width=$x_space
@@ -93,7 +93,7 @@ function scrAll($devs = $global:srl, $x_space = 450)
 
 function castSSH($command)
 {
-	foreach($emulator in $global:srl)
+	foreach($emulator in $global:adbDevices)
 	{adb -s $emulator shell $command
  }
 }
@@ -102,12 +102,12 @@ function checkadb($options = "bat")
 {
 	if ($options -match "bat")
 	{
-		foreach($emulator in $global:srl)
+		foreach($emulator in $global:adbDevices)
 		{adb -s $emulator shell "dumpsys battery | grep -e level"
   }
 	} elseif ($options -match "temp")
 	{
-		foreach($emulator in $global:srl)
+		foreach($emulator in $global:adbDevices)
 		{adb -s $emulator shell "dumpsys battery | grep -e temperature"
   }
 	}
@@ -116,7 +116,7 @@ function checkadb($options = "bat")
 
 function installAllApk($filepath)
 {
-	foreach($emulator in $global:srl)
+	foreach($emulator in $global:adbDevices)
 	{
 	(adb -s $emulator install $filepath )
 	}
@@ -138,7 +138,7 @@ function invokeShizuku($installed = 1)
 
 function pushpullAllFiles($method = "push" , $src,  $dst)
 {
-	foreach($emulator in $global:srl)
+	foreach($emulator in $global:adbDevices)
 	{
 		
 		if ($method -match "push")
@@ -156,7 +156,7 @@ function pushpullAllFiles($method = "push" , $src,  $dst)
 Set-Alias -Name offs -Value offscr -Scope Global
 
 
-function ScrOff($devs = $global:srl)
+function ScrOff($devs = $global:adbDevices)
 {
 	foreach ($emulator in $devs)
 	{
@@ -254,7 +254,7 @@ function typevn
 	$srgs_ind = 0
 	if ($args[-1]  -match '^\d+$' )
 	{
-		$emulator = $global:srl[$args[-1]];
+		$emulator = $global:adbDevices[$args[-1]];
 	} else
 	{
 		$emulator = $global:mainphone;
@@ -293,7 +293,7 @@ function typewe
 	$srgs_ind = 0
 	if ($args[-1]  -match '^\d+$' )
 	{
-		$emulator = $global:srl[$args[-1]];
+		$emulator = $global:adbDevices[$args[-1]];
 	} else
 	{
 		$emulator = $global:mainphone;
