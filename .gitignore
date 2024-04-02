@@ -107,3 +107,7 @@ logfile/*
 *.lnk
 
 
+node_modules/*
+
+
+
