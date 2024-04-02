@@ -4,6 +4,10 @@ function zsh
 {
 	wsl --cd ~
 }
+function Dirs
+{
+	Get-Location -Stack
+}
 function initTypicalEditor
 {	
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
@@ -61,7 +65,8 @@ function zl()
 function Browse-CodeStats()
 {
 	msedge https://codestats.net/users/groutlloyd
-}
+} 
+Set-Alias -Name cst -Value Browse-CodeStats 
 function goviet
 {
 	$currentGTVProcess = (Get-Process -Name GoTiengViet)
@@ -101,7 +106,6 @@ function Format-LimitLength($String,$limitString = 50)
 	}
 	return $String
 }
-
 function global:Backup-Environment($Verbose = $null)
 {
 	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
@@ -121,7 +125,8 @@ function global:Backup-Environment($Verbose = $null)
 		Write-Host "$dotfile backed up." -ForegroundColor Yellow
 	}
 	Copy-Item $p7Profile "$env:p7settingDir"
-	
+	Push-Location $env:p7settingDir
+	Push-Location $env:dotfilesRepo
 
 	Set-Location $env:dotfilesRepo
 }
