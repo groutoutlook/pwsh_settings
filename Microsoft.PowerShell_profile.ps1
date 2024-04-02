@@ -31,8 +31,6 @@ function initShellApp
 	Import-Module -Name ($env:p7settingDir+"quickWebAction") -Scope Global 
 	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
 	Import-Module -Name ($env:p7settingDir+"quickPSReadLine") -Scope Global
-	# function br must be placed on global drive.
-	. "C:\Users\COHOTECH\AppData\Roaming\dystroy\broot\config\launcher\powershell\br.ps1" 
 }
 function initSSH
 {

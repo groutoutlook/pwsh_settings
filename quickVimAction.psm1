@@ -52,7 +52,7 @@ function :v()
 
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
-  "default" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\Journal.md"
+  "default" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\MainJournal.md"
   1688 = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Items\1688Journal.md"
   "taobao" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Items\TaobaoJournal.md"
   "item" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\_Markdown\note_Items\OtherItemsJournal.md"
