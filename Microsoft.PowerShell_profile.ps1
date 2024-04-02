@@ -106,7 +106,6 @@ function global:Backup-Environment($Verbose = $null)
 {
 	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
 	$dotfiles = @(
-		$p7Profile,
 		"~/.gitconfig",
 		"~/.gitignore_global"
 		$terminalSettings
