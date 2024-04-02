@@ -20,7 +20,7 @@ function Edit-Module($options = $null)
 		neovide (Get-Location)
 	} else
 	{
-		nvim (Get-Location)
+		:v 
 	}
 }
 

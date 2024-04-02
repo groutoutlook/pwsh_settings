@@ -58,12 +58,10 @@ function zl()
 	Write-Output "do you want to open zlc instead? It's in Chrome."
 	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
 }
-function zlc()
+function Browse-CodeStats()
 {
-	Write-Output "do you want to open zl instead? It's Desktop app."
-	chrome https://chat.zalo.me
-} 
-Set-Alias -Name clsm -Value clear 
+	msedge https://codestats.net/users/groutlloyd
+}
 function goviet
 {
 	$currentGTVProcess = (Get-Process -Name GoTiengViet)

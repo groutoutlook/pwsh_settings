@@ -9,6 +9,8 @@ $global:lookupSite = @{
   "sov" = "site%3Astackoverflow.com"
   "stex" = "site%3Astackexchange.com"
   "su" = "site%3Asuperuser.com"
+  "cst" = "site%3Acodestats.net"
+  "codestat" = "site%3Acodestats.net"
   "elec" = "site%3Aelectronic.stackexchange.com"
 }
 
