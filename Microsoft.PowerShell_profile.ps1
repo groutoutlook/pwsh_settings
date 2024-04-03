@@ -19,6 +19,8 @@ function initAutomate
 	Set-Alias -Name copyq -Value "$env:ProgramFilesD\CopyQ\copyq" -Scope Global
 	Set-Alias -Name spy -Value "$env:ProgramFiles\AutoHotkey\UX\WindowSpy.ahk" -Scope Global
 	Set-Alias -Name ahk -Value "$env:ProgramFiles\AutoHotkey\UX\ui-dash.ahk" -Scope Global
+	Set-Alias -Name mousekey -Value "$env:ahkDirD\proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
+	Set-Alias -Name keydell -Value "$env:ahkDirD\proj\PersonalAHKScripts\DellKeyboardRemap.ahk"  -Scope Global
 
 }
 
@@ -89,7 +91,6 @@ function initMediaPlayer
 {
 	# # Everyonepiano
 	# Set-Alias -Name piano -Value "$env:ProgramFilesD\EveryonePiano\EveryonePiano.exe" -Scope Global
-	Set-Alias -Name mousekey -Value "$env:ahkDirD\proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 }
 
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
