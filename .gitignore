@@ -108,6 +108,6 @@ logfile/*
 
 
 node_modules/*
-
+Session.vim
 
 

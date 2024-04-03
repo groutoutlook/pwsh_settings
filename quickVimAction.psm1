@@ -44,10 +44,16 @@ function :v()
   if ($args[0] -eq $null)
   {
     $args = "."
-    nvim "." 
+    nvim "."
   } else
   {
-    nvim $args 
+    if($args -match "ls")
+    {
+      nvim "." -c "SessionManager! load_session"
+    } else
+    {
+      nvim $args
+    }
   }
    
 }
