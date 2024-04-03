@@ -62,9 +62,15 @@ function zl()
 	Write-Output "do you want to open zlc instead? It's in Chrome."
 	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
 }
-function Browse-CodeStats()
+function Browse-CodeStats($webui = 0)
 {
-	msedge https://codestats.net/users/groutlloyd
+	if($webui -ne 0)
+ {
+		msedge https://codestats.net/users/groutlloyd
+	} else
+	{
+	 	 (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
+	}
 } 
 Set-Alias -Name cst -Value Browse-CodeStats 
 function goviet
