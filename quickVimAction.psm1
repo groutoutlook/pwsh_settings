@@ -12,6 +12,8 @@ Set-Alias -Name qqq -Value :q
 # There's some other effects, so I may need to dig further I think?
 function :t($p7 = 0) 
 {
+  Push-Location
+  $old_dirs = Get-Location -Stack
   $old_pid = $pid
   if($p7 -eq 0)
   {
@@ -20,7 +22,7 @@ function :t($p7 = 0)
 
   } else
   {
-    pwsh -Noexit -Command "p7 && p7mod" 
+    pwsh -Noexit -Command "p7 && p7mod && Push-Location $old_dirs"
     Stop-Process -id $old_pid 
   }
 }
@@ -98,6 +100,7 @@ function :o()
     Show-Window Obsidian
   } else
   {
+
     $phrase = $tableJournal[$args[0]]
     if($phrase -ne $null)
     {
@@ -109,4 +112,31 @@ function :o()
   }
 }
 
+$global:JrnlInEnv = 0
+function activateJrnl()
+{
+  $Env:jrnlDir = "$Env:venvsDir\jrnl"
+  Set-Location "$Env:jrnlDir\Scripts"
+  .\Activate.ps1
+  Set-Location -
+}
 
+function Jnl
+{
+  if($global:JrnlInEnv -eq 0)
+  {
+    activateJrnl
+    $global:JrnlInEnv = 1
+    jrnl $args
+  } else
+  {
+    jrnl $args
+  }
+}
+
+Set-Alias -Name j -Value Jnl
+
+function :j()
+{
+  jnl
+}

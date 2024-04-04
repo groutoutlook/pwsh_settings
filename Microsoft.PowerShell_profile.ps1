@@ -71,7 +71,7 @@ function Browse-CodeStats($webui = 0)
 		msedge https://codestats.net/users/groutlloyd
 	} else
 	{
-	 	 (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
+		$global:currentCodeStats = (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
 	}
 } 
 Set-Alias -Name cst -Value Browse-CodeStats 
@@ -298,6 +298,8 @@ function global:initProfileEnv
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
 	$Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
 
+	$env:cmakedir = "C:\Program Files\CMake\bin\"
+	$env:VulkanSDK="C:\VulkanSDK\*\"
 	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
 	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
 	$Env:cargoDir = "~\.cargo\bin"
@@ -307,7 +309,9 @@ function global:initProfileEnv
 		$Env:PhotoshopDir,$env:vlcDir,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 		$Env:hledgerDir,$Env:sqlite3Dir,
-		$Env:cargoDir,$env:LuaJitDir,
+		$Env:cargoDir,
+		# $env:LuaJitDir,
+		$env:cmakedir,
 		$Env:gotvDir
 	)
 	foreach($d in $diradd)

@@ -77,31 +77,6 @@ function discord()
 {
 	. "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Discord Inc\discord.lnk"
 }
-$global:JrnlInEnv = 0
-function activateJrnl()
-{
-	$Env:jrnlDir = "$Env:venvsDir\jrnl"
-	Set-Location "$Env:jrnlDir\Scripts"
-	.\Activate.ps1
-	Set-Location -
-}
-
-function Jnl
-{
-	if($global:JrnlInEnv -eq 0)
-	{
-		activateJrnl
-		$global:JrnlInEnv = 1
-		jrnl $args
-	} else
-	{
-		jrnl $args
-	}
-}
-
-Set-Alias -Name jn -Value Jnl
-Set-Alias -Name j -Value Jnl
-
 function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
 {
 	$sd_used = ((Get-PSDrive -PSProvider FileSystem -Name $drive_name).Used) #or we can index [2] then.
