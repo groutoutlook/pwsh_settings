@@ -14,7 +14,7 @@ function SetBufferWidthToScreenWidth
 
 function Edit-Module($options = $null)
 {
-	cd "$env:p7settingDir"
+	Set-Location "$env:p7settingDir"
 	if($options -match "[A-Z]")
 	{
 		neovide (Get-Location)
@@ -29,16 +29,24 @@ Set-Alias -Name p7edit -Value Edit-Module -Scope Global
 function cdClip($demandURI = (Get-Clipboard))
 {
 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
-	cd $finalURI
+	Set-Location $finalURI
 }
 function cdcb
 {
-	cd (gcb) #Get-Clipboard default alias.
+	$copiedPath = ((Get-Clipboard) -replace '"')
+	$property = Get-Item $copiedPath
+	if ($property.PSIsContainer -eq $true)
+	{
+		Set-Location $copiedPath
+	} else
+	{
+		Set-Location (Split-Path -Path $copiedPath -Parent)
+	}#Get-Clipboard default alias.
 }
 
 function cddot($Path = $env:dotfilesRepo)
 {
-	cd $Path
+	Set-Location $Path
 	if ($Path -eq "$env:dotfilesRepo")
 	{
 		Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
@@ -80,7 +88,7 @@ $CommandNewWt = @{
 	"and" = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
 	"ssh" = '-f new-tab -p "ssh" split-pane --size 0.5 -V -p "ssh_1" ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" pwsh -NoExit -Command "anddev && p7 && p7mod"'
 	"lin" = '-f new-tab -p "P7_OrangeBackground" wsl'
-	"obs" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && cd $env:obsVault && jnl -3"'
+	"obs" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && Set-Location $env:obsVault && jnl -3"'
 }
 
 function term($which = "win")
@@ -114,20 +122,20 @@ function androidDevEnv
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
 
-function explr($inputPath = (pwd))
+function explr($inputPath = (Get-Location))
 {
 	if($inputPath -match "This PC")
 	{
-		explorer 
+		explorer.exe 
 		Start-Sleep 0.5
-		scb $inputPath
+		Set-Clipboard $inputPath
 		[System.Windows.Forms.SendKeys]::SendWait("^l")
 		Start-Sleep 0.2
 		[System.Windows.Forms.SendKeys]::SendWait("^v{ENTER}")
 		echo "ahk then?"
 	} else
 	{
-		explorer $inputPath
+		explorer.exe $inputPath
 	}
 }
 

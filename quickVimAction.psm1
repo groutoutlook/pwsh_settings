@@ -13,7 +13,7 @@ Set-Alias -Name qqq -Value :q
 function :t($p7 = 0) 
 {
   Push-Location
-  $old_dirs = Get-Location -Stack
+  $old_dirs = dirs
   $old_pid = $pid
   if($p7 -eq 0)
   {
@@ -22,7 +22,13 @@ function :t($p7 = 0)
 
   } else
   {
-    pwsh -Noexit -Command "p7 && p7mod && Push-Location $old_dirs"
+    $pushCommand = ""
+    foreach ($dir in $old_dirs.Path)
+    {
+      $pushCommand += "&& Push-Location $dir "
+    }
+    echo $pushCommand
+    pwsh -Noexit -Command "p7 && p7mod $pushCommand"
     Stop-Process -id $old_pid 
   }
 }
