@@ -27,7 +27,7 @@ function :t($p7 = 0)
     {
       $pushCommand += "&& Push-Location $dir "
     }
-    echo $pushCommand
+    # echo $pushCommand
     pwsh -Noexit -Command "p7 && p7mod $pushCommand"
     Stop-Process -id $old_pid 
   }
