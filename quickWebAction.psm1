@@ -108,3 +108,7 @@ Set-Alias -Name comps -Value compSearch
 
 
 
+function ocr
+{
+  Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
+}
