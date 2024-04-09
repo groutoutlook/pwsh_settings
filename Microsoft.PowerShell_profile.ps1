@@ -310,7 +310,8 @@ function global:initProfileEnv
 	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
-	$Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
+	# $Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
+	$env:pipxLocalDir = "$HOME\.local\bin"
 
 	$env:cmakedir = "C:\Program Files\CMake\bin\"
 	$env:VulkanSDK="C:\VulkanSDK\*\"
@@ -325,6 +326,7 @@ function global:initProfileEnv
 		$Env:hledgerDir,$Env:sqlite3Dir,
 		$Env:cargoDir,
 		# $env:LuaJitDir,
+		$env:pipxLocalDir,
 		$env:cmakedir,
 		$Env:gotvDir
 	)

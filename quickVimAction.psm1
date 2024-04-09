@@ -118,31 +118,13 @@ function :o()
   }
 }
 
-$global:JrnlInEnv = 0
-function activateJrnl()
-{
-  $Env:jrnlDir = "$Env:venvsDir\jrnl"
-  Set-Location "$Env:jrnlDir\Scripts"
-  .\Activate.ps1
-  Set-Location -
-}
 
-function Jnl
-{
-  if($global:JrnlInEnv -eq 0)
-  {
-    activateJrnl
-    $global:JrnlInEnv = 1
-    jrnl $args
-  } else
-  {
-    jrnl $args
-  }
-}
 
-Set-Alias -Name j -Value Jnl
+
+
+Set-Alias -Name j -Value jrnl
 
 function :j()
 {
-  jnl
+  jrnl
 }
