@@ -111,6 +111,7 @@ node_modules/*
 Session.vim
 dot
 linux
-
+powershell_*_root
+powershell_preview_*_root
 
 
