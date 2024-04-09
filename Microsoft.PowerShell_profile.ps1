@@ -32,12 +32,6 @@ function initIDE
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
 }
 
-function initShellApp
-{
-	Import-Module -Name ($env:p7settingDir+"quickWebAction") -Scope Global 
-	Import-Module -Name ($env:p7settingDir+"quickVimAction") -Scope Global
-	Import-Module -Name ($env:p7settingDir+"quickPSReadLine") -Scope Global
-}
 function initSSH
 {
 	
@@ -183,23 +177,32 @@ function Start-TerminalUserMode
 	Start-Process explorer.exe -ArgumentList ($terminalArgument)
 }
 Set-Alias -Name wtuser -Value Start-TerminalUserMode
+$global:initialModuleList=@(
+	"quickWebAction",
+	"quickVimAction",
+	"quickPSReadLine"
+)
+$global:extraModuleList = @(
+	"quickMathAction",
+	"quickGitAction",
+	"quickTerminalAction",
+	"quickFilePathAction"
+)
+$global:personalModuleList = $global:initialModuleList + $global:extraModuleList
 function MoreTerminalModule
 {
 	#External pwsh module
 	# Import-Module -Name F7History -Scope Global 
-	# Import-Module -Name Terminal-Icons -Scope Global
-	Import-Module -Name PSFzf -Scope Global 
+	# Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+	# Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	# Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
-	#example (get-process  notepad*)[0].MainWindowHandle | Move-Window (Get-CurrentDesktop) | Out-Null
 	
-	$Env:gkPath = "$env:LOCALAPPDATA\gitkraken\"
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
-	$Env:SMergePath = "C:\Program Files\Sublime Merge"
-	$diradd = @($Env:gkPath,
+	$Env:SMergePath = "C:\Program Files\Sublime Merge\"
+	$diradd = @(
 		$Env:SMergePath
 		# $Env:sourceTreePath,
 	)
@@ -207,29 +210,22 @@ function MoreTerminalModule
 	{
 		$Env:Path += ";"+$d;
 	}
-	
-	
-	# Self-made module
-	Import-Module -Name ($env:p7settingDir+"quickMathAction") 
-	Import-Module -Name ($env:p7settingDir+"quickGitAction") -Scope Global 
-	Import-Module -Name ($env:p7settingDir+"quickTerminalAction") -Scope Global
-	Import-Module -Name ($env:p7settingDir+"quickFilePathAction") -Scope Global
-	#clear
-}
-$global:personalModuleList = @(
-	"quickWebAction",
-	"quickVimAction",
-	"quickPSReadLine",
-	"quickMathAction",
-	"quickGitAction",
-	"quickTerminalAction",
-	"quickFilePathAction"
-)
 
+	foreach($module in $global:extraModuleList){
+		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
+		# echo "Done here"
+	}
+}
+function initShellApp
+{
+	foreach($module in $global:initialModuleList){
+		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
+	}
+}
 function Reload-Module-List
 {
 	param (
-		[array]$ModuleList = $global:personalModuleList,
+		[array]$ModuleList = $global:extraModuleList,
 		[string]$ModulePath = $env:p7settingDir
 	)
 	foreach($ModuleName in $ModuleList)
@@ -240,6 +236,8 @@ function Reload-Module-List
 		Write-Output "$ModuleName reimported"
 	}
 }
+
+Set-Alias -Name p7mod -Value MoreTerminalModule
 function global:Reload-Profile($option = "env")
 {
 	if ($option -match "^all")
@@ -255,10 +253,6 @@ function global:Reload-Profile($option = "env")
 }
 Set-Alias -Name repro -Value Reload-Profile
 Set-Alias -Name p7pro -Value Reload-Profile
-
-
-
-Set-Alias -Name p7mod -Value MoreTerminalModule
 function Set-LocationWhere($files = "~")
 {
 	$commandInfo = (get-Command $files)
