@@ -44,18 +44,17 @@ function cdcb
 	}#Get-Clipboard default alias.
 }
 
-function cddot($Path = $env:dotfilesRepo)
-{
-	Set-Location $Path
-	if ($Path -eq "$env:dotfilesRepo")
-	{
-		Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
-	}
-}
 
 function getDateTime
 {
 	return (get-date).TimeOfDay.ToString()
+}
+
+function isLink($currentPath = (Get-Location)){
+	$pathProperty = Get-Item $currentPath
+	if($pathProperty.LinkType){
+		echo "ok"
+	}
 }
 
 function checkFileStatus($filePath)
