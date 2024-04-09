@@ -1,5 +1,5 @@
 # powershell-5.1
-Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+# Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 function zsh
 {
 	wsl --cd ~
@@ -32,10 +32,10 @@ function initIDE
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
 }
 
-function initSSH
-{
-	
-}
+# function initSSH
+# {
+# 	
+# }
 
 function initGuiApp
 {
@@ -193,10 +193,10 @@ function MoreTerminalModule
 {
 	#External pwsh module
 	# Import-Module -Name F7History -Scope Global 
-	# Import-Module -Name PSFzf -Scope Global 
+	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-	# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-	# Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
+	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	# Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
@@ -211,21 +211,25 @@ function MoreTerminalModule
 		$Env:Path += ";"+$d;
 	}
 
-	foreach($module in $global:extraModuleList){
+	foreach($module in $global:extraModuleList)
+	{
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
 		# echo "Done here"
 	}
 }
+Set-Alias -Name p7mod -Value MoreTerminalModule
 function initShellApp
 {
-	foreach($module in $global:initialModuleList){
+	foreach($module in $global:initialModuleList)
+ {
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
+		# echo Nope.
 	}
 }
 function Reload-Module-List
 {
 	param (
-		[array]$ModuleList = $global:extraModuleList,
+		[array]$ModuleList = $global:personalModuleList,
 		[string]$ModulePath = $env:p7settingDir
 	)
 	foreach($ModuleName in $ModuleList)
@@ -237,7 +241,6 @@ function Reload-Module-List
 	}
 }
 
-Set-Alias -Name p7mod -Value MoreTerminalModule
 function global:Reload-Profile($option = "env")
 {
 	if ($option -match "^all")
@@ -277,7 +280,7 @@ function addPath($dirList)
 {
 	
 	foreach($d in $dirList)
- {
+	{
 		$d = Resolve-Path $d
 		$Env:Path += ";"+$d;
 	}
@@ -305,19 +308,20 @@ function global:initProfileEnv
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
 	# $Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
-	$env:pipxLocalDir = "$HOME\.local\bin"
+	$env:pipxLocalDir = "~\.local\bin"
 
+	$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
 	$env:cmakedir = "C:\Program Files\CMake\bin\"
 	$env:VulkanSDK="C:\VulkanSDK\*\"
 	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
 	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
 	$Env:cargoDir = "~\.cargo\bin"
-	$Env:hledgerDir = "$env:ProgramFilesD\hledger"
+	# $Env:hledgerDir = "$env:ProgramFilesD\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
 		$Env:PhotoshopDir,$env:vlcDir,
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
-		$Env:hledgerDir,$Env:sqlite3Dir,
+		$Env:sqlite3Dir,
 		$Env:cargoDir,
 		# $env:LuaJitDir,
 		$env:pipxLocalDir,
@@ -328,7 +332,7 @@ function global:initProfileEnv
 	{
 		$Env:Path += ";"+$d;
 	}
-	$Env:PSModulePath += ";" + $Env:p7settingDir 
+	# $Env:PSModulePath += ";" + $Env:p7settingDir 
 }
 
 function Show-Window
@@ -337,39 +341,20 @@ function Show-Window
 		[Parameter(Mandatory)]
 		[string] $ProcessName
 	)
-	
-
-	# As a courtesy, strip '.exe' from the name, if present.
 	$ProcessName = $ProcessName -replace '\.exe$'
-
-	# Get the ID of the first instance of a process with the given name
-	# that has a non-empty window title.
-	# NOTE: If multiple instances have visible windows, it is undefined
-	#       which one is returned.
 	$procId = (Get-Process -ErrorAction Ignore $ProcessName).Where({ $_.MainWindowTitle }, 'First').Id
 
 	if (-not $procId)
 	{ Throw "No $ProcessName process with a non-empty window title found." 
 	 return 1
 	}
-
-	# Note: 
-	#  * This can still fail, because the window could have been closed since
-	#    the title was obtained.
-	#  * If the target window is currently minimized, it gets the *focus*, but is
-	#    *not restored*.
-	#  * The return value is $true only if the window still existed and was *not
-	#    minimized*; this means that returning $false can mean EITHER that the
-	#    window doesn't exist OR that it just happened to be minimized.
 	$null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
 
-$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
 function Switch-Obsidian
 {
 	Show-Window("Obsidian.exe")
 }
-Set-Alias -Name obsi -Value Switch-Obsidian
 Set-Alias -Name shw -Value Show-Window
 
 function omniSearchObsidian
@@ -381,16 +366,9 @@ function omniSearchObsidian
 	Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-Set-Alias -Name os: -Value omniSearchObsidian
 Set-Alias -Name obs -Value omniSearchObsidian
 
-function hn()
-{
-	Start-Process https://news.ycombinator.com/
-
-}
-
-function cd- ($rep = 1)
+function cd-($rep = 1)
 {
 	foreach($i in (1..$rep))
  {
@@ -406,12 +384,8 @@ function cd+($rep = 1)
 	}
 }
 
-
-#p7in
 initProfileEnv
 initTypicalEditor
 initShellApp
 initIDE
 initAutomate
-initSSH
-initSSH
