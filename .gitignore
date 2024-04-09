@@ -109,5 +109,8 @@ logfile/*
 
 node_modules/*
 Session.vim
+dot
+linux
+
 
 
