@@ -14,23 +14,6 @@ function Edit-Module($options = $null)
 
 Set-Alias -Name p7edit -Value Edit-Module -Scope Global
 
-# function cdClip($demandURI = (Get-Clipboard))
-# {
-# 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
-# 	Set-Location $finalURI
-# }
-function cdcb
-{
-	$copiedPath = ((Get-Clipboard) -replace '"')
-	$property = Get-Item $copiedPath
-	if ($property.PSIsContainer -eq $true)
-	{
-		Set-Location $copiedPath
-	} else
-	{
-		Set-Location (Split-Path -Path $copiedPath -Parent)
-	}#Get-Clipboard default alias.
-}
 function isLink($currentPath = (Get-Location))
 {
 	$pathProperty = Get-Item $currentPath
