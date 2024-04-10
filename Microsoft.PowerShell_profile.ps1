@@ -212,7 +212,7 @@ function cdcb($defaultDir = (Get-Clipboard))
 }
 function Set-LocationWhere($files = (Get-Clipboard))
 {
-	$commandInfo = (get-Command $files )
+	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
 	
 	if ($null -ne $commandInfo)
 	{
@@ -240,7 +240,13 @@ function Set-LocationWhere($files = (Get-Clipboard))
 		} 
 	} else
 	{
-		cdcb $files
+		if(($info = Get-Item $files).LinkType -eq "SymbolicLink")
+		{
+			cd $info.Target
+		} else
+		{
+			cdcb $files
+		}
 	}
 }
 Set-Alias -Name cdw -Value Set-LocationWhere

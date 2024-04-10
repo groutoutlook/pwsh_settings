@@ -48,7 +48,7 @@ $omniSearchParameters = @{
   }
 }
 $cdHandlerParameters = @{
-  Key = 'Ctrl+x'
+  Key = 'Alt+x'
   BriefDescription = 'Set-LocationWhere the paste directory.'
   LongDescription = 'Invoke cdwhere with the current directory in the command line'
   ScriptBlock = {
