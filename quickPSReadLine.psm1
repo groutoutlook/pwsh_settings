@@ -47,6 +47,31 @@ $omniSearchParameters = @{
       
   }
 }
+$cdHandlerParameters = @{
+  Key = 'Ctrl+x'
+  BriefDescription = 'Set-LocationWhere the paste directory.'
+  LongDescription = 'Invoke cdwhere with the current directory in the command line'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    $invokeFunction = "Set-LocationWhere"
+    $Query = "$invokeFunction `'$line`'"
+    #Store to history for future use.
+
+    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction ")
+    # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
+    #Store to history for future use.
+    # Can InvertLine() here to return empty line.
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+      
+  }
+}
 
 $quickEscParameters = @{
   Key = 'Ctrl+k'
@@ -69,6 +94,7 @@ $quickEscParameters = @{
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "obsHandler"  = $omniSearchParameters
+  "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
 }
 ForEach($handler in $HandlerParameters.Keys)

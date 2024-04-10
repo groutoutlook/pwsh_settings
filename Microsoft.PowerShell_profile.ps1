@@ -1,5 +1,5 @@
 # powershell-5.1
-# Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
+Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 function zsh
 {
 	wsl --cd ~
@@ -12,7 +12,6 @@ function initTypicalEditor
 {	
 	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
 }
-
 function initAutomate
 {
 	Set-Alias -Name ditto -Value "$env:ProgramFilesD\Ditto\Ditto" -Scope Global
@@ -21,9 +20,7 @@ function initAutomate
 	Set-Alias -Name ahk -Value "$env:ProgramFiles\AutoHotkey\UX\ui-dash.ahk" -Scope Global
 	Set-Alias -Name mousekey -Value "$env:ahkDirD\proj\MouseKeysPlusPlus\MouseKeys++.exe" -Scope Global
 	Set-Alias -Name keydell -Value "$env:ahkDirD\proj\PersonalAHKScripts\DellKeyboardRemap.ahk"  -Scope Global
-
 }
-
 function initIDE
 {
 	# visual studio
@@ -31,57 +28,11 @@ function initIDE
 	# keil UV4
 	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
 }
-
-# function initSSH
-# {
-# 	
-# }
-
 function initGuiApp
 {
-	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global
-	Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
+	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global	# Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
 	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
-
-function initChat
-{ #for environment variable.
-	$Env:WeChatDir = "C:\Program Files\Tencent\WeChat"
-	Set-Alias -Name wec -Value "$env:ProgramFiles\Tencent\WeChat\wechat.exe" -Scope Global #-Option AllScope
-	Set-Alias -Name discord -Value "$env:APPDATA\Roaming\Microsoft\Start Menu\Programs\Discord Inc\discord.lnk"
-	$Env:TelegramDir = 'D:\Program Files\Telegram'
-	Set-Alias -Name teleg -Value "$Env:TelegramDir\Telegram.exe" -Scope Global #-Option AllScope
-}
-function zl()
-{
-	Write-Output "do you want to open zlc instead? It's in Chrome."
-	Start-Process "$env:LOCALAPPDATA\Programs\Zalo\zalo.exe"
-}
-function Browse-CodeStats($webui = 0)
-{
-	$timeNow = Get-Date
-	if($webui -ne 0)
- {
-		msedge https://codestats.net/users/groutlloyd
-	} else
-	{
-		$global:currentCodeStats = (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
-		
-		Write-Output $global:currentCodeStats
-		Write-Output $global:currentCodeStats.languages
-		$XPbyDate = $currentCodeStats.dates.PSobject.Members | Where { $_.MemberType -eq "NoteProperty" }
-		$LatestDate = (Get-Date $XPbyDate[-1].Name)	
-		if(($timeNow-$LatestDate).Hours -gt 24)
-		{
-			Write-Output "Haven't code for a whole day you lazy ass."
-		} else
-		{
-			$yesterdayXP = $XPbyDate[-2].Value
-			Write-Output "Yesterday XP $yesterdayXP"
-		}
-	}
-} 
-Set-Alias -Name cst -Value Browse-CodeStats 
 function Restart-ForceApp($fileDir)
 {
 	$fileName = (Split-Path $fileDir -Leaf) -replace "\.exe$"
@@ -96,12 +47,12 @@ function Restart-ForceApp($fileDir)
 		Start-Process $fileDir
 	}
 }
-function goviet
+function goviet()
 {
 	$fileDir = "$env:GoTiengVietDir/GoTiengViet.exe"
 	Restart-ForceApp -fileDir $fileDir	
 }
-function pentab
+function pentab()
 {
 	$fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
 	Restart-ForceApp -fileDir $fileDir	
@@ -152,28 +103,19 @@ function global:Backup-Environment($Verbose = $null)
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
 
-function P7
+function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	# Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 	# Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Invoke-Expression (&starship init powershell)
 	initGuiApp
-	initChat
 }
-Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
 function clockWindowsApp()
 {
 	Start-Process (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe")[-1]
 }
 Set-Alias -Name clock -Value clockWindowsApp
-# function todoWindowsApp()
-# {
-# 	Start-Process (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.Todos*x64*\Todo.exe")[-1]
-# }
-# Set-Alias -Name todo -Value todoWindowsApp
-#
 function Start-TerminalUserMode
 {
 	$TerminalPath =	(Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_*x64*\wt.exe")[-1]
@@ -222,15 +164,14 @@ function MoreTerminalModule
 	}
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
-function initShellApp
+function initShellApp()
 {
 	foreach($module in $global:initialModuleList)
  {
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
-		# echo Nope.
 	}
 }
-function Reload-Module-List
+function Restart-ModuleList()
 {
 	param (
 		[array]$ModuleList = $global:personalModuleList,
@@ -238,31 +179,29 @@ function Reload-Module-List
 	)
 	foreach($ModuleName in $ModuleList)
 	{
-		# Write-Output $ModuleName
 		Remove-Module -Name "$ModulePath$ModuleName" -ErrorAction SilentlyContinue
 		Import-Module -Name "$ModulePath$ModuleName" -Force 
 		Write-Output "$ModuleName reimported"
 	}
 }
-
-function global:Reload-Profile($option = "env")
+function global:Restart-Profile($option = "env")
 {
 	if ($option -match "^all")
 	{
-		Reload-Module-List
+		Restart-ModuleList
 		. $PROFILE.AllUsersCurrentHost
-		Write-Output "Reload profile and All module."
+		Write-Output "Restart profile and All module."
 	} else
 	{
 		. $PROFILE.AllUsersCurrentHost
-		Write-Output "Reload pwsh Profile."
+		Write-Output "Restart pwsh Profile."
 	}
 }
-Set-Alias -Name repro -Value Reload-Profile
-Set-Alias -Name p7pro -Value Reload-Profile
+Set-Alias -Name repro -Value Restart-Profile
+Set-Alias -Name p7pro -Value Restart-Profile
 function Set-LocationWhere($files = "~")
 {
-	$commandInfo = (get-Command $files)
+	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
 	switch -Exact ($commandInfo.CommandType)
 	{
 		"Application"
@@ -275,14 +214,14 @@ function Set-LocationWhere($files = "~")
 			Set-Location (split-path (($commandInfo).Definition) -Parent)
 			; break;
 		}
+	} else{
+		Set-Location $files
 	}
 }
-
 Set-Alias -Name cdw -Value Set-LocationWhere
 Set-Alias -Name cdwhere -Value Set-LocationWhere
 function addPath($dirList)
 {
-	
 	foreach($d in $dirList)
 	{
 		$d = Resolve-Path $d

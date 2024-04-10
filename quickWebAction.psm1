@@ -112,3 +112,31 @@ function ocr
 {
   Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
 }
+
+
+function Get-CodeStats($webui = 0)
+{
+  $timeNow = Get-Date
+  if($webui -ne 0)
+  {
+    msedge https://codestats.net/users/groutlloyd
+  } else
+  {
+    $global:currentCodeStats = (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
+		
+    Write-Output $global:currentCodeStats
+    Write-Output $global:currentCodeStats.languages
+    $XPbyDate = $currentCodeStats.dates.PSobject.Members | Where { $_.MemberType -eq "NoteProperty" }
+    $LatestDate = (Get-Date $XPbyDate[-1].Name)	
+    if(($timeNow-$LatestDate).Hours -gt 24)
+    {
+      Write-Output "Haven't code for a whole day you lazy ass."
+    } else
+    {
+      $yesterdayXP = $XPbyDate[-2].Value
+      Write-Output "Yesterday XP $yesterdayXP"
+    }
+  }
+} 
+Set-Alias -Name cst -Value Get-CodeStats 
+
