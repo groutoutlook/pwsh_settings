@@ -119,33 +119,33 @@ function :o()
 
 Set-Alias -Name j -Value jrnl
 
-# Highway function, to add the symlink in the current directory.
-$global:hway = "D:\ProgramDataD\1_AllActiveProject" 
-function :hw($dir = $global:hway,$hwaylinkName = "hway",$destinationName = $null,$Remove = $null)
+# HighWay function, to add the symlink in the current directory.
+$global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
+function :hw($dir = $global:HighWay,$HighWaylinkName = "hw",$destinationName = $null,$Remove = $null)
 {
   $currentDir = (get-Location)
   $currentDirLeaf = Split-Path -Path $currentDir -Leaf
   if($Remove -ne $null)
   {
-    rm "$hway/$currentDirLeaf"
-    rm "$currentDir/$hwaylinkName"
+    rm "$HighWay/$currentDirLeaf"
+    rm "$currentDir/$HighWaylinkName"
   } else
   {
-    if((Test-Path "$currentDir/$hwaylinkName") -eq $false)
+    if((Test-Path "$currentDir/$HighWaylinkName") -eq $false)
     {
-      New-Item $hwaylinkName -ItemType SymbolicLink -Value $dir
+      New-Item $HighWaylinkName -ItemType SymbolicLink -Value $dir
     } else
     {
-      Write-Host "Symlink $hwaylinkName Already Exist" -ForegroundColor Green
+      Write-Host "Symlink $HighWaylinkName Already Exist" -ForegroundColor Green
     }
-    Write-Output "$hwaylinkName" | Add-Content -Path .\.gitignore
+    Write-Output "$HighWaylinkName" | Add-Content -Path .\.gitignore
     if($destinationName -eq $null)
     {
       $destinationName = $currentDirLeaf
     }
-    if((Test-Path "$global:hway/$destinationName") -eq $false)
+    if((Test-Path "$global:HighWay/$destinationName") -eq $false)
     {
-      New-Item "$global:hway/$destinationName" -ItemType SymbolicLink -Value $currentDir
+      New-Item "$global:HighWay/$destinationName" -ItemType SymbolicLink -Value $currentDir
     } else
     {
       Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
@@ -157,9 +157,9 @@ function :hw($dir = $global:hway,$hwaylinkName = "hway",$destinationName = $null
 
 function :ga
 {
-  if($global:symlinkHighwayList -eq $null)
+  if($global:symlinkHighWayList -eq $null)
   {
-    Import-Module "$hway\BatchJob\GitSymLink.psm1" -Scope Global
+    Import-Module "$HighWay\BatchJob\GitSymLink.psm1" -Scope Global
   }
   if ($args[0] -eq $null)
   {
