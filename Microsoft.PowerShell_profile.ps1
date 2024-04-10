@@ -40,7 +40,6 @@ function initIDE
 function initGuiApp
 {
 	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global
-	Set-Alias -Name pentab -Value "$env:ProgramFiles\Pentablet\PenTablet.exe" -Scope Global
 	Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
 	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
@@ -83,24 +82,30 @@ function Browse-CodeStats($webui = 0)
 	}
 } 
 Set-Alias -Name cst -Value Browse-CodeStats 
-function goviet
+function Restart-ForceApp($fileDir)
 {
-	$currentGTVProcess = (Get-Process -Name GoTiengViet)
-	if($currentGTVProcess.Id -eq $null)
+	$fileName = (Split-Path $fileDir -Leaf) -replace "\.exe$"
+	$currentSearchingProcess = (Get-Process -Name $fileName -ErrorAction Ignore)
+	if($currentSearchingProcess.Id -eq $null)
 	{
-		Start-Process "$env:GoTiengVietDir/GoTiengViet.exe"
+		Write-Host "Haven't started the $fileName yet." -ForegroundColor Red
+		Start-Process $fileDir
 	} else
 	{
-		Stop-Process -Id $currentGTVProcess.Id 
-		Start-Process "$env:GoTiengVietDir/GoTiengViet.exe"
+		Stop-Process -Id $currentSearchingProcess.Id 
+		Start-Process $fileDir
 	}
 }
-function initMediaPlayer
+function goviet
 {
-	# # Everyonepiano
-	# Set-Alias -Name piano -Value "$env:ProgramFilesD\EveryonePiano\EveryonePiano.exe" -Scope Global
+	$fileDir = "$env:GoTiengVietDir/GoTiengViet.exe"
+	Restart-ForceApp -fileDir $fileDir	
 }
-
+function pentab
+{
+	$fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
+	Restart-ForceApp -fileDir $fileDir	
+}
 $global:p7Profile = $PROFILE.AllUsersCurrentHost
 function global:p7Env
 {
@@ -155,7 +160,6 @@ function P7
 	Invoke-Expression (&starship init powershell)
 	initGuiApp
 	initChat
-	initMediaPlayer
 }
 Set-Alias -Name p7in -Value p7 -Scope Global #-Option AllScope
 	
