@@ -155,7 +155,7 @@ function :hw($dir = $global:HighWay,$HighWaylinkName = "hw",$destinationName = $
 
 
 
-function :ga
+function :g
 {
   if($global:symlinkHighWayList -eq $null)
   {
