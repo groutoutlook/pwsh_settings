@@ -57,7 +57,7 @@ function :v()
   {
     if($args -match "ls")
     {
-      nvim "." -c "SessionManager! load_session"
+      nvim "." -c "lua require(resession)"
     } else
     {
       nvim $args
