@@ -96,8 +96,6 @@ function global:Backup-Environment($Verbose = $null)
 		Write-Host "$dotfile backed up." -ForegroundColor Yellow
 	}
 	Copy-Item $p7Profile "$env:p7settingDir"
-	Push-Location $env:p7settingDir
-	Push-Location $env:dotfilesRepo
 
 	Set-Location $env:dotfilesRepo
 }
@@ -160,14 +158,16 @@ function MoreTerminalModule
 	foreach($module in $global:extraModuleList)
 	{
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
-		# echo "Done here"
+		# echo "$module here"
 	}
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
 function initShellApp()
 {
+	echo $initialModuleList
 	foreach($module in $global:initialModuleList)
  {
+		# echo "$module here."
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
 	}
 }
@@ -198,24 +198,49 @@ function global:Restart-Profile($option = "env")
 	}
 }
 Set-Alias -Name repro -Value Restart-Profile
-Set-Alias -Name p7pro -Value Restart-Profile
-function Set-LocationWhere($files = "~")
+function cdcb($defaultDir = (Get-Clipboard))
 {
-	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
-	switch -Exact ($commandInfo.CommandType)
+	$copiedPath = ($defaultDir -replace '"')
+	$property = Get-Item $copiedPath
+	if ($property.PSIsContainer -eq $true)
 	{
-		"Application"
+		Set-Location $copiedPath
+	} else
+	{
+		Set-Location (Split-Path -Path $copiedPath -Parent)
+	}
+}
+function Set-LocationWhere($files = (Get-Clipboard))
+{
+	$commandInfo = (get-Command $files )
+	
+	if ($null -ne $commandInfo)
+	{
+		switch -Exact ($commandInfo.CommandType)
 		{
-			Set-Location (split-path (where.exe $files) -Parent)
-			; break; 
-		}
-		"Alias"
-		{
-			Set-Location (split-path (($commandInfo).Definition) -Parent)
-			; break;
-		}
-	} else{
-		Set-Location $files
+			"Application"
+			{
+				# for global executable files.
+				# We need something to detect executable here. Mostly exe files but there could also be other type as well.
+				if ($commandInfo.Extension -match "exe")
+				{
+					Set-Location (split-path (where.exe $files) -Parent)
+				} else
+				{
+					# other extensions 
+					cdcb $files
+				}
+				; break; 
+			}
+			"Alias"
+			{
+				Set-Location (split-path (($commandInfo).Definition) -Parent)
+				; break;
+			}
+		} 
+	} else
+	{
+		cdcb $files
 	}
 }
 Set-Alias -Name cdw -Value Set-LocationWhere
