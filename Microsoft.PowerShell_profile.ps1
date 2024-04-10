@@ -164,7 +164,7 @@ function MoreTerminalModule
 Set-Alias -Name p7mod -Value MoreTerminalModule
 function initShellApp()
 {
-	echo $initialModuleList
+	# echo $initialModuleList
 	foreach($module in $global:initialModuleList)
  {
 		# echo "$module here."

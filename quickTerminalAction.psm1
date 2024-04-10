@@ -19,7 +19,7 @@ function isLink($currentPath = (Get-Location))
 	$pathProperty = Get-Item $currentPath
 	if($pathProperty.LinkType -eq "SymbolicLink")
 	{
-		Write-Host "This is SymLink"
+		Write-Host "`$PWD is SymLink"
 		Write-Host $pathProperty.Target
 	}
 	return  $pathProperty.Target
