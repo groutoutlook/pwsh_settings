@@ -34,6 +34,7 @@ function cdSymLink($currentPath = (Get-Location))
 	}
 }
 
+Set-Alias -Name cdlink -Value cdSymLink
 Set-Alias -Name cdsl -Value cdSymLink
 
 function checkFileStatus($filePath)
