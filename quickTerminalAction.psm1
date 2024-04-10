@@ -27,7 +27,7 @@ function isLink($currentPath = (Get-Location))
 
 function cdSymLink($currentPath = (Get-Location))
 {
-	
+	$currentPath = Resolve-Path $currentPath
 	if(($targetDir = isLink($currentPath)) -ne $null)
  {
 		Set-Location $targetDir
