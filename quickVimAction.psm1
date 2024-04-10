@@ -150,6 +150,23 @@ function :hw($dir = $global:hway,$hwaylinkName = "hway",$destinationName = $null
     {
       Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
     }
-  }
-  
+  }  
 }
+
+
+
+function :ga()
+{
+  if($global:symlinkHighwayList -eq $null)
+  {
+    Import-Module "$hway\BatchJob\GitSymLink.psm1"
+  }
+  if ($args[0] -eq $null)
+  {
+    gitAll st
+  } else
+  {
+    gitAll $args
+  }
+}
+
