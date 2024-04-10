@@ -119,3 +119,37 @@ function :o()
 
 Set-Alias -Name j -Value jrnl
 
+# Highway function, to add the symlink in the current directory.
+$global:hway = "D:\ProgramDataD\1_AllActiveProject" 
+function :hw($dir = $global:hway,$hwaylinkName = "hway",$destinationName = $null,$Remove = $null)
+{
+  $currentDir = (get-Location)
+  $currentDirLeaf = Split-Path -Path $currentDir -Leaf
+  if($Remove -ne $null)
+  {
+    rm "$hway/$currentDirLeaf"
+    rm "$currentDir/$hwaylinkName"
+  } else
+  {
+    if((Test-Path "$currentDir/$hwaylinkName") -eq $false)
+    {
+      New-Item $hwaylinkName -ItemType SymbolicLink -Value $dir
+    } else
+    {
+      Write-Host "Symlink $hwaylinkName Already Exist" -ForegroundColor Green
+    }
+    Write-Output "$hwaylinkName" | Add-Content -Path .\.gitignore
+    if($destinationName -eq $null)
+    {
+      $destinationName = $currentDirLeaf
+    }
+    if((Test-Path "$global:hway/$destinationName") -eq $false)
+    {
+      New-Item "$global:hway/$destinationName" -ItemType SymbolicLink -Value $currentDir
+    } else
+    {
+      Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
+    }
+  }
+  
+}
