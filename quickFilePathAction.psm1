@@ -164,13 +164,13 @@ function ChangeWindowTitles($oldName , $newName, $addOldTitle = 0)
  Get-Process | ? {$_.mainWindowTitle -and ($_.mainWindowTitle -match "$($oldName)*")} | %{
 	 
 		if($addOldTitle -eq 1)
-  {
-			$suffix  = $_.mainWindowTitle 
-		} else
-		{ $suffix = ""
-		}
-		[Win32]::SetWindowText($_.mainWindowHandle, "$newName $suffix")
+  
+		$suffix  = $_.mainWindowTitle 
+	} else
+	{ $suffix = ""
 	}
+	[Win32]::SetWindowText($_.mainWindowHandle, "$newName $suffix")
+}
 }
 
 

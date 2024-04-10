@@ -47,17 +47,19 @@ function :backup($Verbose = $null)
 Set-Alias -Name :bak -Value :backup
 
 
-function :v()
+function :v
 {
+  $currentDir = (Get-Location) -replace '\\','\'
+  echo $currentDir
   if ($args[0] -eq $null)
   {
-    $args = "."
-    nvim "."
+    # $args = "."
+    nvim "." # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
   } else
   {
     if($args -match "ls")
     {
-      nvim "." -c "lua require(resession)"
+      nvim $currentDir -c "lua require('resession').load()"
     } else
     {
       nvim $args
@@ -96,9 +98,6 @@ $tableJournal = @{
 }
 
 
-
-
-
 function :o()
 {
   if($args[0] -eq $null)
@@ -118,13 +117,5 @@ function :o()
   }
 }
 
-
-
-
-
 Set-Alias -Name j -Value jrnl
 
-function :j()
-{
-  jrnl
-}
