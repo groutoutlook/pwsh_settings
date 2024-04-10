@@ -1,17 +1,5 @@
 using namespace System.Collections.Generic
 # import-module -Name VirtualDesktop
-Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1 # for RefreshEnv
-
-function SetBufferWidthToScreenWidth
-{
-	$h = Get-Host
-	$ui = $h.UI.RawUI
-	$bufferSize = $ui.BufferSize
-	$windowSize = $ui.WindowSize
-	$bufferSize.Width = $windowSize.Width
-	$ui.BufferSize = $bufferSize
-}
-
 function Edit-Module($options = $null)
 {
 	Set-Location "$env:p7settingDir"
@@ -26,11 +14,11 @@ function Edit-Module($options = $null)
 
 Set-Alias -Name p7edit -Value Edit-Module -Scope Global
 
-function cdClip($demandURI = (Get-Clipboard))
-{
-	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
-	Set-Location $finalURI
-}
+# function cdClip($demandURI = (Get-Clipboard))
+# {
+# 	$finalURI = (([URI]($demandURI)).LocalPath) | Split-path -PipelineVariable $_ -parent
+# 	Set-Location $finalURI
+# }
 function cdcb
 {
 	$copiedPath = ((Get-Clipboard) -replace '"')
@@ -43,20 +31,27 @@ function cdcb
 		Set-Location (Split-Path -Path $copiedPath -Parent)
 	}#Get-Clipboard default alias.
 }
-
-
-function getDateTime
+function isLink($currentPath = (Get-Location))
 {
-	return (get-date).TimeOfDay.ToString()
-}
-
-function isLink($currentPath = (Get-Location)){
 	$pathProperty = Get-Item $currentPath
-	if($pathProperty.LinkType -eq "SymbolicLink"){
+	if($pathProperty.LinkType -eq "SymbolicLink")
+	{
 		Write-Host "This is SymLink"
 		Write-Host $pathProperty.Target
 	}
+	return  $pathProperty.Target
 }
+
+function cdSymLink($currentPath = (Get-Location))
+{
+	
+	if(($targetDir = isLink($currentPath)) -ne $null)
+ {
+		Set-Location $targetDir
+	}
+}
+
+Set-Alias -Name cdSymLink -Value cdsl
 
 function checkFileStatus($filePath)
 {
@@ -138,9 +133,9 @@ function explr($inputPath = (Get-Location))
 		explorer.exe $inputPath
 	}
 }
-
 Set-Alias -Name expl -Value explr -Scope Global
 
-
-
-
+function getDateTime
+{
+	return (get-date).TimeOfDay.ToString()
+}
