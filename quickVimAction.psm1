@@ -155,11 +155,11 @@ function :hw($dir = $global:hway,$hwaylinkName = "hway",$destinationName = $null
 
 
 
-function :ga()
+function :ga
 {
   if($global:symlinkHighwayList -eq $null)
   {
-    Import-Module "$hway\BatchJob\GitSymLink.psm1"
+    Import-Module "$hway\BatchJob\GitSymLink.psm1" -Scope Global
   }
   if ($args[0] -eq $null)
   {
