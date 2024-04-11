@@ -134,11 +134,11 @@ function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighW
     if((Test-Path "$currentDir/$HighWaylinkName") -eq $false)
     {
       New-Item $HighWaylinkName -ItemType SymbolicLink -Value $dir
+      Write-Output "$HighWaylinkName`n" | Add-Content -Path .\.gitignore
     } else
     {
       Write-Host "Symlink $HighWaylinkName Already Exist" -ForegroundColor Green
     }
-    Write-Output "$HighWaylinkName" | Add-Content -Path .\.gitignore
     if($destinationName -eq $null)
     {
       $destinationName = $currentDirLeaf
@@ -146,7 +146,7 @@ function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighW
     if((Test-Path "$global:HighWay/$destinationName") -eq $false)
     {
       New-Item "$global:HighWay/$destinationName" -ItemType SymbolicLink -Value $currentDir
-      Write-Output "$HighWaylinkName" | Add-Content -Path "$global:HighWay\.gitignore"
+      Write-Output "$destinationName`n" | Add-Content -Path "$global:HighWay\.gitignore"
     } else
     {
       Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
