@@ -156,18 +156,18 @@ function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighW
 
 
 
-function :g
+function :g([string]$commands)
 {
   if($global:symlinkHighWayList -eq $null)
   {
     Import-Module "$HighWay\BatchJob\GitSymLink.psm1" -Scope Global
   }
-  if ($args[0] -eq $null)
+  if ($commands -eq '')
   {
     gitAll st
   } else
   {
-    gitAll $args
+    gitAll $commands
   }
 }
 
