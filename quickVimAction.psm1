@@ -116,8 +116,30 @@ function :o()
     }
   }
 }
+$jrnlList = @(
+  "hw" , "sw", "work", "vocab", "lang", "prog"
+)
+function :j
+{
+  if($args[0] -match "all")
+  {
+    # echo "here."
+    $argument = $args[1..($args.Length - 1)]
 
-Set-Alias -Name j -Value jrnl
+    # echo $argument
+    foreach($jrnlFile in $jrnlList)
+    {
+      echo $jrnlFile
+      Invoke-Expression "jrnl $jrnlFile  $argument"
+    }
+  } else
+  {
+    jrnl $args
+  }
+}
+
+Set-Alias -Name j -Value :j
+
 
 # HighWay function, to add the symlink in the current directory.
 $global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
