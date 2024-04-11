@@ -121,13 +121,13 @@ Set-Alias -Name j -Value jrnl
 
 # HighWay function, to add the symlink in the current directory.
 $global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
-function :hw($dir = $global:HighWay,$HighWaylinkName = "hw",$destinationName = $null,$Remove = $null)
+function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighWay,$Remove = $null)
 {
   $currentDir = (get-Location)
   $currentDirLeaf = Split-Path -Path $currentDir -Leaf
   if($Remove -ne $null)
   {
-    rm "$HighWay/$currentDirLeaf"
+    rm "$global:HighWay/$currentDirLeaf"
     rm "$currentDir/$HighWaylinkName"
   } else
   {
@@ -146,6 +146,7 @@ function :hw($dir = $global:HighWay,$HighWaylinkName = "hw",$destinationName = $
     if((Test-Path "$global:HighWay/$destinationName") -eq $false)
     {
       New-Item "$global:HighWay/$destinationName" -ItemType SymbolicLink -Value $currentDir
+      Write-Output "$HighWaylinkName" | Add-Content -Path "$global:HighWay\.gitignore"
     } else
     {
       Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
