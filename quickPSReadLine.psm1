@@ -37,7 +37,7 @@ $omniSearchParameters = @{
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
-    $searchFunction = "omniSearchObsidian"
+    $searchFunction = ":obsidian" # omniSearchObsidian
     $SearchWithQuery = "$searchFunction $line"
     #Store to history for future use.
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)

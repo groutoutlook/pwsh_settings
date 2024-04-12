@@ -50,7 +50,7 @@ Set-Alias -Name :bak -Value :backup
 function :v
 {
   $currentDir = (Get-Location) -replace '\\','\'
-  echo $currentDir
+  # echo $currentDir
   if ($args[0] -eq $null)
   {
     # $args = "."
@@ -93,32 +93,59 @@ $tableJournal = @{
   "workflow" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Business\WorkflowJournal.md"
   "phr" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\PhraseJournal.md"
   "phrase" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\PhraseJournal.md"
+  "til" = "1D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown/note_algo_lang/0_LongJournal/OtherKnowledgeJournal.md"
   "obs" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\400002_Obsidian.md"
   "nvim" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\100001_Neovim.md"
 }
 
 
-function :o()
+function :obsidian()
 {
   if($args[0] -eq $null)
   {
     Show-Window Obsidian
   } else
   {
-
-    $phrase = $tableJournal[$args[0]]
-    if($phrase -ne $null)
+    $inputString = $args[0]
+    $phrase = $tableJournal[$inputString]
+    if($phrase -eq $null)
     {
-      (Start-Process "obsidian://open?path=$phrase") | Out-Null
-    } else
+      # Second chance to match the phrase.
+      
+      if(($inputString -match "j$") -or ($inputString -match " $"))
+      {
+        $clippedPhrase = $inputString -replace " $" -replace "j$" 
+        $phrase = $tableJournal[$clippedPhrase]
+      }
+    } 
+
+    if($phrase -eq $null)
     {
       omniSearchObsidian $args | Out-Null
+    } else
+    {
+      ((Start-Process "obsidian://open?path=$phrase") &) | Out-Null
     }
   }
 }
-$jrnlList = @(
-  "hw" , "sw", "work", "vocab", "lang", "prog"
+
+Set-Alias -Name :o -Value :obsidian
+
+$jrnlMainList = @(
+  "default", "hw" , "sw", "lang", "prog","eda"
+  , "phr" , "vocab" , "til"
 )
+
+$otherJrnlList =@(
+  ":1688","taobao","work","comp","hw"
+)
+
+$JrnlGroup =@{
+  "all" = $jrnlMainList
+  "busy" = $otherJrnlList
+  "wk" = $otherJrnlList #work, short like that since we need to parse through some of those jrnl notes.
+}
+
 function :j
 {
   if($args[0] -match "all")
