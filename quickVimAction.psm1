@@ -57,7 +57,7 @@ function :v
     nvim "." # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
   } else
   {
-    if($args -match "ls")
+    if($args[0] -match "^ls")
     {
       nvim $currentDir -c "lua require('resession').load()"
     } else
@@ -67,6 +67,14 @@ function :v
   }
    
 }
+
+# Since I'm that lazy, cant type :v ls for sure.
+# when not sure which project to jump. Type :vl for sure.
+function :vl
+{
+  :v ls
+}
+
 
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
