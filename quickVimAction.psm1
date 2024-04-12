@@ -177,7 +177,7 @@ function :j
   {
     foreach($jrnlFile in $jrnlList)
     {
-      Write-Host $jrnlFile -ForegroundColor Cyan -BackgroundColor Green
+      Write-Host $jrnlFile -ForegroundColor Cyan # -BackgroundColor Red 
       Invoke-Expression "jrnl $jrnlFile  $argument"
     }
   }
