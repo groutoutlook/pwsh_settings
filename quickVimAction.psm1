@@ -59,7 +59,10 @@ function :v
   {
     if($args[0] -match "^ls")
     {
-      nvim $currentDir -c "lua require('resession').load()"
+      nvim -c "lua require('resession').load()"
+    } elseif($args[0] -match "^last")
+    {
+      nvim -c "lua require('resession').load 'Last Session'"
     } else
     {
       nvim $args
@@ -69,12 +72,16 @@ function :v
 }
 
 # Since I'm that lazy, cant type :v ls for sure.
-# when not sure which project to jump. Type :vl for sure.
-function :vl
+# when not sure which project to jump. Type :vs for sure.
+function :vs
 {
   :v ls
 }
 
+function :vl
+{
+  :v last
+}
 
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
