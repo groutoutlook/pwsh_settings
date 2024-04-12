@@ -247,6 +247,7 @@ function :g([string]$commands)
   if($global:symlinkHighWayList -eq $null)
   {
     Import-Module "$HighWay\BatchJob\GitSymLink.psm1" -Scope Global
+    Import-Module "$highway\BatchJob\BatchMeasure.psm1" -Scope Global
   }
   if ($commands -eq '')
   {
