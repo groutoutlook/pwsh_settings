@@ -200,6 +200,10 @@ function :j
 
 Set-Alias -Name j -Value :j
 
+function jall
+{
+  :j all 
+}
 
 # HighWay function, to add the symlink in the current directory.
 $global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
