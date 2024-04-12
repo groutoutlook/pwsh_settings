@@ -142,26 +142,44 @@ $otherJrnlList =@(
 
 $JrnlGroup =@{
   "all" = $jrnlMainList
+  "prg" = $jrnlMainList
+  "idea" = $jrnlMainList
   "busy" = $otherJrnlList
   "wk" = $otherJrnlList #work, short like that since we need to parse through some of those jrnl notes.
+  "bs" = $otherJrnlList #busy, same as above.
 }
 
 function :j
 {
-  if($args[0] -match "all")
+  # Loop to find correct word that match the list. If not, branch out to execute normal commands.
+  $jrnlList = $null
+  foreach($keyword in $JrnlGroup.Keys)
   {
-    # echo "here."
-    $argument = $args[1..($args.Length - 1)]
-
-    # echo $argument
-    foreach($jrnlFile in $jrnlList)
+    if($args[0] -match $keyword)
     {
-      echo $jrnlFile
-      Invoke-Expression "jrnl $jrnlFile  $argument"
+      # Default behaviour is display today's written note.
+      if ($args.Length -lt 2)
+      {
+        $argument = "-today"
+      } else
+      {
+        $argument = $args[1..($args.Length - 1)]
+      }
+      $jrnlList = $JrnlGroup[$keyword]
     }
-  } else
+  }
+
+  if($jrnlList -eq $null)
   {
     jrnl $args
+    # break
+  } else
+  {
+    foreach($jrnlFile in $jrnlList)
+    {
+      Write-Host $jrnlFile -ForegroundColor Cyan -BackgroundColor Green
+      Invoke-Expression "jrnl $jrnlFile  $argument"
+    }
   }
 }
 
