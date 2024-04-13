@@ -155,20 +155,34 @@ Set-Alias -Name :o -Value :obsidian
 
 $jrnlMainList = @(
   "default", "hw" , "sw", "lang", "prog","eda"
-  , "phr" , "vocab" , "til"
+  , "phr" , "til"
 )
 
-$otherJrnlList =@(
-  ":1688","taobao","work","comp","hw"
+$knowledgeJrnlList = @(
+  "vocab" , "til", "stem" , "phrase", "wf"
 )
+
+$businessJrnlList =@(
+  ":1688","taobao","work","wf","comp","hw"
+)
+
+$placeAndEventJrnlList =@(
+  "place","event"
+)
+
 
 $JrnlGroup =@{
   "all" = $jrnlMainList
   "prg" = $jrnlMainList
   "idea" = $jrnlMainList
-  "busy" = $otherJrnlList
-  "wk" = $otherJrnlList #work, short like that since we need to parse through some of those jrnl notes.
-  "bs" = $otherJrnlList #busy, same as above.
+  "busy" = $businessJrnlList
+  "wk" =  $businessJrnlList
+  "bs" = $businessJrnlList
+  "word" = $knowledgeJrnlList
+  "know" = $knowledgeJrnlList
+  "vc" = $knowledgeJrnlList
+  "pl" = $placeAndEventJrnlList
+  "plev" = $placeAndEventJrnlList
 }
 
 function :j
