@@ -51,21 +51,28 @@ function :v
 {
   $currentDir = (Get-Location) -replace '\\','\'
   # echo $currentDir
+  if($args[$args.Length - 1] -match "^gui")
+  {
+    $codeEditor = "neovide --"
+  } else
+  {
+    $codeEditor = "nvim"
+  }
   if ($args[0] -eq $null)
   {
     # $args = "."
-    nvim "." # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
+    Invoke-Expression "$codeEditor ." # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
   } else
   {
     if($args[0] -match "^ls")
     {
-      nvim -c "lua require('resession').load()"
+      Invoke-Expression "$codeEditor -c `"lua require('resession').load()`""
     } elseif($args[0] -match "^last")
     {
-      nvim -c "lua require('resession').load 'Last Session'"
+      Invoke-Expression "$codeEditor -c `"lua require('resession').load 'Last Session'`""
     } else
     {
-      nvim $args
+      Invoke-Expression "$codeEditor $args" # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
     }
   }
    
@@ -75,12 +82,12 @@ function :v
 # when not sure which project to jump. Type :vs for sure.
 function :vs
 {
-  :v ls
+  :v ls "$args"
 }
 
 function :vl
 {
-  :v last
+  :v last "$args"
 }
 
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
