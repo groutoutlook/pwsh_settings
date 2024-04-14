@@ -90,6 +90,12 @@ function :vl
   :v last "$args"
 }
 
+function :vg
+{
+  :v ls gui
+  :v last
+}
+
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
   "default" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\MainJournal.md"
