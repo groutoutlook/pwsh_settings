@@ -290,6 +290,7 @@ function global:initProfileEnv
 	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
 	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
 	$Env:cargoDir = "~\.cargo\bin"
+	$env:weztermDir = "C:\Program Files\WezTerm\wezterm-gui.exe"
 	# $Env:hledgerDir = "$env:ProgramFilesD\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
@@ -297,7 +298,7 @@ function global:initProfileEnv
 		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
 		$Env:sqlite3Dir,
 		$Env:cargoDir,
-		# $env:LuaJitDir,
+		$env:weztermDir,
 		$env:pipxLocalDir,
 		$env:cmakedir,
 		$Env:gotvDir
