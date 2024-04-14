@@ -122,19 +122,6 @@ function installAllApk($filepath)
 	}
 }
 
-function invokeShizuku($installed = 1)
-{
-	
-	if($installed -eq 0)
- {
-		installallApk "D:\ProgramDataD\Python\proj\ADB_Scrcpy\repos\shizuku-v13.5.1.r1025.ebb2a30-release.apk"
-	}
-	
-	foreach($emulator in $srl)
- {
-		adb -s $emulator shell sh /storage/emulated/0/Android/data/moe.shizuku.privileged.api/start.sh
-	}
-}
 
 function pushpullAllFiles($method = "push" , $src,  $dst)
 {
@@ -248,77 +235,77 @@ function forwardUSBADB($emulator = $global:mainphone,  $remoteport = "tcp:8022",
 	 (adb -s $emulator forward $localport  $remoteport )
 }
 
-function typevn
-{
-	$string = ""
-	$srgs_ind = 0
-	if ($args[-1]  -match '^\d+$' )
-	{
-		$emulator = $global:adbDevices[$args[-1]];
-	} else
-	{
-		$emulator = $global:mainphone;
-		$srgs_ind = -1
-	}
-	
-	foreach($ar in $args)
- {
-		$srgs_ind += 1;
-		if($srgs_ind -eq $args.Count)
-		{
-			break;
-		}
-		$string = $string + "$ar ";# + "\ ";
-		
-	}
-	# $args | % { $string = $string + "$_" + "\ " }
-	# $text=$string.replace(" ","\ ");
-	$text = $string
-	# echo $emulator;
-	set-clipboard $text
-	adb -s $emulator  shell input keyevent 279
-	# (adb -s $emulator shell am broadcast -a ADB_INPUT_TEXT --es msg $text);
-	adb -s $emulator  shell input keyevent KEYCODE_ENTER; #Keyevent enter.
-}
-
-
-Set-Alias -Name vntype -Value typevn -Scope Global
-Set-Alias -Name vnty -Value typevn -Scope Global
-Set-Alias -Name tyvn -Value typevn -Scope Global
-
-
-function typewe
-{
-	$string = ""
-	$srgs_ind = 0
-	if ($args[-1]  -match '^\d+$' )
-	{
-		$emulator = $global:adbDevices[$args[-1]];
-	} else
-	{
-		$emulator = $global:mainphone;
-		$srgs_ind = -1
-	}
-	
-	foreach($ar in $args)
- {
-		$srgs_ind += 1;
-		if($srgs_ind -eq $args.Count)
-		{
-			break;
-		}
-		$string = $string + "$ar" + "\ ";
-		
-	}
-	# $args | % { $string = $string + "$_" + "\ " }
-	# $text=$string.replace(" ","\ ");
-	$text = $string
-	# echo $text
-	adb -s $emulator shell "input tap 180 1450" # position of textbox,  could detect through uiautomator dump.
-	(adb -s $emulator shell am broadcast -a ADB_INPUT_TEXT --es msg $text);
-	adb -s $emulator  shell "input keyevent KEYCODE_TAB && input keyevent KEYCODE_TAB && input keyevent KEYCODE_ENTER"; 
-}
-
-Set-Alias -Name wetype -Value typewe -Scope Global
-Set-Alias -Name wety -Value typewe -Scope Global
-Set-Alias -Name tywe -Value typewe -Scope Global
+# function typevn
+# {
+# 	$string = ""
+# 	$srgs_ind = 0
+# 	if ($args[-1]  -match '^\d+$' )
+# 	{
+# 		$emulator = $global:adbDevices[$args[-1]];
+# 	} else
+# 	{
+# 		$emulator = $global:mainphone;
+# 		$srgs_ind = -1
+# 	}
+# 	
+# 	foreach($ar in $args)
+#  {
+# 		$srgs_ind += 1;
+# 		if($srgs_ind -eq $args.Count)
+# 		{
+# 			break;
+# 		}
+# 		$string = $string + "$ar ";# + "\ ";
+# 		
+# 	}
+# 	# $args | % { $string = $string + "$_" + "\ " }
+# 	# $text=$string.replace(" ","\ ");
+# 	$text = $string
+# 	# echo $emulator;
+# 	set-clipboard $text
+# 	adb -s $emulator  shell input keyevent 279
+# 	# (adb -s $emulator shell am broadcast -a ADB_INPUT_TEXT --es msg $text);
+# 	adb -s $emulator  shell input keyevent KEYCODE_ENTER; #Keyevent enter.
+# }
+#
+#
+# Set-Alias -Name vntype -Value typevn -Scope Global
+# Set-Alias -Name vnty -Value typevn -Scope Global
+# Set-Alias -Name tyvn -Value typevn -Scope Global
+#
+#
+# function typewe
+# {
+# 	$string = ""
+# 	$srgs_ind = 0
+# 	if ($args[-1]  -match '^\d+$' )
+# 	{
+# 		$emulator = $global:adbDevices[$args[-1]];
+# 	} else
+# 	{
+# 		$emulator = $global:mainphone;
+# 		$srgs_ind = -1
+# 	}
+# 	
+# 	foreach($ar in $args)
+#  {
+# 		$srgs_ind += 1;
+# 		if($srgs_ind -eq $args.Count)
+# 		{
+# 			break;
+# 		}
+# 		$string = $string + "$ar" + "\ ";
+# 		
+# 	}
+# 	# $args | % { $string = $string + "$_" + "\ " }
+# 	# $text=$string.replace(" ","\ ");
+# 	$text = $string
+# 	# echo $text
+# 	adb -s $emulator shell "input tap 180 1450" # position of textbox,  could detect through uiautomator dump.
+# 	(adb -s $emulator shell am broadcast -a ADB_INPUT_TEXT --es msg $text);
+# 	adb -s $emulator  shell "input keyevent KEYCODE_TAB && input keyevent KEYCODE_TAB && input keyevent KEYCODE_ENTER"; 
+# }
+#
+# Set-Alias -Name wetype -Value typewe -Scope Global
+# Set-Alias -Name wety -Value typewe -Scope Global
+# Set-Alias -Name tywe -Value typewe -Scope Global
