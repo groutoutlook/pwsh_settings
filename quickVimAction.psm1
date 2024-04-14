@@ -161,7 +161,7 @@ Set-Alias -Name :o -Value :obsidian
 
 $jrnlMainList = @(
   "default", "hw" , "sw", "lang", "prog","eda"
-  , "phr" , "til"
+  , "phrase" , "til"
 )
 
 $knowledgeJrnlList = @(
@@ -177,7 +177,7 @@ $placeAndEventJrnlList =@(
 )
 
 
-$JrnlGroup =@{
+$global:JrnlGroup =@{
   "all" = $jrnlMainList
   "prg" = $jrnlMainList
   "idea" = $jrnlMainList
@@ -217,10 +217,23 @@ function :j
     # break
   } else
   {
-    foreach($jrnlFile in $jrnlList)
+    if($args[-1] -match "^nv")
     {
-      Write-Host $jrnlFile -ForegroundColor Cyan # -BackgroundColor Red 
-      Invoke-Expression "jrnl $jrnlFile  $argument"
+      $argument = $argument -replace $args[-1]
+      $TempFile = New-TemporaryFile
+      foreach($jrnlFile in $jrnlList)
+      {
+        Write-Output "$jrnlFile notes`n" | Add-Content $TempFile
+        Invoke-Expression "jrnl $jrnlFile  $argument" | Add-Content $TempFile
+      }
+      bat $TempFile
+    } else
+    {
+      foreach($jrnlFile in $jrnlList)
+      {
+        Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
+        Invoke-Expression "jrnl $jrnlFile  $argument"
+      }
     }
   }
 }
