@@ -290,7 +290,7 @@ function global:initProfileEnv
 	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
 	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
 	$Env:cargoDir = "~\.cargo\bin"
-	$env:weztermDir = "C:\Program Files\WezTerm\wezterm-gui.exe"
+	$env:weztermDir = "C:\Program Files\WezTerm\"
 	# $Env:hledgerDir = "$env:ProgramFilesD\hledger"
 	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
