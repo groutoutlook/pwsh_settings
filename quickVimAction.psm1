@@ -51,7 +51,7 @@ function :v
 {
   $currentDir = (Get-Location) -replace '\\','\'
   # echo $currentDir
-  if($args[$args.Length - 1] -match "^gui")
+  if($args[$args.Length - 1] -match "^g")# "^gui")
   {
     $codeEditor = "neovide --"
   } else

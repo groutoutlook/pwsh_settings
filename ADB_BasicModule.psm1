@@ -229,7 +229,6 @@ function ScrNoti($emulator = $global:mainphone,  $xcoor = 1300)
 
 
 
-
 function forwardUSBADB($emulator = $global:mainphone,  $remoteport = "tcp:8022",  $localport = "tcp:8022")
 {
 	 (adb -s $emulator forward $localport  $remoteport )
