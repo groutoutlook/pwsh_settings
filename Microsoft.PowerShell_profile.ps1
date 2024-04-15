@@ -57,12 +57,13 @@ function pentab()
 	$fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
 	Restart-ForceApp -fileDir $fileDir	
 }
-$global:p7Profile = $PROFILE.AllUsersCurrentHost
+$localPathNvim = "D:\ProgramDataD\powershell\settings\Microsoft.PowerShell_profile.ps1"
+$global:p7Profile = $localPathNvim
 function global:p7Env
 {
-	$LastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
-	nvim $p7Profile
-	$NewLastWrite = (Get-ItemProperty ($PROFILE.AllUsersCurrentHost)).LastWriteTimeString
+	$LastWrite = (Get-ItemProperty ($localPathNvim)).LastWriteTimeString
+	nvim $localPathNvim
+	$NewLastWrite = (Get-ItemProperty ($localPathNvim)).LastWriteTimeString
 	if($NewLastWrite -ne $LastWrite)
 	{
 		Backup-Environment
@@ -95,9 +96,8 @@ function global:Backup-Environment($Verbose = $null)
 		}
 		Write-Host "$dotfile backed up." -ForegroundColor Yellow
 	}
-	Copy-Item $p7Profile "$env:p7settingDir"
-
-	Set-Location $env:dotfilesRepo
+	Copy-Item $localPathNvim "$PROFILE"
+	Write-Host "Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
 
@@ -189,11 +189,11 @@ function global:Restart-Profile($option = "env")
 	if ($option -match "^all")
 	{
 		Restart-ModuleList
-		. $PROFILE.AllUsersCurrentHost
+		. $PROFILE
 		Write-Output "Restart profile and All module."
 	} else
 	{
-		. $PROFILE.AllUsersCurrentHost
+		. $PROFILE
 		Write-Output "Restart pwsh Profile."
 	}
 }
@@ -341,7 +341,7 @@ function omniSearchObsidian
 	Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-Set-Alias -Name obs -Value omniSearchObsidian
+# Set-Alias -Name obs -Value omniSearchObsidian
 
 function cd-($rep = 1)
 {

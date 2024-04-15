@@ -158,6 +158,7 @@ function :obsidian()
 }
 
 Set-Alias -Name :o -Value :obsidian
+Set-Alias -Name obs -Value :obsidian
 
 $jrnlMainList = @(
   "default", "hw" , "sw", "lang", "prog","eda"
