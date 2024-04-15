@@ -192,6 +192,9 @@ $global:JrnlGroup =@{
   "plev" = $placeAndEventJrnlList
 }
 
+# TODO: make it better by pasting note from 2-3 day. back
+# TODO: in another word, add range on it.
+# TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :j
 {
   # Loop to find correct word that match the list. If not, branch out to execute normal commands.

@@ -101,10 +101,12 @@ function global:Backup-Environment($Verbose = $null)
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
 
+# Extra color for the terminal.
+Set-Alias -Name zz -Value yazi
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	# Invoke-Expression (& { (zoxide init powershell | Out-String) })
+	Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Invoke-Expression (&starship init powershell)
 	initGuiApp
 }
