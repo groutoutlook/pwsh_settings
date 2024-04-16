@@ -195,24 +195,34 @@ $global:JrnlGroup =@{
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :j
 {
-  # Loop to find correct word that match the list. If not, branch out to execute normal commands.
+  # rerowk list by specify first argument.
   $jrnlList = $null
+  $argument = ""
   foreach($keyword in $JrnlGroup.Keys)
   {
     if($args[0] -match $keyword)
     {
       # Default behaviour is display today's written note.
-      if ($args.Length -lt 2)
-      {
-        $argument = "-today"
-      } else
-      {
-        $argument = $args[1..($args.Length - 1)]
-      }
       $jrnlList = $JrnlGroup[$keyword]
     }
   }
+  if ($null -ne $jrnlList)
+  {
+    if ($args.Length -lt 2)
+    {
+      $argument = "-today"
+    } else
+    {
+      $argument = $args[1..($args.Length - 1)]
+    }
+  } else
+  {
+    # casual passing argument. Dont omit anything.
+    $argument = $args
+  }
 
+
+  # Rework argument.
   $specialArgumentList = @{
     "^bat" = 1
     "^last" = 2
@@ -222,7 +232,7 @@ function :j
     "^\d*e" = 4
     "^\d*d" = 5
   }
-  # Rework argument.
+
   foreach( $specialArgument in $specialArgumentList.Keys)
   {
     $argLast = $args[-1]
@@ -274,7 +284,7 @@ function :j
   # execute `jrnl` command. 
   if($jrnlList -eq $null)
   {
-    jrnl $args
+    Invoke-Expression "jrnl $argument"
   } else
   {
     if($callBat -eq 1)
