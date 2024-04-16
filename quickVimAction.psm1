@@ -215,22 +215,40 @@ function :j
     }
   }
 
+  $specialArgument = @("^bat","^last")
+  # Rework argument.
+  if($args[-1] -match "^bat")
+  {
+    $argument = $argument -replace $args[-1]
+    $callBat = 1
+  } elseif($args[-1] -match "^last")
+  {
+    $argument = $argument -replace $args[-1]
+    $day = $args[-1] -replace "^last"
+    # echo $day
+    $convertToInt = [int]$day #- [System.Char]"0"
+    $fromDate = (Get-Date).AddDays(-$convertToInt)
+    $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
+    # $trimDate = ([string]($fromDate)).SubString(0,10)
+    $argument += " -from $trimDate"
+    echo $argument
+  }
+
+
+  
   if($jrnlList -eq $null)
   {
     jrnl $args
-    # break
   } else
   {
-    if($args[-1] -match "^nv")
+    if($callBat -eq 1)
     {
-      $argument = $argument -replace $args[-1]
       $TempFile = New-TemporaryFile
       foreach($jrnlFile in $jrnlList)
       {
         Write-Output "$jrnlFile notes`n" | Add-Content $TempFile
         Invoke-Expression "jrnl $jrnlFile  $argument" | Add-Content $TempFile
       }
-      bat $TempFile
     } else
     {
       foreach($jrnlFile in $jrnlList)
@@ -240,6 +258,7 @@ function :j
       }
     }
   }
+
 }
 
 Set-Alias -Name j -Value :j
