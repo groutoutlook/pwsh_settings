@@ -192,8 +192,6 @@ $global:JrnlGroup =@{
   "plev" = $placeAndEventJrnlList
 }
 
-# TODO: make it better by pasting note from 2-3 day. back
-# TODO: in another word, add range on it.
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :j
 {
@@ -215,27 +213,43 @@ function :j
     }
   }
 
-  $specialArgument = @("^bat","^last")
+  $specialArgumentList = @{
+    "^bat" = 1
+    "^last" = 2
+    "^lt" = 2
+  }
   # Rework argument.
-  if($args[-1] -match "^bat")
+  foreach( $specialArgument in $specialArgumentList.Keys)
   {
-    $argument = $argument -replace $args[-1]
-    $callBat = 1
-  } elseif($args[-1] -match "^last")
-  {
-    $argument = $argument -replace $args[-1]
-    $day = $args[-1] -replace "^last"
-    # echo $day
-    $convertToInt = [int]$day #- [System.Char]"0"
-    $fromDate = (Get-Date).AddDays(-$convertToInt)
-    $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
-    # $trimDate = ([string]($fromDate)).SubString(0,10)
-    $argument += " -from $trimDate"
-    echo $argument
+    $argLast = $args[-1]
+  
+    if($argLast -match $specialArgument)
+    {
+      $argument = $argument -replace $argLast
+      $flagRaise = $specialArgumentList[$specialArgument]
+    }
+  
+    if($flagRaise -eq 1)
+    {
+      $callBat = 1
+      break
+    } elseif($flagRaise -eq 2)
+    {
+      # extract number. Maybe do it with regex instead?
+      # $day = $argLast -replace $specialArgument  
+      # regex way to match
+      $day = (Select-String -InputObject $argLast -pattern "\d$").Matches.Value
+      $convertToInt = [int]$day #- [System.Char]"0"
+      $fromDate = (Get-Date).AddDays(-$convertToInt)
+      $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
+      $argument += " -from $trimDate"
+      # echo $argument
+      break
+    }
   }
 
 
-  
+  # execute `jrnl` command. 
   if($jrnlList -eq $null)
   {
     jrnl $args
