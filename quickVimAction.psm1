@@ -301,7 +301,7 @@ function :j
       foreach($jrnlFile in $jrnlList)
       {
         # Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
-        Write-Output "- $jrnlFile notes`n" 
+        Write-Output "- $jrnlFile eotes`n" 
 
         Invoke-Expression "jrnl $jrnlFile  $argument"
       }
@@ -317,7 +317,7 @@ function jall
   :j all 
 }
 
-# HighWay function, to add the symlink in the current directory.
+# HighWay function, to add the symlink in the current
 $global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
 function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighWay,$Remove = $null)
 {

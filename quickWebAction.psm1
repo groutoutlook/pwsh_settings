@@ -1,5 +1,3 @@
-
-
 $global:lookupSite = @{
   "reddit" =  "site%3Areddit.com"
   "rd" =  "site%3Areddit.com"
@@ -13,7 +11,7 @@ $global:lookupSite = @{
   "codestat" = "site%3Acodestats.net"
   "elec" = "site%3Aelectronic.stackexchange.com"
 }
-
+#  TODO: May switch default engine to edge, since I found I have many things to ask the AI.
 function Search-Google
 {
   if($args[0] -match "^yt")
@@ -138,5 +136,7 @@ function Get-CodeStats($webui = 0)
     }
   }
 } 
+Set-Alias -Name cst -Value Get-CodeStats 
+
 Set-Alias -Name cst -Value Get-CodeStats 
 
