@@ -217,6 +217,10 @@ function :j
     "^bat" = 1
     "^last" = 2
     "^lt" = 2
+    "^tg" = 3
+    "^tag" = 3
+    "^\d*e" = 4
+    "^\d*d" = 5
   }
   # Rework argument.
   foreach( $specialArgument in $specialArgumentList.Keys)
@@ -225,25 +229,43 @@ function :j
   
     if($argLast -match $specialArgument)
     {
+      $matchValue_argLast = $Matches.0
       $argument = $argument -replace $argLast
       $flagRaise = $specialArgumentList[$specialArgument]
     }
   
-    if($flagRaise -eq 1)
+    switch ($flagRaise)
     {
-      $callBat = 1
-      break
-    } elseif($flagRaise -eq 2)
+      1
+      {
+        $callBat = 1
+      }
+      2
+      {
+        # regex way to match
+        $day = (Select-String -InputObject $argLast -pattern "\d*$").Matches.Value ?? 2
+        $convertToInt = [int]$day #- [System.Char]"0"
+        $fromDate = (Get-Date).AddDays(-$convertToInt)
+        $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
+        $argument += " -from $trimDate"
+      }
+      3
+      {
+        echo "TAGGGG Work."
+      }
+      4
+      {
+        $matchValue = (Select-String -InputObject $argLast -pattern "^\d*").Matches.Value ?? 2
+        $argument += " -$matchValue --edit"
+      }
+      5
+      {
+        $matchValue = (Select-String -InputObject $argLast -pattern "^\d*").Matches.Value ?? 2
+        $argument += " -$matchValue --delete"
+      }
+    }
+    if($null -ne $flagRaise)
     {
-      # extract number. Maybe do it with regex instead?
-      # $day = $argLast -replace $specialArgument  
-      # regex way to match
-      $day = (Select-String -InputObject $argLast -pattern "\d$").Matches.Value
-      $convertToInt = [int]$day #- [System.Char]"0"
-      $fromDate = (Get-Date).AddDays(-$convertToInt)
-      $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
-      $argument += " -from $trimDate"
-      # echo $argument
       break
     }
   }
@@ -263,11 +285,14 @@ function :j
         Write-Output "$jrnlFile notes`n" | Add-Content $TempFile
         Invoke-Expression "jrnl $jrnlFile  $argument" | Add-Content $TempFile
       }
+      nvim $TempFile
     } else
     {
       foreach($jrnlFile in $jrnlList)
       {
-        Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
+        # Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
+        Write-Output "- $jrnlFile notes`n" 
+
         Invoke-Expression "jrnl $jrnlFile  $argument"
       }
     }
