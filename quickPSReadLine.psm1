@@ -19,7 +19,8 @@ $ggSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
     # Can InvertLine() here to return empty line.
-    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    # [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    # Rather than that, I put the cursor at the end instead.
       
   }
 }
@@ -43,7 +44,7 @@ $omniSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
     # Can InvertLine() here to return empty line.
-    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::InvertLine()
       
   }
 }
