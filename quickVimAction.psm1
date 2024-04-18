@@ -96,6 +96,7 @@ function :vg
   :v last
 }
 
+# TODO: one day I will try to make them parse the yaml text instead of this clunky hash table.
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
 $tableJournal = @{
   "default" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\MainJournal.md"
@@ -121,10 +122,17 @@ $tableJournal = @{
   "workflow" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Business\WorkflowJournal.md"
   "phr" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\PhraseJournal.md"
   "phrase" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\PhraseJournal.md"
-  "til" = "1D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown/note_algo_lang/0_LongJournal/OtherKnowledgeJournal.md"
+  "ev" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\EventJournal.md"
+  "event" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_Knowledge\EventJournal.md"
+  "math" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_algo_lang\0_LongJournal\STEMJournal.md"
+  "physic" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_algo_lang\0_LongJournal\STEMJournal.md"
+  "stem" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_algo_lang\0_LongJournal\STEMJournal.md"
+  "til" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown/note_algo_lang/0_LongJournal/OtherKnowledgeJournal.md"
+  "acc" =  "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\0_LongJournal\AccountJournal.md"
   "obs" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\400002_Obsidian.md"
   "nvim" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\100001_Neovim.md"
 }
+
 
 
 function :obsidian()
@@ -152,7 +160,7 @@ function :obsidian()
       omniSearchObsidian $args | Out-Null
     } else
     {
-      ((Start-Process "obsidian://open?path=$phrase") &) | Out-Null
+      ((Start-Process "obsidian://open?path=$phrase")  &) | Out-Null
     }
   }
 }

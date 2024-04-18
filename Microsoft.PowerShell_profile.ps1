@@ -10,7 +10,7 @@ function Dirs
 }
 function initTypicalEditor
 {	
-	Set-Alias -Name np -Value 'C:\Program Files\Notepad++\notepad++.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name np -Value 'notepad++.exe' -Scope Global #-Option AllScope
 }
 function initAutomate
 {
