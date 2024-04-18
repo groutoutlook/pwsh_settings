@@ -47,6 +47,7 @@ function :backup($Verbose = $null)
 Set-Alias -Name :bak -Value :backup
 
 
+# NOTE: neovim trigger function.
 function :v
 {
   $currentDir = (Get-Location) -replace '\\','\'
@@ -77,6 +78,8 @@ function :v
   }
    
 }
+# TODO: I am thinking of nesting vim or helix when I'm inside neovim here.
+# Since lots of keymap could be collided when I'm inside the terminal, perhap it's a better choice to use editor in editor.
 
 # Since I'm that lazy, cant type :v ls for sure.
 # when not sure which project to jump. Type :vs for sure.
@@ -133,8 +136,7 @@ $tableJournal = @{
   "nvim" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\100001_Neovim.md"
 }
 
-
-
+# NOTE: Obsidian trigger function.
 function :obsidian()
 {
   if($args[0] -eq $null)
@@ -370,11 +372,19 @@ function :g
     Import-Module "$highway\BatchJob\BatchMeasure.psm1" -Scope Global
   }
   if ($null -eq $args[0])
-  {
+  { 
     gitAll st
   } else
   {
+
     Invoke-Expression "gitAll $args"
   }
 }
 
+
+# NOTE: Espanso
+function :e
+{
+  $argument = $args -join " "
+  Invoke-Expression "espansod $argument"
+}
