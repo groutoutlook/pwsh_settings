@@ -106,7 +106,7 @@ Set-Alias -Name zz -Value yazi
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	Invoke-Expression (& { (zoxide init powershell | Out-String) })
+	Invoke-Expression (& { (zoxide init powershell --hook prompt | Out-String) })
 	Invoke-Expression (&starship init powershell)
 	initGuiApp
 }
