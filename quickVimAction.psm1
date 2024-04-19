@@ -137,6 +137,7 @@ $tableJournal = @{
 }
 
 # NOTE: Obsidian trigger function.
+# TODO: might as well implemented workspace open (Advanced)URI and something extreme.
 function :obsidian()
 {
   if($args[0] -eq $null)
@@ -311,7 +312,7 @@ function :j
       foreach($jrnlFile in $jrnlList)
       {
         # Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
-        Write-Output "- $jrnlFile eotes`n" 
+        Write-Output "- $jrnlFile notes`n" 
 
         Invoke-Expression "jrnl $jrnlFile  $argument"
       }
