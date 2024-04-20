@@ -108,7 +108,7 @@ function P7()
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Invoke-Expression (&starship init powershell)
 	Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
-	# Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
+	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 }
 	
 function clockWindowsApp()
@@ -375,5 +375,5 @@ initIDE
 initAutomate
 
 # Last line triggering zoxide.
-Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
-Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
+# Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
+# Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
