@@ -10,7 +10,7 @@ function Dirs
 }
 function initTypicalEditor
 {	
-	Set-Alias -Name np -Value 'notepad++.exe' -Scope Global #-Option AllScope
+	Set-Alias -Name np -Value 'notepad++.exe' -Scope Global -Option AllScope
 }
 function initAutomate
 {
@@ -108,7 +108,7 @@ function P7()
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Invoke-Expression (&starship init powershell)
 	Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
-	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
+	# Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 }
 	
 function clockWindowsApp()
@@ -374,5 +374,6 @@ initShellApp
 initIDE
 initAutomate
 
-# Last line
+# Last line triggering zoxide.
 Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
+Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
