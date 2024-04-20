@@ -226,7 +226,16 @@ function Set-LocationWhere($files = (Get-Clipboard))
 				# We need something to detect executable here. Mostly exe files but there could also be other type as well.
 				if ($commandInfo.Extension -match "exe")
 				{
-					Set-Location (split-path (where.exe $files) -Parent)
+					$listBinaries = (where.exe $files) 
+					if ($listBinaries.GetType().BaseType.Name -eq "Array")
+					{
+						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
+						$finalBinariesPath = $listBinaries | fzf
+					} else
+					{
+						$finalBinariesPath = $listBinaries
+					}
+					Set-Location (split-path ($finalBinariesPath) -Parent)
 				} else
 				{
 					# other extensions 
