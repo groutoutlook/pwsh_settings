@@ -97,7 +97,7 @@ function global:Backup-Environment($Verbose = $null)
 		Write-Host "$dotfile backed up." -ForegroundColor Yellow
 	}
 	Copy-Item $localPathNvim "$PROFILE"
-	Write-Host "Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
+	Write-Host "[$(Get-Date)] Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
 
@@ -106,9 +106,9 @@ Set-Alias -Name zz -Value yazi
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
-	Invoke-Expression (& { (zoxide init powershell --hook prompt | Out-String) })
 	Invoke-Expression (&starship init powershell)
-	initGuiApp
+	Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
+	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 }
 	
 function clockWindowsApp()
@@ -343,7 +343,14 @@ function omniSearchObsidian
 	Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-# Set-Alias -Name obs -Value omniSearchObsidian
+function z..($rep = 1)
+{
+
+	foreach($i in (1..$rep))
+ {
+		z ..
+	}
+}
 
 function cd-($rep = 1)
 {
@@ -366,3 +373,6 @@ initTypicalEditor
 initShellApp
 initIDE
 initAutomate
+
+# Last line
+Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })

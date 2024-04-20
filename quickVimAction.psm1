@@ -204,7 +204,7 @@ $global:JrnlGroup =@{
 }
 
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
-function  fb
+function :j
 {
   # rerowk list by specify first argument.
   $jrnlList = $null
