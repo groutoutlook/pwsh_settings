@@ -14,7 +14,13 @@ $ggSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = "Search-Google"
-    $SearchWithQuery = "$searchFunction $line"
+    if ($line -match "[a-z]")
+    {
+      $SearchWithQuery = "$searchFunction $line"
+    } else
+    {
+      $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+    }
     #Store to history for future use.
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
@@ -39,7 +45,14 @@ $omniSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = ":obsidian" # omniSearchObsidian
-    $SearchWithQuery = "$searchFunction $line"
+    if ($line -match "[a-z]")
+    {
+      $SearchWithQuery = "$searchFunction $line"
+    } else
+    {
+      $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+    }
+ 
     #Store to history for future use.
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
@@ -105,6 +118,11 @@ ForEach($handler in $HandlerParameters.Keys)
   $parameters = $HandlerParameters[$handler]
   Set-PSReadLineKeyHandler @parameters
 }
+
+
+
+$parameters = $HandlerParameters[$handler]
+Set-PSReadLineKeyHandler @parameters
 
 
 
