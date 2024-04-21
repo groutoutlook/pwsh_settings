@@ -102,7 +102,18 @@ function global:Backup-Environment($Verbose = $null)
 Set-Alias -Name p7Backup -Value Backup-Environment
 
 # Extra color for the terminal.
-Set-Alias -Name zz -Value yazi
+function yy
+{
+	$tmp = [System.IO.Path]::GetTempFileName()
+	yazi $args --cwd-file="$tmp"
+	$cwd = Get-Content -Path $tmp
+	if (-not [String]::IsNullOrEmpty($cwd) -and $cwd -ne $PWD.Path)
+	{
+		Set-Location -Path $cwd
+	}
+	Remove-Item -Path $tmp
+}
+Set-Alias -Name ccd -Value yy
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
