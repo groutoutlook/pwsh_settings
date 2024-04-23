@@ -168,6 +168,25 @@ function :obsidian()
   }
 }
 
+# INFO: switch workspace.
+
+$workspaceNameTable = @{
+  "jc" = "Journal-code-eda"
+  "on" = "Obs-Nvim"
+}
+function :ow
+{
+  $vaultName = "Vault_2401"
+  $defaultWorkspace = "Obs-Nvim"
+
+  # Prepare arguments  
+  $argument = $args -join " "
+  $workspaceName = $workspaceNameTable[$argument] ?? "$defaultWorkspace"
+  
+  $originalURI = "obsidian://advanced-uri?vault=$vaultName&workspace=$workspaceName" 	
+  (Start-Process "$originalURI" &) | Out-Null
+}
+
 Set-Alias -Name :o -Value :obsidian
 Set-Alias -Name obs -Value :obsidian
 
@@ -384,8 +403,28 @@ function :g
 
 
 # NOTE: Espanso
+$espansoAlias = @{
+  "st" = "status"
+  "e" = "editInNvimSession"
+}
+
 function :e
 {
-  $argument = $args -join " "
-  Invoke-Expression "espansod $argument"
+  $argument = ""
+  # Prepare arguments 
+  foreach($arg in $args)
+  {
+    $postProcessArgument = $espansoAlias[$arg] ?? $arg 
+    $argument += "$postProcessArgument "
+  }
+
+  if ($argument -eq "editInNvimSession ")
+  {
+    $espansoNvimSession = "espanso"
+    nvim -c "lua require('resession').load `"$espansoNvimSession`""
+  } else
+  {
+    Invoke-Expression "espansod $argument"
+  }
+
 }
