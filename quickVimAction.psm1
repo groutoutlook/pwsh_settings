@@ -348,6 +348,8 @@ function jall
 }
 
 # HighWay function, to add the symlink in the current
+# WARN: recently I found symlink affects recursive tools like fzf and fd a lot... 
+# Might change that kind of add sy,links everywhere.
 $global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
 function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighWay,$Remove = $null)
 {
@@ -382,8 +384,7 @@ function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighW
   }  
 }
 
-
-
+# What could we note here?
 function :g
 {
   if($global:symlinkHighWayList -eq $null)
@@ -401,8 +402,7 @@ function :g
   }
 }
 
-
-# NOTE: Espanso
+# NOTE: Espanso powershell wrapper.
 $espansoAlias = @{
   "st" = "status"
   "e" = "editInNvimSession"
@@ -426,5 +426,4 @@ function :e
   {
     Invoke-Expression "espansod $argument"
   }
-
 }
