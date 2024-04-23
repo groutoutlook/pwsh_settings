@@ -76,12 +76,13 @@ function :v
       Invoke-Expression "$codeEditor $args" # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
     }
   }
-   
+
 }
+
 # TODO: I am thinking of nesting vim or helix when I'm inside neovim here.
 # Since lots of keymap could be collided when I'm inside the terminal, perhap it's a better choice to use editor in editor.
 
-# Since I'm that lazy, cant type :v ls for sure.
+# INFO: Since I'm that lazy, cant type :v ls for sure.
 # when not sure which project to jump. Type :vs for sure.
 function :vs
 {
@@ -97,6 +98,18 @@ function :vg
 {
   :v ls gui
   :v last
+}
+
+function :vp
+{
+  if($null -eq $args[0])
+  {
+    nvim -c "lua require('resession').load 'pwsh_settings'"
+  } else
+  {
+    Write-Host "What do you want?" -ForegroundColor Yellow
+    :vs
+  }
 }
 
 # TODO: one day I will try to make them parse the yaml text instead of this clunky hash table.
@@ -171,7 +184,9 @@ function :obsidian()
 # INFO: switch workspace.
 
 $workspaceNameTable = @{
+  "j" = "Journal-code-eda"
   "jc" = "Journal-code-eda"
+  "o" = "Obs-Nvim"
   "on" = "Obs-Nvim"
 }
 function :ow

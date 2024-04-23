@@ -388,6 +388,12 @@ function cd+($rep = 1)
 	}
 }
 
+# INFO: Rescue explorer function.
+function Restart-Explorer
+{
+	Stop-Process -Name explorer
+}
+Set-Alias -Name resexp -Value Restart-Explorer
 initProfileEnv
 initTypicalEditor
 initShellApp
