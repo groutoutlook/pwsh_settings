@@ -108,9 +108,19 @@ Set-Alias -Name comps -Value compSearch
 
 
 
+Add-Type -AssemblyName System.Windows.Forms
 function ocr
 {
   Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
+  Start-Sleep -Milliseconds 800
+ 	[System.Windows.Forms.SendKeys]::SendWait("^v")
+}
+
+function trans
+{
+  Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=translate"
+  Start-Sleep -Milliseconds 800
+ 	[System.Windows.Forms.SendKeys]::SendWait("^v")
 }
 
 

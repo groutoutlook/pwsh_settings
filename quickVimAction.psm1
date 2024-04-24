@@ -100,6 +100,7 @@ function :vg
   :v last
 }
 
+# INFO: Quick pwsh_profiles session.
 function :vp
 {
   if($null -eq $args[0])
