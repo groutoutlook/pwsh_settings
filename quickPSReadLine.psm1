@@ -2,7 +2,7 @@
 
 # Setup for (^G) 
 $ggSearchParameters = @{
-  Key = 'Ctrl+g'
+  Key = 'Alt+g'
   BriefDescription = 'Google Mode'
   LongDescription = 'Maybe other search function, but who knows.'
   ScriptBlock = {
