@@ -61,6 +61,7 @@ $omniSearchParameters = @{
       
   }
 }
+
 $cdHandlerParameters = @{
   Key = 'Alt+x'
   BriefDescription = 'Set-LocationWhere the paste directory.'
@@ -106,12 +107,51 @@ $quickEscParameters = @{
   }
 }
 
+function Invoke-SudoPwsh
+{
+  sudo pwsh -Command "$args"
+}
+$sudoRunParameters = @{
+  Key = 'Ctrl+x'
+  BriefDescription = 'Execute as sudo (in pwsh).'
+  LongDescription = 'Call sudo on current command or latest command in history.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    $invokeFunction = "Invoke-SudoPwsh"
+    if ($line -match "[a-z]")
+    {
+      $invokeCommand = "$invokeFunction `"$line`""
+    } else
+    {
+      $invokeCommand = "$invokeFunction `"$(Get-History -Count 1)`""
+    }
+
+    # Invoke-Expression $invokeCommand
+    
+    # HACK: Just revert the line and brute force printing the line again in console.
+    # Ugly way but worked.
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeCommand")
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+      
+  }
+}
+
+
 
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "obsHandler"  = $omniSearchParameters
   "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
+  "sudoHandler"  = $sudoRunParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {
