@@ -113,7 +113,8 @@ function yy
 	}
 	Remove-Item -Path $tmp
 }
-Set-Alias -Name ccd -Value yy
+# Set-Alias -Name cc -Value yy
+Set-Alias -Name dd -Value yy
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
