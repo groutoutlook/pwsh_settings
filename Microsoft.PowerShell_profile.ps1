@@ -80,28 +80,12 @@ function Format-LimitLength($String,$limitString = 50)
 }
 function global:Backup-Environment($Verbose = $null)
 {
-	$terminalSettings = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json"
-	$dotfiles = @(
-		"~/.gitconfig",
-		"~/.gitignore_global"
-		$terminalSettings
-	)
-
-	foreach($dotfile in $dotfiles)
-	{
-		(Copy-Item $dotfile "$Env:dotfilesRepo")
-		if($Verbose -le 0)
-		{
-			$dotfile = Format-LimitLength -String $dotfile
-		}
-		Write-Host "$dotfile backed up." -ForegroundColor Yellow
-	}
 	Copy-Item $localPathNvim "$PROFILE"
 	Write-Host "[$(Get-Date)] Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
 
-# Extra color for the terminal.
+
 function yy
 {
 	$tmp = [System.IO.Path]::GetTempFileName()
@@ -113,8 +97,8 @@ function yy
 	}
 	Remove-Item -Path $tmp
 }
-# Set-Alias -Name cc -Value yy
 Set-Alias -Name dd -Value yy
+
 function P7()
 {
 	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
@@ -402,5 +386,3 @@ initIDE
 initAutomate
 
 # Last line triggering zoxide.
-# Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
-# Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
