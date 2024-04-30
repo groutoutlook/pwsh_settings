@@ -123,74 +123,28 @@ function Copy-Cliff($directory = "$env:p7settingDir\cliff.toml")
 }
 Set-Alias -Name cpcliff -Value Copy-Cliff 
 
-<#
-# Prefix to add to window titles.
-$prefix = "Top Secret"
-
-# How often to update window titles (in milliseconds).
-$interval = 1000
-
-$timer = New-Object System.Timers.Timer
-
-$timer.Enabled = $true
-$timer.Interval = $interval
-$timer.AutoReset = $true
-
-
-function Add-Prefix-Titles($prefix) {
-  Get-Process | ? {$_.mainWindowTitle -and $_.mainWindowTitle -notlike "$($prefix)*"} | %{
-    [Win32]::SetWindowText($_.mainWindowHandle, "$prefix - $($_.mainWindowTitle)")
-  }
-}
-
-Register-ObjectEvent -InputObject $timer -EventName Elapsed -Action {
-  Add-Prefix-Titles $prefix
-}
-
-#>
-
-Add-Type -TypeDefinition @"
-using System;
-using System.Runtime.InteropServices;
-
-public static class Win32 {
-  [DllImport("User32.dll", EntryPoint="SetWindowText")]
-  public static extern int SetWindowText(IntPtr hWnd, string strTitle);
-}
-"@
-
-function ChangeWindowTitles($oldName , $newName, $addOldTitle = 0)
+# INFO: Import Completion scripts.
+function Import-Completion
 {
- Get-Process | ? {$_.mainWindowTitle -and ($_.mainWindowTitle -match "$($oldName)*")} | %{
-	 
-		if($addOldTitle -eq 1)
+	$completionsDir = "$env:p7settingDir\completions"
+	$listImport = Get-ChildItem $completionsDir
+	if($args[0] -eq $null)
+	{
+		# $importScripts = $listImport.FullName | fzf 
+		$importName = $listImport.BaseName | fzf
+		. (Join-Path -Path $completionsDir -ChildPath "$importName.ps1")
+	} else
+	{
+		foreach($arg in $args)
   {
-			$suffix  = $_.mainWindowTitle 
-		} else
-		{ $suffix = ""
+			$importName = $arg
+			. (Join-Path -Path $completionsDir -ChildPath "$importName.ps1")
 		}
-		[Win32]::SetWindowText($_.mainWindowHandle, "$newName $suffix")
 	}
 }
 
+Set-Alias -Name :cp -Value Import-Completion 
 
+# INFO: Default completion import.
+Import-Completion just
 
-function LoopChangeWindowTitles($oldName , $newName, $addOldTitle = 0)
-{
-
-	$interval = 1000
-
-	$timer = New-Object System.Timers.Timer
-
-	$timer.Enabled = $true
-	$timer.Interval = $interval
-	$timer.AutoReset = $true
-
-
-	Register-ObjectEvent -InputObject $timer -EventName Elapsed -Action {
-		ChangeWindowTitles $oldName $newName $addOldTitle
-	}
-}
-
-
-Set-Alias -Name cpKeil -Value copyFilestoKeil -Scope Global

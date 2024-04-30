@@ -102,26 +102,14 @@ StartupProfileData-NonInteractive
 # Ignore logfiles
 logfile/*
 
-
 # Shortcuts
 *.lnk
 
-
 node_modules/*
-Session.vim
 dot
 linux
 powershell_*_root
 powershell_preview_*_root
 
-
 nvim
-hway
-hway
-hway
-hway
-hway
-hway
-hway
-hw
 hw

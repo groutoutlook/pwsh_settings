@@ -239,7 +239,7 @@ $global:JrnlGroup =@{
 }
 
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
-function :j
+function :jrnl
 {
   # rerowk list by specify first argument.
   $jrnlList = $null
@@ -356,7 +356,7 @@ function :j
 
 }
 
-Set-Alias -Name j -Value :j
+Set-Alias -Name j -Value :jrnl
 
 function jall
 {
