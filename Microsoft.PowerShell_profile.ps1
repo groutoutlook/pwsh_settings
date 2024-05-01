@@ -8,10 +8,7 @@ function Dirs
 {
 	Get-Location -Stack
 }
-function initTypicalEditor
-{	
-	Set-Alias -Name np -Value 'notepad++.exe' -Scope Global -Option AllScope
-}
+
 function initAutomate
 {
 	Set-Alias -Name ditto -Value "$env:ProgramFilesD\Ditto\Ditto" -Scope Global
@@ -152,7 +149,6 @@ function MoreTerminalModule
 	{
 		$Env:Path += ";"+$d;
 	}
-
 	foreach($module in $global:extraModuleList)
 	{
 		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
@@ -160,6 +156,7 @@ function MoreTerminalModule
 	}
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
+
 function initShellApp()
 {
 	# echo $initialModuleList
@@ -268,47 +265,29 @@ function addPath($dirList)
 }
 
 function global:initProfileEnv
-{ #for environment variable.
-
-	#If not set ProgramFilesD
-	#[Environment]::SetEnvironmentVariable('ProgramFilesD', "D:\Program Files",'Machine') 
-	#$Env:GoDir = "C:\Program Files\Go\bin\"
+{ 
 	$Env:ProgramFilesD = "D:\Program Files"
 	$Env:ProgramDataD = "D:\ProgramDataD"
 	$env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
-	$Env:VSDir = "$env:ProgramDataD\Visual Studio"
-	$Env:mozillaDir = "$Env:ProgramFilesD\Mozilla Firefox\"
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
-	# $Env:PhotoshopDir = "C:\Program Files\Adobe\Adobe Photoshop 2023\"
-	# $Env:vlcDir = "$env:ProgramFiles\VideoLAN\VLC\"
-	$Env:GoTiengVietDir = "D:\Program Files\GoTiengViet"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
 	$Env:ahkDirD = "$env:ProgramDataD\ahk\"
 	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
-	# $Env:venvsDir = "$env:LOCALAPPDATA\pipx\pipx\venvs\"
 	$env:pipxLocalDir = "~\.local\bin"
 
 	$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
-	$env:cmakedir = "C:\Program Files\CMake\bin\"
 	$env:VulkanSDK="C:\VulkanSDK\*\"
-	$env:LuaJitDir = "$Env:ProgramFilesD\LuaJit\luajit\src\"
-	$Env:sqlite3Dir = "$env:ProgramFilesD\sqlite3\"
 	$Env:cargoDir = "~\.cargo\bin"
-	$env:weztermDir = "C:\Program Files\WezTerm\"
-	# $Env:hledgerDir = "$env:ProgramFilesD\hledger"
-	# $Env:ImageMagickDir = "C:\Program Files\ImageMagick-7.1.1-Q16-HDRI\"
 	$diradd = @(
-		$Env:PhotoshopDir,$env:vlcDir,
-		$Env:ChromeDir,$Env:kicadDir,$Env:SysInternalSuite
-		$Env:sqlite3Dir,
-		$Env:cargoDir,
-		$env:weztermDir,
+		$Env:PhotoshopDir,
+		$Env:ChromeDir,
+		$Env:kicadDir,
 		$env:pipxLocalDir,
-		$env:cmakedir,
-		$Env:gotvDir
+		$Env:cargoDir,
+		$Env:SysInternalSuite
 	)
 	foreach($d in $diradd)
 	{
@@ -348,14 +327,6 @@ function omniSearchObsidian
 	Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-function z..($rep = 1)
-{
-
-	foreach($i in (1..$rep))
- {
-		z ..
-	}
-}
 
 function cd-($rep = 1)
 {
@@ -381,10 +352,8 @@ function Restart-Explorer
 Set-Alias -Name resexp -Value Restart-Explorer
 
 initProfileEnv
-initTypicalEditor
 initShellApp
 initIDE
 initAutomate
-
-# Last line triggering zoxide.
-Import-Module PSCompletions
+P7
+# Import-Module PSCompletions
