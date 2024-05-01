@@ -138,8 +138,8 @@ function MoreTerminalModule
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-	Set-PsFzfOption -TabExpansion
+	# Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	# Set-PsFzfOption -TabExpansion
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
@@ -379,6 +379,7 @@ function Restart-Explorer
 	Stop-Process -Name explorer
 }
 Set-Alias -Name resexp -Value Restart-Explorer
+
 initProfileEnv
 initTypicalEditor
 initShellApp
@@ -386,3 +387,4 @@ initIDE
 initAutomate
 
 # Last line triggering zoxide.
+Import-Module PSCompletions
