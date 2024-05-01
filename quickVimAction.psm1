@@ -146,8 +146,8 @@ $tableJournal = @{
   "stem" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_algo_lang\0_LongJournal\STEMJournal.md"
   "til" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown/note_algo_lang/0_LongJournal/OtherKnowledgeJournal.md"
   "acc" =  "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\0_LongJournal\AccountJournal.md"
-  "obs" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\400002_Obsidian.md"
-  "nvim" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\100001_Neovim.md"
+  "web" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\0_LongJournal\WebJournal.md"
+  "os" = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\1_Markdown\note_software\0_LongJournal\OSJournal.md"
 }
 
 # NOTE: Obsidian trigger function.
