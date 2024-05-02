@@ -1,18 +1,6 @@
 using namespace System.Collections.Generic
 # import-module -Name VirtualDesktop
-function Edit-Module($options = $null)
-{
-	Set-Location "$env:p7settingDir"
-	if($options -match "[A-Z]")
-	{
-		neovide (Get-Location)
-	} else
-	{
-		:v 
-	}
-}
 
-Set-Alias -Name p7edit -Value Edit-Module -Scope Global
 
 function isLink($currentPath = (Get-Location))
 {
@@ -33,35 +21,8 @@ function cdSymLink($currentPath = (Get-Location))
 		Set-Location $targetDir
 	}
 }
-
-Set-Alias -Name cdlink -Value cdSymLink
 Set-Alias -Name cdsl -Value cdSymLink
-
-function checkFileStatus($filePath)
-{
-	write-host (getDateTime) "[ACTION][FILECHECK] Checking if" $filePath "is locked"
-	$fileInfo = New-Object System.IO.FileInfo $filePath
-
-	try 
-	{
-		$fileStream = $fileInfo.Open( [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::Read )
-		write-host (getDateTime) "[ACTION][FILEAVAILABLE]" $filePath
-		return $true
-	} catch
-	{
-		write-host (getDateTime) "[ACTION][FILELOCKED] $filePath is locked"
-		return $false
-	}
-}
 	
-
-function editNvimConfig($specific_path = "$env:LOCALAPPDATA/nvim")
-{
-	nvim $specific_path 
-}
-#set-Alias -Name viconf -Value editNvimConfig
-Set-Alias -Name nvimconf -Value editNvimConfig
-
 $CommandNewWt = @{
 	"win" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"'
 	"and" = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
@@ -84,8 +45,8 @@ function term($which = "win")
 }
 function androidDevEnv
 {
-	$Env:P7AndroidDir = "D:\ProgramDataD\powershell\Proj\ADB_P7\"
-	Import-Module -Name ($env:p7settingDir+"ADB_BasicModule") -Scope Global
+	$Env:P7AndroidDir = ".\adb_p7"
+	Import-Module -Name (Join-Path -Path $Env:P7AndroidDir -ChildPath "ADB_BasicModule.psm1") -Scope Global
 }
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
@@ -107,8 +68,3 @@ function explr($inputPath = (Get-Location))
 	}
 }
 Set-Alias -Name expl -Value explr -Scope Global
-
-function getDateTime
-{
-	return (get-date).TimeOfDay.ToString()
-}

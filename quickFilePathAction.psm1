@@ -1,6 +1,9 @@
+# INFO: Old script I use to copy files back and forth between repos.
+# should not do that anymore, use `just` to run test or copy task,
+# or decouple them into modules. Better to manage and faster to automate.
 
-$global:at_dir = "D:\ProgramDataD\Artery\Proj\TEST\src\"
-$global:mm_dir = "D:\ProgramDataD\MindMotion\Proj\12_uart_irq\Project\"
+$global:at_dir = "D:\ProgramDataD\Artery_MCU\Proj\TEST\src\"
+$global:mm_dir = "D:\ProgramDataD\MindMotion_MCU\Proj\12_uart_irq\Project\"
 $global:fmd_dir = "D:\ProgramDataD\FMD_MCU\FMD_Proj\2023_RGB_CPP\"
 $global:vs_dir_debug = "D:\ProgramDataD\Visual Studio\ConsoleApplication1\x64\Debug"
 $global:st_dir = "D:\ProgramDataD\ST\repo\STM32CubeH7\Projects\NUCLEO-H745ZI-Q\Examples\GPIO\GPIO_EXTI\STM32CubeIDE\CM7\RGB_SOURCE"
@@ -65,14 +68,6 @@ function EmbedEnv()
 		$Env:Path += ";"+$d;
 	}
 }
-function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
-{
-	expl $path
-}
-function syncthing()
-{
-	Start-Process https://localhost:8384
-}
 function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2023-06-01 Project.uvprojx")
 {
 	cd $uv4project
@@ -84,18 +79,25 @@ function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2
 }
 EmbedEnv
 
+function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
+{
+	expl $path
+}
+function syncthing()
+{
+	Start-Process https://localhost:8384
+}
+
 function Copy-Cliff($directory = "$env:p7settingDir\cliff.toml")
 {
 	Copy-Item $directory .
 }
-Set-Alias -Name cpcliff -Value Copy-Cliff 
-
-
 function Copy-Just($directory = "$env:p7settingDir\justfile")
 {
 	Copy-Item $directory .
 }
 Set-Alias -Name cpjust -Value Copy-Just
+Set-Alias -Name cpcliff -Value Copy-Cliff 
 
 
 # INFO: Import Completion scripts.
@@ -117,9 +119,6 @@ function Import-Completion
 		}
 	}
 }
-
-
-
 Set-Alias -Name :cp -Value Import-Completion 
 
 # INFO: Default completion import.
