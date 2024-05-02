@@ -85,17 +85,7 @@ function term($which = "win")
 function androidDevEnv
 {
 	$Env:P7AndroidDir = "D:\ProgramDataD\powershell\Proj\ADB_P7\"
-	$diradd = @(
-		$Env:P7AndroidDir
-	)
-	foreach($d in $diradd)
-	{
-		$Env:Path += ";"+$d;
-	}
-	
 	Import-Module -Name ($env:p7settingDir+"ADB_BasicModule") -Scope Global
-	# Import-Module -Name ($env:P7AndroidDir+"ADB_BasicModule") -Scope Global
-
 }
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms

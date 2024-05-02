@@ -73,40 +73,9 @@ function syncthing()
 {
 	Start-Process https://localhost:8384
 }
-function discord()
-{
-	. "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Discord Inc\discord.lnk"
-}
-function SDCardCheckAndLoad($drive_name = "E",$data_file = "D:\ProgramDataD\Audio\proj\FireworkMusic_v2.0.mp3")
-{
-	$sd_used = ((Get-PSDrive -PSProvider FileSystem -Name $drive_name).Used) #or we can index [2] then.
-	if($sd_used -ge 1000000)
-	{
-		echo "have file."
-	} elseif(($sd_used -le 1000000) -and ($sd_used -ne $null))
-	{
-		echo "no file."
-		cp "$data_file" ("$drive_name"+":") 
-		echo "copied"
-	} else
-	{
-		echo "no disk."
-	}
-}
-
-function LoopSDCardLoad()
-{
-	while($true)
-	{
-		SDCardCheckAndLoad
-		sleep 1
-	}
-}
-
 function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2023-06-01 Project.uvprojx")
 {
 	cd $uv4project
-
 	while($true)
 	{
 		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
@@ -114,14 +83,20 @@ function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2
 	}
 }
 EmbedEnv
-# activateJrnl
-$global:imgPath = "D:\ProgramDataD\Animation\Proj\final"
 
 function Copy-Cliff($directory = "$env:p7settingDir\cliff.toml")
 {
 	Copy-Item $directory .
 }
 Set-Alias -Name cpcliff -Value Copy-Cliff 
+
+
+function Copy-Just($directory = "$env:p7settingDir\justfile")
+{
+	Copy-Item $directory .
+}
+Set-Alias -Name cpjust -Value Copy-Just
+
 
 # INFO: Import Completion scripts.
 function Import-Completion

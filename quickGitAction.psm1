@@ -5,7 +5,9 @@
 
 function quickInitGit
 {
-	git init && git add * && gitmoji -c
+	git init && git add * && gitmoji -c `
+		&& Copy-Cliff `
+		&& Copy-Just
 }
 
 function openWebRemote

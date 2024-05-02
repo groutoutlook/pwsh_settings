@@ -1,0 +1,3 @@
+[submodule "adb_p7"]
+	path = adb_p7
+	url = https://github.com/groutoutlook/adb_p7
