@@ -135,8 +135,8 @@ function MoreTerminalModule
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-	# Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-	# Set-PsFzfOption -TabExpansion
+	Set-PsFzfOption -TabExpansion
+	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
@@ -355,5 +355,5 @@ initProfileEnv
 initShellApp
 initIDE
 initAutomate
-P7
+# P7
 # Import-Module PSCompletions
