@@ -281,7 +281,9 @@ function global:initProfileEnv
 	$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
 	$env:VulkanSDK="C:\VulkanSDK\*\"
 	$Env:cargoDir = "~\.cargo\bin"
+	$env:usrbinD="D:\usr\bin"
 	$diradd = @(
+		$env:usrbinD,
 		$Env:PhotoshopDir,
 		$Env:ChromeDir,
 		$Env:kicadDir,
