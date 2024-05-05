@@ -98,30 +98,19 @@ Set-Alias -Name dd -Value yy
 
 function P7()
 {
-	# oh-my-posh -> https://ohmyposh.dev/docs/installation/customize
 	Invoke-Expression (&starship init powershell)
 	Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
 	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 }
-	
-function clockWindowsApp()
-{
-	Start-Process (Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsAlarms*x64*\Time.exe")[-1]
-}
-Set-Alias -Name clock -Value clockWindowsApp
-function Start-TerminalUserMode
-{
-	$TerminalPath =	(Resolve-Path "C:\Program Files\WindowsApps\Microsoft.WindowsTerminal_*x64*\wt.exe")[-1]
-	$terminalArgument = "$TerminalPath $args"
-	Start-Process explorer.exe -ArgumentList ($terminalArgument)
-}
-Set-Alias -Name wtuser -Value Start-TerminalUserMode
+
 $global:initialModuleList=@(
 	"quickWebAction",
 	"quickVimAction",
 	"quickPSReadLine"
 )
+
 $global:extraModuleList = @(
+	"ExtraCLIApp",
 	"quickMathAction",
 	"quickGitAction",
 	"quickTerminalAction",
