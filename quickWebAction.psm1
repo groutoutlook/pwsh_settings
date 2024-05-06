@@ -12,6 +12,7 @@ $global:lookupSite = @{
   "cst" = "site%3Acodestats.net"
   "codestat" = "site%3Acodestats.net"
   "elec" = "site%3Aelectronic.stackexchange.com"
+  "ms" = "site%3Alearn.microsoft.com"
 }
 #  TODO: May switch default engine to edge, since I found I have many things to ask the AI.
 function Search-Google
@@ -148,7 +149,7 @@ function Get-CodeStats($webui = 0)
       Write-Output "Haven't code for a whole day you lazy ass."
     } else
     {
-      Write-Output "Yesterday XP $yesterdayXP"
+      Write-Host "Yesterday XP " -NoNewline; Write-Host "$yesterdayXP" -ForegroundColor Red
     }
   }
 } 

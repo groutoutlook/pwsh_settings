@@ -303,11 +303,12 @@ function Show-Window
 	$null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
 
-function Switch-Obsidian
+function Show-Neovide
 {
-	Show-Window("Obsidian.exe")
+	Show-Window("Neovide.exe")
 }
 Set-Alias -Name shw -Value Show-Window
+Set-Alias -Name shv -Value Show-Neovide
 
 function omniSearchObsidian
 {

@@ -45,7 +45,7 @@ function term($which = "win")
 }
 function androidDevEnv
 {
-	$Env:P7AndroidDir = ".\adb_p7"
+	$Env:P7AndroidDir = "$env:p7settingDir\adb_p7"
 	Import-Module -Name (Join-Path -Path $Env:P7AndroidDir -ChildPath "ADB_BasicModule.psm1") -Scope Global
 }
 Set-Alias -Name andDev -Value androidDevEnv
