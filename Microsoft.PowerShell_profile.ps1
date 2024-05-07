@@ -344,8 +344,8 @@ function Restart-Explorer
 {
 	Stop-Process -Name explorer `
 		&& Stop-Process -Name "WindowsVirtualDesktopHelper" `
-		&& Start-Sleep -Milliseconds 1000 `
-		&& VDhelper
+		&& Start-Sleep -Milliseconds 1000 
+	# && VDhelper
 }
 Set-Alias -Name resexp -Value Restart-Explorer
 
