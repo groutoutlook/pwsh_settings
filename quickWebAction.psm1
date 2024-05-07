@@ -13,6 +13,7 @@ $global:lookupSite = @{
   "codestat" = "site%3Acodestats.net"
   "elec" = "site%3Aelectronic.stackexchange.com"
   "ms" = "site%3Alearn.microsoft.com"
+  "pwsh" = "site%3Alearn.microsoft.com" # NOTE: Since it's the same to search pwsh in msdoc.
 }
 #  TODO: May switch default engine to edge, since I found I have many things to ask the AI.
 function Search-Google

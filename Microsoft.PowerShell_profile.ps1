@@ -27,6 +27,8 @@ function initIDE
 }
 function initGuiApp
 {
+	Set-Alias -Name VDhelper -Value "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper" -Scope Global
+	Set-Alias -Name VDcreate -Value "$env:ProgramFiles\VirtualDisplayDriver\bin\VirtualDisplayDriverControl" -Scope Global
 	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global	# Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
 	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
@@ -54,7 +56,7 @@ function pentab()
 	$fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
 	Restart-ForceApp -fileDir $fileDir	
 }
-$localPathNvim = "D:\ProgramDataD\powershell\settings\Microsoft.PowerShell_profile.ps1"
+$localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
 $global:p7Profile = $localPathNvim
 function global:p7Env
 {
@@ -67,6 +69,7 @@ function global:p7Env
 		Write-Host "Env change, jump to backup." -ForegroundColor Green
 	}
 }
+
 function Format-LimitLength($String,$limitString = 50)
 {
 	if($String.Length -gt $limitString)
@@ -347,5 +350,6 @@ initProfileEnv
 initShellApp
 initIDE
 initAutomate
+initGuiApp
 # P7
 # Import-Module PSCompletions
