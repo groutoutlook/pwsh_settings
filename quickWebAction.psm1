@@ -35,7 +35,11 @@ function Search-Google
     if ($args[0] -match "^(?:cb|gcb)")
     {
       $args[0] = (Get-Clipboard)
+    } elseif ($args[0] -match "^ok$")
+    {
+      $args[0] = "PlaceholderQuery"
     }
+
     $appendix = $global:lookupSite[$args[-1]]
     if( $appendix -ne $null)
     {
@@ -75,13 +79,18 @@ function hvdic(
 }
 
 
-function DuckDuckGo
+function Search-DuckDuckGo
 {
-
+  # TODO: Should make a list of abbrev about what to saerch here.
+  # For example, $args[0] -eq ok --> $args[0] = placeholder
   if ($args[0] -match "^(?:cb|gcb)")
   {
     $args[0] = (Get-Clipboard)
+  } elseif ($args[0] -match "^ok$")
+  {
+    $args[0] = "PlaceholderQuery"
   }
+
   $appendix = $global:lookupSite[$args[-1]]
   if( $appendix -ne $null)
   {
@@ -91,11 +100,11 @@ function DuckDuckGo
   $query = 'https://www.duckduckgo.com/?q='
   $args | % { $query = $query + "$_+" }
   $url = $query.Substring(0, $query.Length - 1)
-  Start-Process "$url"
+  chrome  "$url"
 }
 
-Set-Alias -Name ddg -Value DuckDuckGo
-Set-Alias -Name dg -Value DuckDuckGo
+Set-Alias -Name ddg -Value Search-DuckDuckGo
+Set-Alias -Name dg -Value Search-DuckDuckGo
 
 
 function compSearch

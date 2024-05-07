@@ -343,8 +343,8 @@ function cd+($rep = 1)
 function Restart-Explorer
 {
 	Stop-Process -Name explorer `
-		&& Stop-Process -Name "WindowsVirtualDesktopHelper" `
-		&& Start-Sleep -Milliseconds 1000 
+		# && Stop-Process -Name "WindowsVirtualDesktopHelper" `
+		# && Start-Sleep -Milliseconds 1000 
 	# && VDhelper
 }
 Set-Alias -Name resexp -Value Restart-Explorer
