@@ -129,7 +129,7 @@ function MoreTerminalModule
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
 	Set-PsFzfOption -TabExpansion
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-	#Import-Module -Name VirtualDesktop -Scope Global -Verbose
+	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
 	$Env:SMergePath = "C:\Program Files\Sublime Merge\"

@@ -100,7 +100,7 @@ function Search-DuckDuckGo
   $query = 'https://www.duckduckgo.com/?q='
   $args | % { $query = $query + "$_+" }
   $url = $query.Substring(0, $query.Length - 1)
-  chrome  "$url"
+  chrome "$url"
 }
 
 Set-Alias -Name ddg -Value Search-DuckDuckGo
@@ -123,7 +123,7 @@ Add-Type -AssemblyName System.Windows.Forms
 function ocr
 {
   Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
-  Start-Sleep -Milliseconds 800
+  Start-Sleep -Milliseconds 850
  	[System.Windows.Forms.SendKeys]::SendWait("^v")
 }
 

@@ -176,7 +176,53 @@ $sudoRunParameters = @{
 }
 
 
+# HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
+$smartKillWordParameters = @{
+  Key = 'Ctrl+w'
+  BriefDescription = 'Smarter kill word '
+  LongDescription = 'Call sudo on current command or latest command in history.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
 
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+     
+    #Info 
+    if($cursor -eq 0)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
+    }
+  }
+}
+
+# INFO: yank word. The latest killed one.
+# Currently therer is no way to access a list  of tjust killed words.
+$YankWordParameters = @{
+  Key = 'Ctrl+q'
+  BriefDescription = 'Yank word pararmeter'
+  LongDescription = 'yank word that we just kill, it is currently limited to the latest in ring.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+     
+    [Microsoft.PowerShell.PSConsoleReadLine]::Yank()
+  }
+}
+
+
+
+# INFO: Self-made function.
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "AuxGgHandler"   = $AuxSearchParameters
@@ -184,12 +230,15 @@ $HandlerParameters = @{
   "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
   "sudoHandler"  = $sudoRunParameters
+  "killword" = $smartKillWordParameters
+  "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {
   $parameters = $HandlerParameters[$handler]
   Set-PSReadLineKeyHandler @parameters
 }
+
 
 
 
