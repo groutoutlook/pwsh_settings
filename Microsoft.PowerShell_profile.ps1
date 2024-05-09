@@ -27,7 +27,6 @@ function initIDE
 }
 function initGuiApp
 {
-	Set-Alias -Name VDhelper -Value "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper" -Scope Global
 	Set-Alias -Name VDcreate -Value "$env:ProgramFiles\VirtualDisplayDriver\bin\VirtualDisplayDriverControl" -Scope Global
 	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global	# Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
 	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
@@ -42,19 +41,25 @@ function Restart-ForceApp($fileDir)
 		Start-Process $fileDir
 	} else
 	{
-		Stop-Process -Id $currentSearchingProcess.Id 
-		Start-Process $fileDir
+		Stop-Process -Id $currentSearchingProcess.Id && `
+			Start-Sleep -Milliseconds 500 && `
+			Start-Process $fileDir
 	}
 }
 function goviet()
 {
-	$fileDir = "$env:GoTiengVietDir/GoTiengViet.exe"
+	$fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
 	Restart-ForceApp -fileDir $fileDir	
 }
 function pentab()
 {
 	$fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
 	Restart-ForceApp -fileDir $fileDir	
+}
+function vdhelper()
+{
+	$fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
+	Restart-ForceApp -fileDir $fileDir
 }
 $localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
 $global:p7Profile = $localPathNvim
