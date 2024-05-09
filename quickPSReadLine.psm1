@@ -1,4 +1,5 @@
-
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
 
 # Setup for (^G) 
 $ggSearchParameters = @{
@@ -240,6 +241,136 @@ ForEach($handler in $HandlerParameters.Keys)
 }
 
 
+
+# Sometimes you want to get a property of invoke a member on what you've entered so far
+# but you need parens to do that.  This binding will help by putting parens around the current selection,
+# or if nothing is selected, the whole line.
+Set-PSReadLineKeyHandler -Key 'Alt+(' `
+  -BriefDescription ParenthesizeSelection `
+  -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
+  -ScriptBlock {
+  param($key, $arg)
+
+  $selectionStart = $null
+  $selectionLength = $null
+  [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+  $line = $null
+  $cursor = $null
+  [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+  if ($selectionStart -ne -1)
+  {
+    [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+  } else
+  {
+    [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
+    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+  }
+}
+
+# This example will replace any aliases on the command line with the resolved commands.
+Set-PSReadLineKeyHandler -Key "Alt+%" `
+  -BriefDescription ExpandAliases `
+  -LongDescription "Replace all aliases with the full command" `
+  -ScriptBlock {
+  param($key, $arg)
+
+  $ast = $null
+  $tokens = $null
+  $errors = $null
+  $cursor = $null
+  [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+
+  $startAdjustment = 0
+  foreach ($token in $tokens)
+  {
+    if ($token.TokenFlags -band [TokenFlags]::CommandName)
+    {
+      $alias = $ExecutionContext.InvokeCommand.GetCommand($token.Extent.Text, 'Alias')
+      if ($alias -ne $null)
+      {
+        $resolvedCommand = $alias.ResolvedCommandName
+        if ($resolvedCommand -ne $null)
+        {
+          $extent = $token.Extent
+          $length = $extent.EndOffset - $extent.StartOffset
+          [Microsoft.PowerShell.PSConsoleReadLine]::Replace(
+            $extent.StartOffset + $startAdjustment,
+            $length,
+            $resolvedCommand)
+
+          # Our copy of the tokens won't have been updated, so we need to
+          # adjust by the difference in length
+          $startAdjustment += ($resolvedCommand.Length - $length)
+        }
+      }
+    }
+  }
+}
+
+
+# Cycle through arguments on current line and select the text. This makes it easier to quickly change the argument if re-running a previously run command from the history
+# or if using a psreadline predictor. You can also use a digit argument to specify which argument you want to select, i.e. Alt+1, Alt+a selects the first argument
+# on the command line.
+Set-PSReadLineKeyHandler -Key Alt+a `
+  -BriefDescription SelectCommandArguments `
+  -LongDescription "Set current selection to next command argument in the command line. Use of digit argument selects argument by position" `
+  -ScriptBlock {
+  param($key, $arg)
+  
+  $ast = $null
+  $cursor = $null
+  [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$null, [ref]$null, [ref]$cursor)
+  
+  $asts = $ast.FindAll( {
+      $args[0] -is [System.Management.Automation.Language.ExpressionAst] -and
+      $args[0].Parent -is [System.Management.Automation.Language.CommandAst] -and
+      $args[0].Extent.StartOffset -ne $args[0].Parent.Extent.StartOffset
+    }, $true)
+  
+  if ($asts.Count -eq 0)
+  {
+    [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
+    return
+  }
+    
+  $nextAst = $null
+
+  if ($null -ne $arg)
+  {
+    $nextAst = $asts[$arg - 1]
+  } else
+  {
+    foreach ($ast in $asts)
+    {
+      if ($ast.Extent.StartOffset -ge $cursor)
+      {
+        $nextAst = $ast
+        break
+      }
+    } 
+        
+    if ($null -eq $nextAst)
+    {
+      $nextAst = $asts[0]
+    }
+  }
+
+  $startOffsetAdjustment = 0
+  $endOffsetAdjustment = 0
+
+  if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
+    $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
+  {
+    $startOffsetAdjustment = 1
+    $endOffsetAdjustment = 2
+  }
+  
+  [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+  [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+  [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
+}
 
 
 $parameters = $HandlerParameters[$handler]

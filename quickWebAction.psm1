@@ -15,6 +15,18 @@ $global:lookupSite = @{
   "ms" = "site%3Alearn.microsoft.com"
   "pwsh" = "site%3Alearn.microsoft.com" # NOTE: Since it's the same to search pwsh in msdoc.
 }
+
+# reason to make this function is, I may need some kind of initial or something to do some opreataion after firing the query
+function hashmapMatch($argsToMatch)
+{
+  $appendix = $global:lookupSite[$argsToMatch]
+  if( $appendix -ne $null)
+  {
+    $argsToMatch = $appendix
+  } 
+  return $argsToMatch
+
+}
 #  TODO: May switch default engine to edge, since I found I have many things to ask the AI.
 function Search-Google
 {
@@ -40,11 +52,7 @@ function Search-Google
       $args[0] = "PlaceholderQuery"
     }
 
-    $appendix = $global:lookupSite[$args[-1]]
-    if( $appendix -ne $null)
-    {
-      $args[-1] = $appendix
-    } 
+    $args[-1] = hashmapMatch($args[-1])
     $global:oldQuery = $args
 		
     $query = 'https://www.google.com/search?q='
@@ -90,13 +98,10 @@ function Search-DuckDuckGo
   {
     $args[0] = "PlaceholderQuery"
   }
-
-  $appendix = $global:lookupSite[$args[-1]]
-  if( $appendix -ne $null)
-  {
-    $args[-1] = $appendix
-  } 
-		
+  
+  $args[-1] = hashmapMatch($args[-1])
+  $global:oldQuery = $args
+			
   $query = 'https://www.duckduckgo.com/?q='
   $args | % { $query = $query + "$_+" }
   $url = $query.Substring(0, $query.Length - 1)

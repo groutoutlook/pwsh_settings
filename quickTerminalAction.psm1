@@ -51,6 +51,20 @@ function androidDevEnv
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
 
+function tapscr($emulatorList = $global:adbDevices)
+{
+	try
+	{
+		adb -s $emulatorList[0] shell input tap 600 600
+
+	} catch [System.Exception] 
+	{
+		Write-Host "Import Anddev" -ForegroundColor Cyan
+		anddev && adbList && `
+			adb -s $global:adbDevices[0] shell input tap 600 600
+	}
+}
+
 function explr($inputPath = (Get-Location))
 {
 	if($inputPath -match "This PC")
