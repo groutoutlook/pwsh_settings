@@ -245,7 +245,8 @@ ForEach($handler in $HandlerParameters.Keys)
 # Sometimes you want to get a property of invoke a member on what you've entered so far
 # but you need parens to do that.  This binding will help by putting parens around the current selection,
 # or if nothing is selected, the whole line.
-Set-PSReadLineKeyHandler -Key 'Alt+(' `
+# $ original is alt+(
+Set-PSReadLineKeyHandler -Key 'Alt+9' `
   -BriefDescription ParenthesizeSelection `
   -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
   -ScriptBlock {
@@ -270,7 +271,8 @@ Set-PSReadLineKeyHandler -Key 'Alt+(' `
 }
 
 # This example will replace any aliases on the command line with the resolved commands.
-Set-PSReadLineKeyHandler -Key "Alt+%" `
+# Original is alt+%
+Set-PSReadLineKeyHandler -Key "Alt+5" `
   -BriefDescription ExpandAliases `
   -LongDescription "Replace all aliases with the full command" `
   -ScriptBlock {
