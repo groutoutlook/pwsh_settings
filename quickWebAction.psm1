@@ -111,6 +111,16 @@ function Search-DuckDuckGo
 Set-Alias -Name ddg -Value Search-DuckDuckGo
 Set-Alias -Name dg -Value Search-DuckDuckGo
 
+$global:ggmode = $true
+
+if($global:ggmode -eq $true)
+{
+
+}
+
+
+
+
 
 function compSearch
 {

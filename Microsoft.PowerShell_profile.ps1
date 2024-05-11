@@ -75,12 +75,31 @@ function yy
 }
 Set-Alias -Name dd -Value yy
 
+
+
+
+function AppendPrompt
+{
+	function global:prompt
+	{
+		if ($null -ne $__zoxide_prompt_old)
+		{
+			& $__zoxide_prompt_old
+		}
+		$null = __zoxide_hook
+	}
+
+}
+
 function P7()
 {
 	Invoke-Expression (&starship init powershell)
 	Invoke-Expression (& { (zoxide init powershell --hook pwd | Out-String) })
 	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
+	AppendPrompt
 }
+
+
 
 $global:initialModuleList=@(
 	"quickWebAction",

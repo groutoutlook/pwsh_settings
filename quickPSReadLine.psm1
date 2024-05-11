@@ -222,7 +222,6 @@ $YankWordParameters = @{
 }
 
 
-
 # INFO: Self-made function.
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
@@ -233,6 +232,7 @@ $HandlerParameters = @{
   "sudoHandler"  = $sudoRunParameters
   "killword" = $smartKillWordParameters
   "yankword" = $YankWordParameters
+  # "EnterLine" = $EnterParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {
