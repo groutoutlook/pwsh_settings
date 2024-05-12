@@ -59,10 +59,18 @@ function tapscr($emulatorList = $global:adbDevices)
 
 	} catch [System.Exception] 
 	{
-		Write-Host "Import Anddev" -ForegroundColor Cyan
-		anddev 
-		ADB_getSerialList && `
-			adb -s $global:adbDevices[0] shell input tap 600 600
+		try
+  {
+
+			Write-Host "Import Anddev" -ForegroundColor Cyan
+			anddev 
+			ADB_getSerialList && `
+				adb -s $global:adbDevices[0] shell input tap 600 600
+		} catch [ System.Management.Automation.CommandNotFoundException]
+		{
+			# Recursive call until it tap.
+			tapsc
+		}
 	}
 }
 
