@@ -45,8 +45,8 @@ function term($which = "win")
 }
 function androidDevEnv
 {
-	$Env:P7AndroidDir = "$env:p7settingDir\adb_p7"
-	Import-Module -Name (Join-Path -Path $Env:P7AndroidDir -ChildPath "ADB_BasicModule.psm1") -Scope Global
+	$Env:P7AndroidDir = (Join-Path -Path $env:p7settingDir -ChildPath "adb_p7")
+	Import-Module -Name (Join-Path -Path $Env:P7AndroidDir -ChildPath "ADB_BasicModule.psm1") -Scope Global 
 }
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
@@ -60,7 +60,8 @@ function tapscr($emulatorList = $global:adbDevices)
 	} catch [System.Exception] 
 	{
 		Write-Host "Import Anddev" -ForegroundColor Cyan
-		anddev && adbList && `
+		anddev 
+		ADB_getSerialList && `
 			adb -s $global:adbDevices[0] shell input tap 600 600
 	}
 }
