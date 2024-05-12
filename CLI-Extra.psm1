@@ -1,11 +1,3 @@
-# INFO: yazi on the download folders?
-function yyd
-{
-  yy "~/Downloads/"
-}
-
-
-
 # INFO: Import Completion scripts.
 function Import-Completion
 {

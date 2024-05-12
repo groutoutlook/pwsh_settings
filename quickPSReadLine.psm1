@@ -202,25 +202,24 @@ $smartKillWordParameters = @{
   }
 }
 
-# INFO: yank word. The latest killed one.
-# Currently therer is no way to access a list  of tjust killed words.
-$YankWordParameters = @{
-  Key = 'Ctrl+q'
-  BriefDescription = 'Yank word pararmeter'
-  LongDescription = 'yank word that we just kill, it is currently limited to the latest in ring.'
-  ScriptBlock = {
-    param($key, $arg)   # The arguments are ignored in this example
-
-    # GetBufferState gives us the command line (with the cursor position)
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-      [ref]$cursor)
-     
-    [Microsoft.PowerShell.PSConsoleReadLine]::Yank()
-  }
-}
-
+# # INFO: yank word. The latest killed one.
+# # Currently therer is no way to access a list  of tjust killed words.
+# $YankWordParameters = @{
+#   Key = 'Ctrl+q'
+#   BriefDescription = 'Yank word pararmeter'
+#   LongDescription = 'yank word that we just kill, it is currently limited to the latest in ring.'
+#   ScriptBlock = {
+#     param($key, $arg)   # The arguments are ignored in this example
+#
+#     # GetBufferState gives us the command line (with the cursor position)
+#     $line = $null
+#     $cursor = $null
+#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+#       [ref]$cursor)
+#      
+#     [Microsoft.PowerShell.PSConsoleReadLine]::Yank()
+#   }
+# }
 
 # INFO: Self-made function.
 $HandlerParameters = @{
@@ -231,8 +230,7 @@ $HandlerParameters = @{
   "escHandler"  = $quickEscParameters
   "sudoHandler"  = $sudoRunParameters
   "killword" = $smartKillWordParameters
-  "yankword" = $YankWordParameters
-  # "EnterLine" = $EnterParameters
+  # "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {

@@ -62,22 +62,6 @@ function global:Backup-Environment($Verbose = $null)
 Set-Alias -Name p7Backup -Value Backup-Environment
 
 
-function yy
-{
-	$tmp = [System.IO.Path]::GetTempFileName()
-	yazi $args --cwd-file="$tmp"
-	$cwd = Get-Content -Path $tmp
-	if (-not [String]::IsNullOrEmpty($cwd) -and $cwd -ne $PWD.Path)
-	{
-		Set-Location -Path $cwd
-	}
-	Remove-Item -Path $tmp
-}
-Set-Alias -Name dd -Value yy
-
-
-
-
 function AppendPrompt
 {
 	function global:prompt
