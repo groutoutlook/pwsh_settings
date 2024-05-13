@@ -92,3 +92,17 @@ function yyd
 }
 Set-Alias -Name dd -Value yy
 
+function ycb
+{
+  try
+  {
+    $clipboardExtracted = ((Get-Clipboard) -replace '"',"" )
+    $processedPath = (Split-path -Path $clipboardExtracted)
+  } catch [System.Management.Automation.ParameterBindingValidationException]
+  {
+    Write-Error "Clipboard is not a system path."
+    $processedPath = "$pwd"
+  }
+  yy $processedPath
+}
+Set-Alias -Name dcb -Value ycb
