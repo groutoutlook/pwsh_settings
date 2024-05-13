@@ -51,7 +51,7 @@ function androidDevEnv
 Set-Alias -Name andDev -Value androidDevEnv
 Add-Type -AssemblyName System.Windows.Forms
 
-function tapscr($emulatorList = $global:adbDevices)
+function tapscr($emulator = $global:adbDevices,$index = 0)
 {
 	try
 	{
@@ -65,11 +65,11 @@ function tapscr($emulatorList = $global:adbDevices)
 			Write-Host "Import Anddev" -ForegroundColor Cyan
 			anddev 
 			ADB_getSerialList && `
-				adb -s $global:adbDevices[0] shell input tap 600 600
-		} catch [ System.Management.Automation.CommandNotFoundException]
+				adb -s $emulator[$index] shell input tap 600 600
+		} catch [ System.Management.Automation.CommandNotFoundException],[System.Management.Automation.ParentContainsErrorRecordException]
 		{
 			# Recursive call until it tap.
-			tapsc
+			tapscr
 		}
 	}
 }
