@@ -202,6 +202,37 @@ $smartKillWordParameters = @{
   }
 }
 
+
+# HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
+$smartKillWordParameters = @{
+  Key = 'Ctrl+Backspace'
+  BriefDescription = 'Smarter kill word '
+  LongDescription = 'Call sudo on current command or latest command in history.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+     
+    #Info 
+    if($cursor -eq 0)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
+    }
+  }
+}
+
+
+
+
+
+
 # # INFO: yank word. The latest killed one.
 # # Currently therer is no way to access a list  of tjust killed words.
 # $YankWordParameters = @{
