@@ -55,7 +55,14 @@ function tapscr($emulator = $global:adbDevices,$index = 0)
 {
 	try
 	{
-		adb -s $emulatorList[0] shell input tap 600 600
+		$emulatorName  = $emulator[$index]
+		if(($emulatorName).Length -gt 2)
+		{
+			adb -s $emulatorName shell input tap 600 600
+		} else
+		{
+			adb -s $emulator shell input tap 1000 500
+		}
 
 	} catch [System.Exception] 
 	{
@@ -64,9 +71,17 @@ function tapscr($emulator = $global:adbDevices,$index = 0)
 
 			Write-Host "Import Anddev" -ForegroundColor Cyan
 			anddev 
-			ADB_getSerialList && `
-				adb -s $emulator[$index] shell input tap 600 600
-		} catch [ System.Management.Automation.CommandNotFoundException],[System.Management.Automation.ParentContainsErrorRecordException]
+			ADB_getSerialList 
+		
+			$emulatorName  = $emulator[$index]
+			if(($emulatorName).Length -gt 2)
+			{
+				adb -s $emulatorName shell input tap 600 600
+			} else
+			{
+				adb -s $emulator shell input tap 1000 500
+			}	
+		} catch [ System.Management.Automation.CommandNotFoundException]
 		{
 			# Recursive call until it tap.
 			tapscr
