@@ -203,9 +203,34 @@ $smartKillWordParameters = @{
 }
 
 
-# HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
-$smartKillWordParameters = @{
+## HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
+$ExtraKillWordParameters = @{
   Key = 'Ctrl+Backspace'
+  BriefDescription = 'Smarter kill word '
+  LongDescription = 'Call sudo on current command or latest command in history.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+     
+    #Info 
+    if($cursor -eq 0)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
+    }
+  }
+}
+
+
+$ExtraKillWord1Parameters = @{
+  Key = 'Alt+Backspace'
   BriefDescription = 'Smarter kill word '
   LongDescription = 'Call sudo on current command or latest command in history.'
   ScriptBlock = {
@@ -261,6 +286,8 @@ $HandlerParameters = @{
   "escHandler"  = $quickEscParameters
   "sudoHandler"  = $sudoRunParameters
   "killword" = $smartKillWordParameters
+  "extrakillword" = $ExtraKillWordParameters
+  "extrakillword1" = $ExtraKillWord1Parameters
   # "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
@@ -404,8 +431,13 @@ Set-PSReadLineKeyHandler -Key Alt+a `
 }
 
 
+# INFO: https://github.com/PowerShell/PSReadLine/blob/61f598d8a733eba35810a4de6dc76f17433bbefc/PSReadLine/Options.cs#L23
+# All the options, on the code.
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineOption -PredictionViewStyle ListView
+
+# INFO: Here is the main function. To add the large chunk of keymap into shell.
 $parameters = $HandlerParameters[$handler]
 Set-PSReadLineKeyHandler @parameters
-
-
 
