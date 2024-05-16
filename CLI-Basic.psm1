@@ -106,3 +106,12 @@ function ycb
   yy $processedPath
 }
 Set-Alias -Name dcb -Value ycb
+
+
+
+# INFO: mousemaster or something related to mouse controlling
+function mousemt
+{
+  ( mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
+}
+Set-Alias -Name msmt -Value mousemt
