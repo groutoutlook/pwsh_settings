@@ -2,7 +2,9 @@
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
 function zsh
 {
-	wsl --cd ~
+	# INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
+	# wsl --cd ~
+	wsl
 }
 function Dirs
 {
@@ -301,5 +303,5 @@ initShellApp
 initIDE
 initAutomate
 initGuiApp
-# P7
+
 # Import-Module PSCompletions
