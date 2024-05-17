@@ -115,3 +115,11 @@ function mousemt
   ( mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
 }
 Set-Alias -Name msmt -Value mousemt
+
+
+
+# INFO: Misc files on the terminal.
+function clock
+{
+  tenki --mode meteor --timer-color green --show-fps
+}
