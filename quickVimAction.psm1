@@ -185,7 +185,6 @@ function :obsidian()
 }
 
 # INFO: switch workspace.
-
 $workspaceNameTable = @{
   "j" = "Journal-code-eda"
   "jc" = "Journal-code-eda"
@@ -453,3 +452,9 @@ Set-Alias -Name ju -Value just
 
 
 
+# INFO: function to switch between applications.
+# Right now it's based on the Show-Window function.
+function :s
+{
+  Show-Window "$args"
+}
