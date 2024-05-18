@@ -1,9 +1,11 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
-# Setup for (^G) 
+# Setup for (^S)
+# Substitute the fwd_i_search.
+# (https://stackoverflow.com/a/76991018/22954711)
 $ggSearchParameters = @{
-  Key = 'Ctrl+g'
+  Key = 'Ctrl+s'
   BriefDescription = 'Google Mode'
   LongDescription = 'Maybe other search function, but who knows.'
   ScriptBlock = {
