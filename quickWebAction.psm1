@@ -15,6 +15,9 @@ $global:lookupSite = @{
   "ms" = "site%3Alearn.microsoft.com"
   "pwsh" = "site%3Alearn.microsoft.com" # NOTE: Since it's the same to search pwsh in msdoc.
 }
+# FIXME: Reason I have to use that variable because of the broken state of some browser could..
+# affect my speed for accessing things.
+$global:defaultBrowser = "msedge"
 
 # reason to make this function is, I may need some kind of initial or something to do some opreataion after firing the query
 function hashmapMatch($argsToMatch)
@@ -59,7 +62,7 @@ function Search-Google
     $args | ForEach-Object { $query = $query + "$_+" }
   }
   $url = $query.Substring(0, $query.Length - 1)
-  Start-Process "$url"
+  Invoke-Expression "$global:defaultBrowser $url"
 }
 
 Set-Alias -Name gos -Value Search-Google
@@ -81,7 +84,7 @@ function hvdic(
     $phrase.ToCharArray() | % { 
       $link = $query + "$_" 
       $url = $link.Substring(0, $link.Length)
-      start "$url"
+      Invoke-Expression "$global:defaultBrowser $url"
     }
   }
 }
@@ -105,7 +108,7 @@ function Search-DuckDuckGo
   $query = 'https://www.duckduckgo.com/?q='
   $args | % { $query = $query + "$_+" }
   $url = $query.Substring(0, $query.Length - 1)
-  chrome "$url"
+  Invoke-Expression "$global:defaultBrowser $url"
 }
 
 Set-Alias -Name ddg -Value Search-DuckDuckGo

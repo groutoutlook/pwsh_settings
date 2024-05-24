@@ -73,8 +73,8 @@ function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2
 	cd $uv4project
 	while($true)
 	{
-		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
-			&& cat .\flash_log.txt && sleep 1
+		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 4 `
+			&& cat .\flash_log.txt && sleep 2
 	}
 }
 EmbedEnv

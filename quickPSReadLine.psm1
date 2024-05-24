@@ -33,6 +33,37 @@ $ggSearchParameters = @{
       
   }
 }
+
+$ggSearch_1_Parameters = @{
+  Key = 'Ctrl+g'
+  BriefDescription = 'Google Mode'
+  LongDescription = 'Maybe other search function, but who knows.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    $searchFunction = "Search-Google"
+    if ($line -match "[a-z]")
+    {
+      $SearchWithQuery = "$searchFunction $line"
+    } else
+    {
+      $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+    }
+    #Store to history for future use.
+    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
+    Invoke-Expression $SearchWithQuery
+    # Can InvertLine() here to return empty line.
+    # [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    # Rather than that, I put the cursor at the end instead.
+      
+  }
+}
+
 # Setup for (!s) 
 $AuxSearchParameters = @{
   Key = 'Alt+s'
@@ -282,6 +313,7 @@ $ExtraKillWord1Parameters = @{
 # INFO: Self-made function.
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
+  "gg1Handler"   = $ggSearch_1_Parameters
   "AuxGgHandler"   = $AuxSearchParameters
   "obsHandler"  = $omniSearchParameters
   "cdHandler"  = $cdHandlerParameters
