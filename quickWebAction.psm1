@@ -198,7 +198,15 @@ function Start-Streaming($defaultPages = "tw")
   $streamingHomepageURI ??= $dictStreamPage["tw"] 
   # INFO: Basically wrapping around the `obs-cmd` executable.
   # Or just simply invoke the shortcut.
-  obs-cmd streaming start
+  try
+  {
+    $processProperties = (Get-Process -Name obs64 -ErrorAction Stop) `
+      && obs-cmd streaming start
+  } catch [Microsoft.PowerShell.Commands.ProcessCommandException]
+  {
+    Write-Host "Havent started OBS Studio yet." -ForegroundColor Red
+    Start-Process "C:\Users\COHOTECH\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Scoop Apps\OBS Studio.lnk"
+  }
 }
 Set-Alias sstream Start-Streaming
 function Stop-Streaming
