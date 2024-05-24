@@ -183,3 +183,57 @@ function Get-CodeStats($webui = 0)
 } 
 
 Set-Alias -Name cst -Value Get-CodeStats 
+
+
+# INFO: Streaming services quick-access
+# Twitch and Youtube.
+$dictStreamPage = @{
+  "tw" = "https://www.twitch.tv/groutnotout"
+  "yt" = "https://studio.youtube.com/channel/UCmqaJVwSmqDxwbsN3nzVQRA/livestreaming"
+}
+function Start-Streaming($defaultPages = "tw")
+{
+  
+  $streamingHomepageURI = $dictStreamPage[$defaultPages] 
+  $streamingHomepageURI ??= $dictStreamPage["tw"] 
+  # INFO: Basically wrapping around the `obs-cmd` executable.
+  # Or just simply invoke the shortcut.
+  obs-cmd streaming start
+}
+Set-Alias sstream Start-Streaming
+function Stop-Streaming
+{
+  obs-cmd streaming stop
+}
+
+Set-Alias kstream Stop-Streaming
+
+function Test-Stream(
+  $defaultPages = "tw",
+  $checkStatus = "w" 
+)
+{
+  # Since chrome have my account registered, better automate it here.
+  $defaultStreamingBrowser = "chrome" 
+  if ($checkStatus -match "^cli")
+  {
+    obs-cmd recording status
+    # there may be elegant ways to do this, just implemented something as `obs-cmd streaming status`
+    Write-Host "now check web portal" -ForegroundColor Yellow
+    $checkStatus = "web"
+  } 
+  if ($checkStatus -match "^w")
+  
+  {
+    $streamingHomepageURI = $dictStreamPage[$defaultPages] 
+    $streamingHomepageURI ??= $dictStreamPage["tw"] 
+
+    Invoke-Expression "$defaultStreamingBrowser $streamingHomepageURI"
+  } else
+  {
+    Start-Streaming $defaultPages
+  }
+  
+
+}
+Set-Alias ckstream Test-Stream
