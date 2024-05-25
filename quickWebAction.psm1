@@ -189,7 +189,7 @@ Set-Alias -Name cst -Value Get-CodeStats
 # Twitch and Youtube.
 $dictStreamPage = @{
   "tw" = "https://www.twitch.tv/groutnotout"
-  "yt" = "https://studio.youtube.com/channel/UCmqaJVwSmqDxwbsN3nzVQRA/livestreaming"
+  "yt" = "https://www.youtube.com/@dell_p1/streams"
 }
 function Start-Streaming($defaultPages = "tw")
 {
