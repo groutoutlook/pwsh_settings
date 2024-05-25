@@ -58,7 +58,7 @@ function copyFilestoKeil(
 function EmbedEnv()
 {
 	$Env:cubeCLIdir =  "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
-	$Env:edgeDir = "$env:LOCALAPPDATA\Microsoft\Edge SxS\Application"	
+	$Env:edgeDir = "${env:PROGRAMFILES(X86)}\Microsoft\Edge\Application\"	
 	$env:linuxEnvdir = "D:\ProgramDataD\Linux\proj\linux_env"
 	$diradd = @(
 		$Env:cubeCLIdir,$env:edgeDir
