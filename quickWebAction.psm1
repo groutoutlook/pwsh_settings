@@ -191,6 +191,11 @@ $dictStreamPage = @{
   "tw" = "https://www.twitch.tv/groutnotout"
   "yt" = "https://www.youtube.com/@dell_p1/streams"
 }
+
+function obss
+{
+  Show-Window obs64
+}
 function Start-Streaming($defaultPages = "tw")
 {
   
@@ -201,7 +206,7 @@ function Start-Streaming($defaultPages = "tw")
   try
   {
     $processProperties = (Get-Process -Name obs64 -ErrorAction Stop) `
-      && obs-cmd streaming start
+      && obs-cmd streaming start && obs-cmd replay start
   } catch [Microsoft.PowerShell.Commands.ProcessCommandException]
   {
     Write-Host "Havent started OBS Studio yet." -ForegroundColor Red
@@ -212,23 +217,35 @@ Set-Alias sstream Start-Streaming
 function Stop-Streaming
 {
   obs-cmd streaming stop
+  obs-cmd recording stop
+  obs-cmd replay stop
 }
 
 Set-Alias kstream Stop-Streaming
 
 function Test-Stream(
   $defaultPages = "tw",
-  $checkStatus = "w" 
+  $checkStatus = "cli" 
 )
 {
   # Since chrome have my account registered, better automate it here.
   $defaultStreamingBrowser = "chrome" 
+  # HACK: It's relying on replay status since I toggled it on the same time as streaming.
+  # Should be changed when we have a command like `streaming status` available.
+  $outputCheck = (obs-cmd replay status) | Select-String -Pattern "not"
+  if ($null -ne $outputCheck)
+  {
+    Write-Host "Stream havent started." -ForegroundColor Red
+  } else
+  {
+    Write-Host "Stream started." -ForegroundColor Green
+  }
+
   if ($checkStatus -match "^cli")
   {
-    obs-cmd recording status
     # there may be elegant ways to do this, just implemented something as `obs-cmd streaming status`
-    Write-Host "now check web portal" -ForegroundColor Yellow
-    $checkStatus = "web"
+    Write-Host "Check web portal." -ForegroundColor Yellow
+    # $checkStatus = "web"
   } 
   if ($checkStatus -match "^w")
   
@@ -237,11 +254,6 @@ function Test-Stream(
     $streamingHomepageURI ??= $dictStreamPage["tw"] 
 
     Invoke-Expression "$defaultStreamingBrowser $streamingHomepageURI"
-  } else
-  {
-    Start-Streaming $defaultPages
   }
-  
-
 }
 Set-Alias ckstream Test-Stream
