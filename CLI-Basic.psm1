@@ -123,3 +123,20 @@ function clock
 {
   tenki --mode meteor --timer-color green --show-fps
 }
+
+
+
+function cdd
+{
+  zi $args
+}
+
+
+# HACK: `lsd` and `ls` to `exa`
+# There could be more function at this point though.
+function lsd
+{
+  exa --hyperlink $args
+}
+
+Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope

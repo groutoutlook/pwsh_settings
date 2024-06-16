@@ -17,7 +17,7 @@ $global:lookupSite = @{
 }
 # FIXME: Reason I have to use that variable because of the broken state of some browser could..
 # affect my speed for accessing things.
-$global:defaultBrowser = "msedge"
+$global:defaultBrowser = "chrome"
 
 # reason to make this function is, I may need some kind of initial or something to do some opreataion after firing the query
 function hashmapMatch($argsToMatch)
@@ -205,8 +205,9 @@ function Start-Streaming($defaultPages = "tw")
   # Or just simply invoke the shortcut.
   try
   {
-    $processProperties = (Get-Process -Name obs64 -ErrorAction Stop) `
+    (Get-Process -Name obs64 -ErrorAction Stop) `
       && obs-cmd streaming start && obs-cmd replay start
+
   } catch [Microsoft.PowerShell.Commands.ProcessCommandException]
   {
     Write-Host "Havent started OBS Studio yet." -ForegroundColor Red
@@ -216,8 +217,11 @@ function Start-Streaming($defaultPages = "tw")
 Set-Alias sstream Start-Streaming
 function Stop-Streaming
 {
+  # HACK: This is too linear though. Maybe we need them to express more information, or clean the output...
+  # Havent thought of it yet.
   obs-cmd streaming stop
   obs-cmd recording stop
+  obs-cmd replay save
   obs-cmd replay stop
 }
 
