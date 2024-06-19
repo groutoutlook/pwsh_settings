@@ -136,7 +136,7 @@ function cdd
 # There could be more function at this point though.
 function lsd
 {
-  exa --hyperlink $args
+  exa --hyperlink --icons=always $args 
 }
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
