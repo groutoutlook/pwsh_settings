@@ -149,8 +149,9 @@ $tableJournal = @{
   "web" = "$vaultPath\note_software\0_LongJournal\WebJournal.md"
   "os" = "$vaultPath\note_software\0_LongJournal\OSJournal.md"
   "vid" = "$vaultPath\note_software\note_entertainment\note_discography\VideoJournal.md"
-  "music" = "$vaultPath\note_software\note_entertainment\note_discography\VideoJournal.md"
+  "music" = "$vaultPath\note_entertainment\note_discography\VideoJournal.md"
   "life" = "$vaultPath\note_algo_lang\0_LongJournal\LifeJournal.md"
+  "new" = "$vaultPath\note_Knowledge\NewsJournal.md"
 }
 
 # NOTE: Obsidian trigger function.
