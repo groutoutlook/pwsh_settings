@@ -289,6 +289,30 @@ function cd+($rep = 1)
 	}
 }
 
+function cd..($rep = 1)
+{
+	foreach($i in (1..$rep))
+ {
+		Set-Location ..
+	}
+}
+
+function ...($rep = 1)
+{
+	cd.. 2
+	if ($rep -gt 1 )
+	{
+		cd.. ($rep - 1)
+	}
+}
+
+
+function ....($rep = 1)
+{
+	cd.. 3
+}
+
+
 # INFO: Rescue explorer function.
 function Restart-Explorer
 {

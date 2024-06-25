@@ -61,6 +61,12 @@ function bc
   numbat
 }
 
+# INFO: Copy previous command in history.
+function cp!
+{
+  $previousCommand = Get-History -Count 1 
+  Set-Clipboard $previousCommand
+}
 
 function omniSearchObsidian
 {

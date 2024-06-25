@@ -110,14 +110,16 @@ Set-Alias -Name expl -Value explr -Scope Global
 
 # INFO: A function to switch font, on CLI.
 # TODO: Further extent could be dynamically change profiles settings, but to be honest that's not what the product recommended
-function fontsw
+function fontsw($lineId = 411)
 {
 	# INFO: Find tab's profile name then search in that chunk.
 	# Right now we will hard-code the offset of font and `Set-Content` that line.
 	# Hard-code is easier in powershell honestly, since `Get-Content` have that issue.
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = Get-Content -Path $SettingsPath
-	$CurrentFont = $CurrentFileContent[368]
+	$FontLine = $lineId
+	$CurrentFont = $CurrentFileContent[$FontLine]
+	echo "$CurrentFont"
 	if ($CurrentFont -match "iosev")
 	{
 		$ReplacedFont = '"face": "Cascadia Code NF SemiLight",'
@@ -125,7 +127,7 @@ function fontsw
 	{
 		$ReplacedFont = '"face": "Iosevka Nerd Font Propo",'
 	}
-	$CurrentFileContent[368] = $ReplacedFont
+	$CurrentFileContent[$FontLine] = $ReplacedFont
 	Set-Content $CurrentFileContent -Path $SettingsPath
 
 	# TODO: Ideally, convert that chunk into json object and directly modified from there.
