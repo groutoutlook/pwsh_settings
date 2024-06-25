@@ -139,6 +139,7 @@ $tableJournal = @{
   "workflow" = "$vaultPath\note_Business\WorkflowJournal.md"
   "phr" = "$vaultPath\note_Knowledge\PhraseJournal.md"
   "phrase" = "$vaultPath\note_Knowledge\PhraseJournal.md"
+  "quote" = "$vaultPath\note_Knowledge\QuoteJournal.md"
   "ev" = "$vaultPath\note_Knowledge\EventJournal.md"
   "event" = "$vaultPath\note_Knowledge\EventJournal.md"
   "math" = "$vaultPath\note_algo_lang\0_LongJournal\STEMJournal.md"
