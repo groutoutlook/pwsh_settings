@@ -243,7 +243,7 @@ function global:initProfileEnv
 { 
 	$Env:ProgramFilesD = "D:\Program Files"
 	$Env:ProgramDataD = "D:\ProgramDataD"
-	$env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
+	$Env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
@@ -251,19 +251,21 @@ function global:initProfileEnv
 	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
-	$env:pipxLocalDir = "~\.local\bin"
+	$Env:pipxLocalDir = "~\.local\bin"
 
-	$env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
-	$env:VulkanSDK="C:\VulkanSDK\*\"
+	$Env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
+	$Env:VulkanSDK="C:\VulkanSDK\*\"
 	$Env:cargoDir = "~\.cargo\bin"
-	$env:usrbinD="D:\usr\bin"
+	$Env:usrbinD="D:\usr\bin"
+	$Env:edgeDir = "${env:PROGRAMFILES(X86)}\Microsoft\Edge\Application\"
 	$diradd = @(
-		$env:usrbinD,
+		$Env:usrbinD,
 		$Env:PhotoshopDir,
 		$Env:ChromeDir,
 		$Env:kicadDir,
-		$env:pipxLocalDir,
+		$Env:pipxLocalDir,
 		$Env:cargoDir,
+		$Env:edgeDir,
 		$Env:SysInternalSuite
 	)
 	foreach($d in $diradd)

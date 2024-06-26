@@ -15,7 +15,7 @@ $global:lookupSite = @{
 }
 # FIXME: Reason I have to use that variable because of the broken state of some browser could..
 # affect my speed for accessing things.
-$global:defaultBrowser = "chrome"
+$global:defaultBrowser = "msedge"
 
 # reason to make this function is, I may need some kind of initial or something to do some opreataion after firing the query
 function hashmapMatch($argsToMatch)
@@ -231,7 +231,7 @@ function Test-Stream(
 )
 {
   # Since chrome have my account registered, better automate it here.
-  $defaultStreamingBrowser = "chrome" 
+  $defaultStreamingBrowser = "msedge" 
   # HACK: It's relying on replay status since I toggled it on the same time as streaming.
   # Should be changed when we have a command like `streaming status` available.
   $outputCheck = (obs-cmd replay status) | Select-String -Pattern "not"
