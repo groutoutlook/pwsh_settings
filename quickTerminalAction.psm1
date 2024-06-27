@@ -126,6 +126,7 @@ function fontsw($fontName = "Iosevka Nerd Font Propo")
 }
 
 # INFO: Swap shaders, for reloading purpose perhaps.
+$global:defaultShaderPath = "D:\ProgramDataD\VS\proj\general_shader\HLSL_Windows_Terminal"
 function swapWtShader($fileName = "orig")
 {
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
@@ -142,7 +143,7 @@ function swapWtShader($fileName = "orig")
 			$fileName = "orig"
 		}
 	}
-	$CurrentFileContent.profiles.list[$defaultWTProfile].'experimental.pixelShaderPath' = "C:\RootConf\$fileName.hlsl"
+	$CurrentFileContent.profiles.list[$defaultWTProfile].'experimental.pixelShaderPath' = "$defaultShaderPath\$fileName.hlsl"
 	$fileContent = "$(ConvertTo-Json $CurrentFileContent -Depth 10)"
 	# echo $fileContent
 	Set-Content -Value $fileContent -Path $SettingsPath
@@ -154,7 +155,7 @@ function copyWtShader($fileName = "orig")
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json")
 	$CurrentFileContent = Get-Content -Path $SettingsPath | ConvertFrom-Json
 	$TestShaderPath = $CurrentFileContent.profiles.defaults.'experimental.pixelShaderPath'
-	$FinalShaderPath = "C:\\RootConf\\$fileName.hlsl"
+	$FinalShaderPath = "$defaultShaderPath\$fileName.hlsl"
 
 	Copy-Item $TestShaderPath $FinalShaderPath
 }

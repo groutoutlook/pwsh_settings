@@ -34,7 +34,7 @@ function initGuiApp
 	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
 }
 
-$localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
+$global:localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
 $global:p7Profile = $localPathNvim
 function global:p7Env
 {
