@@ -109,15 +109,16 @@ Set-Alias -Name expl -Value explr -Scope Global
 
 
 # INFO: A function to switch font, on CLI.
+$global:defaultWTProfile = 3
 function fontsw($fontName = "Iosevka Nerd Font Propo")
 {
 	# HACK: Find tab's profile name then search in that chunk.
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = (Get-Content -Path $SettingsPath | ConvertFrom-Json)
-	$TestFont = $CurrentFileContent.profiles.list[2].font.face
+	$TestFont = $CurrentFileContent.profiles.list[$defaultWTProfile].font.face
 	echo $TestFont
 
-	$CurrentFileContent.profiles.list[2].font.face = "$fontName"
+	$CurrentFileContent.profiles.list[$defaultWTProfile].font.face = "$fontName"
 	$fileContent = "$(ConvertTo-Json $CurrentFileContent -Depth 10)"
 
 	Set-Content -Value $fileContent -Path $SettingsPath
@@ -129,7 +130,7 @@ function swapWtShader($fileName = "orig")
 {
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = (Get-Content -Path $SettingsPath | ConvertFrom-Json)
-	$TestShaderPath = $CurrentFileContent.profiles.list[3].'experimental.pixelShaderPath'
+	$TestShaderPath = $CurrentFileContent.profiles.list[$defaultWTProfile].'experimental.pixelShaderPath'
 	# INFO: switch back case.
 	if ($fileName -eq "-")
 	{
@@ -141,7 +142,7 @@ function swapWtShader($fileName = "orig")
 			$fileName = "orig"
 		}
 	}
-	$CurrentFileContent.profiles.list[3].'experimental.pixelShaderPath' = "C:\\RootConf\\$fileName.hlsl"
+	$CurrentFileContent.profiles.list[$defaultWTProfile].'experimental.pixelShaderPath' = "C:\RootConf\$fileName.hlsl"
 	$fileContent = "$(ConvertTo-Json $CurrentFileContent -Depth 10)"
 	# echo $fileContent
 	Set-Content -Value $fileContent -Path $SettingsPath
