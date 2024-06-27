@@ -130,7 +130,17 @@ function swapWtShader($fileName = "orig")
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = (Get-Content -Path $SettingsPath | ConvertFrom-Json)
 	$TestShaderPath = $CurrentFileContent.profiles.list[3].'experimental.pixelShaderPath'
-	# echo $TestShaderPath
+	# INFO: switch back case.
+	if ($fileName -eq "-")
+	{
+		if( $TestShaderPath -match "orig")
+		{
+			$fileName = "swap"
+		} else
+		{
+			$fileName = "orig"
+		}
+	}
 	$CurrentFileContent.profiles.list[3].'experimental.pixelShaderPath' = "C:\\RootConf\\$fileName.hlsl"
 	$fileContent = "$(ConvertTo-Json $CurrentFileContent -Depth 10)"
 	# echo $fileContent
