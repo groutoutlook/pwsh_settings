@@ -275,6 +275,7 @@ function global:initProfileEnv
 	# $Env:PSModulePath += ";" + $Env:p7settingDir 
 }
 
+# INFO: cd- and cd--, same logic with cd+ and cd++
 function cd-($rep = 1)
 {
 	foreach($i in (1..$rep))
@@ -282,6 +283,15 @@ function cd-($rep = 1)
 		Set-Location -
 	}
 }
+function cd--($rep = 1)
+{
+	foreach($i in (1..$rep+1))
+ {
+		Set-Location -
+	}
+
+}
+
 
 function cd+($rep = 1)
 {
@@ -290,6 +300,16 @@ function cd+($rep = 1)
 		Set-Location +
 	}
 }
+
+function cd++($rep = 1)
+{
+	foreach($i in (1..$rep+1))
+ {
+		Set-Location +
+	}
+}
+
+
 
 function cd..($rep = 1)
 {
@@ -301,17 +321,19 @@ function cd..($rep = 1)
 
 function ...($rep = 1)
 {
-	cd.. 2
-	if ($rep -gt 1 )
-	{
-		cd.. ($rep - 1)
+	foreach($i in (1..$rep+1))
+ {
+		Set-Location ..
 	}
 }
 
 
 function ....($rep = 1)
 {
-	cd.. 3
+	foreach($i in (1..$rep+2))
+ {
+		Set-Location ..
+	}
 }
 
 

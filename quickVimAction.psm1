@@ -152,6 +152,8 @@ $tableJournal = @{
   "vid" = "$vaultPath\note_software\note_entertainment\note_discography\VideoJournal.md"
   "music" = "$vaultPath\note_entertainment\note_discography\VideoJournal.md"
   "life" = "$vaultPath\note_algo_lang\0_LongJournal\LifeJournal.md"
+  "blog" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
+  "read" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
   "new" = "$vaultPath\note_Knowledge\NewsJournal.md"
 }
 
