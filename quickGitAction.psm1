@@ -20,8 +20,9 @@ function gitCloneClipboard($link = (Get-Clipboard))
 {
 	if ($link -match "^https")
  {
-
-		git clone (Get-Clipboard)
+		# INFO: here we trim the `?.*` queries part of the URL.
+		$trimmedQueryURI = $link -replace "\?.*",""
+		git clone ($trimmedQueryURI)
 	} else
 	{
 		Write-Host "Not a link." -ForegroundColor Red
