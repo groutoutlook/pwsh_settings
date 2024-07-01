@@ -155,6 +155,10 @@ $tableJournal = @{
   "blog" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
   "read" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
   "new" = "$vaultPath\note_Knowledge\NewsJournal.md"
+  "comedy" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
+  "meme" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
+  "firm" = "$vaultPath\note_Embedded\FirmwareJournal.md"
+  "fw" = "$vaultPath\note_Embedded\FirmwareJournal.md"
 }
 
 # NOTE: Obsidian trigger function.
