@@ -100,17 +100,34 @@ function :vg
   :v last
 }
 
+
 # INFO: Quick pwsh_profiles session.
+# Table first
+$sessionMap = @{
+  "pw" = "pwsh_settings"
+  "nv" = "nvim_dotfiles"
+  "ob" = "obsidian"
+  "vk" = "vulkan-samples"
+}
 function :vp
 {
   if($null -eq $args[0])
   {
-    nvim -c "lua require('resession').load 'pwsh_settings'"
+    $inputString = "pw"  
   } else
+  {
+    $inputString = $args[0]
+  }
+  $processedString = $sessionMap[$inputString]
+  
+  if($null -eq $inputString)
   {
     Write-Host "What do you want?" -ForegroundColor Yellow
     :vs
-  }
+  } else
+  {
+    nvim -c "lua require('resession').load `"$processedString`" "
+  } 
 }
 
 # TODO: one day I will try to make them parse the yaml text instead of this clunky hash table.

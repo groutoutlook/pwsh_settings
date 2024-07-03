@@ -110,7 +110,8 @@ Set-Alias -Name expl -Value explr -Scope Global
 
 # INFO: A function to switch font, on CLI.
 $global:defaultWTProfile = 3
-function fontsw($fontName = "Iosevka Nerd Font Propo")
+$global:preferFont = "Iosevka Nerd Font Propo"
+function fontsw($fontName = $global:preferFont)
 {
 	# HACK: Find tab's profile name then search in that chunk.
 	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
@@ -118,7 +119,15 @@ function fontsw($fontName = "Iosevka Nerd Font Propo")
 	$TestFont = $CurrentFileContent.profiles.list[$defaultWTProfile].font.face
 	echo $TestFont
 
-	$CurrentFileContent.profiles.list[$defaultWTProfile].font.face = "$fontName"
+	# INFO: add a fallback mechanism
+	if ($TestFont -match $fontName)
+	{
+		$FinalFont = "Cascadia Code NF SemiLight"
+	} else
+	{
+		$FinalFont = $fontName
+	}
+	$CurrentFileContent.profiles.list[$defaultWTProfile].font.face = "$FinalFont"
 	$fileContent = "$(ConvertTo-Json $CurrentFileContent -Depth 10)"
 
 	Set-Content -Value $fileContent -Path $SettingsPath
