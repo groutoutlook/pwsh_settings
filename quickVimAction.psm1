@@ -84,10 +84,6 @@ function :v
 
 # INFO: Since I'm that lazy, cant type :v ls for sure.
 # when not sure which project to jump. Type :vs for sure.
-function :vs
-{
-  :v ls "$args"
-}
 
 function :vl
 {
@@ -108,8 +104,9 @@ $sessionMap = @{
   "nv" = "nvim_dotfiles"
   "ob" = "obsidian"
   "vk" = "vulkan-samples"
+  "cs" = "stylish-css"
 }
-function :vp
+function :vs
 {
   if($null -eq $args[0])
   {
@@ -123,7 +120,7 @@ function :vp
   if($null -eq $inputString)
   {
     Write-Host "What do you want?" -ForegroundColor Yellow
-    :vs
+    :v ls "$args"
   } else
   {
     nvim -c "lua require('resession').load `"$processedString`" "
