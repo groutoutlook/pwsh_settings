@@ -168,6 +168,7 @@ $tableJournal = @{
   "life" = "$vaultPath\note_algo_lang\0_LongJournal\LifeJournal.md"
   "blog" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
   "read" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
+  "book" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
   "new" = "$vaultPath\note_Knowledge\NewsJournal.md"
   "comedy" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
   "meme" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
@@ -378,6 +379,43 @@ function :jrnl
     }
   }
 
+}
+
+function Get-UniqueEntryJrnl
+{
+  $jrnlYamlPath = "~/.config/jrnl/jrnl.yaml"
+  Import-Module powershell-yaml  
+  #[System.Collections.ArrayList]$ResultList = @()
+  $all_list = @()
+  $os_list = (ConvertFrom-Yaml -yaml (get-content -Raw $jrnlYamlPath))
+  $initial_keys_list = $os_list.journals.Keys
+  $final_dir = $os_list.journals.Values.Values | Sort-Object | Get-Unique
+  [System.Collections.ArrayList]$finalDir = $final_Dir
+  foreach ($shortName in $initial_keys_list)
+  {
+    $matchedPath = $os_list.journals[$shortName].Journal
+    if ($matchedPath -in $finalDir)
+    {
+      $finalDir.Remove($matchedPath)
+      # WARN: Should be $ResultList, I dont know why it didnt work.
+      #  $ResultList.Add($shortName)
+      # HACK: Filter the `acc`. This is the worst way possible to filter this out.
+      # Should be something else, but later, it work now.
+      if ($shortName -ne "acc")
+      {$all_list += $shortName
+      }
+    }
+  }
+  return $all_list
+}
+
+function Test-AllEntryJrnl
+{
+  # INFO: Each and everyone of them have alias, in case you want to golf,
+  # I prefer to KISS.
+  Get-UniqueEntryJrnl | ForEach-Object { `
+      Write-Host $_ -ForegroundColor Cyan && Invoke-Expression "j $_ -today" } `
+  | Set-Clipboard
 }
 
 Set-Alias -Name j -Value :jrnl
