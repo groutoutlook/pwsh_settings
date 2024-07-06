@@ -141,52 +141,74 @@ function :vs
 }
 
 # TODO: one day I will try to make them parse the yaml text instead of this clunky hash table.
+# HACK: As today I could `Get-UniqueEntryJrnl table | Set-Clipboard`
+# Could test with `$os_list = (ConvertFrom-Yaml -yaml (get-content -Raw ~/.config/jrnl/jrnl.yaml)) && $os_list.journals.Keys | %{:o $_}`
+# TODO: Could write full test case later.
 $vaultPath = "D:\ProgramDataD\Notes\Obsidian\Vault_2401" 
-$tableJournal = @{
-  "default" = "$vaultPath\MainJournal.md"
-  1688 = "$vaultPath\note_Items\1688Journal.md"
-  "taobao" = "$vaultPath\note_Items\TaobaoJournal.md"
-  "item" = "$vaultPath\note_Items\OtherItemsJournal.md"
-  "asset" = "$vaultPath\note_Items\AssetJournal.md"
-  "place" = "$vaultPath\note_Knowledge\note_Places\PlacesJournal.md"
-  "work" = "$vaultPath\note_Business\WorkJournal.md"
-  "lang" = "$vaultPath\note_algo_lang\0_LongJournal\LangJournal.md"
-  "prog" = "$vaultPath\note_algo_lang\0_LongJournal\ProgrammingJournal.md"
-  "comp" = "$vaultPath\note_Embedded\ComponentJournal.md"
-  "kicad" = "$vaultPath\note_Embedded\note_EDA\EDAJournal.md"
-  "eda" = "$vaultPath\note_Embedded\note_EDA\EDAJournal.md"
-  "hard" = "$vaultPath\note_Embedded\HardwareJournal.md"
-  "hw" = "$vaultPath\note_Embedded\HardwareJournal.md"
-  "soft" = "$vaultPath\note_software\0_LongJournal\SoftwareJournal.md"
-  "sw" = "$vaultPath\note_software\0_LongJournal\SoftwareJournal.md"
-  "acro" = "$vaultPath\note_Knowledge\AcronymJournal.md"
-  "vocab" = "$vaultPath\note_Knowledge\VocabJournal.md"
-  "flow" = "$vaultPath\note_Business\WorkflowJournal.md"
-  "wf" = "$vaultPath\note_Business\WorkflowJournal.md"
-  "workflow" = "$vaultPath\note_Business\WorkflowJournal.md"
-  "phr" = "$vaultPath\note_Knowledge\PhraseJournal.md"
-  "phrase" = "$vaultPath\note_Knowledge\PhraseJournal.md"
-  "quote" = "$vaultPath\note_Knowledge\QuoteJournal.md"
-  "ev" = "$vaultPath\note_Knowledge\EventJournal.md"
-  "event" = "$vaultPath\note_Knowledge\EventJournal.md"
-  "math" = "$vaultPath\note_algo_lang\0_LongJournal\STEMJournal.md"
-  "physic" = "$vaultPath\note_algo_lang\0_LongJournal\STEMJournal.md"
-  "stem" = "$vaultPath\note_algo_lang\0_LongJournal\STEMJournal.md"
-  "til" = "$vaultPath\note_algo_lang\0_LongJournal\OtherKnowledgeJournal.md"
-  "acc" =  "$vaultPath\note_software\0_LongJournal\AccountJournal.md"
-  "web" = "$vaultPath\note_software\0_LongJournal\WebJournal.md"
-  "os" = "$vaultPath\note_software\0_LongJournal\OSJournal.md"
-  "vid" = "$vaultPath\note_software\note_entertainment\note_discography\VideoJournal.md"
-  "music" = "$vaultPath\note_entertainment\note_discography\VideoJournal.md"
-  "life" = "$vaultPath\note_algo_lang\0_LongJournal\LifeJournal.md"
-  "blog" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
-  "read" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
-  "book" = "$vaultPath\note_algo_lang\0_LongJournal\ReadAndListenJournal.md"
-  "new" = "$vaultPath\note_Knowledge\NewsJournal.md"
-  "comedy" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
-  "meme" = "$vaultPath\note_algo_lang\0_LongJournal\WholesomeJournal.md"
-  "firm" = "$vaultPath\note_Embedded\FirmwareJournal.md"
-  "fw" = "$vaultPath\note_Embedded\FirmwareJournal.md"
+$tableJrnl = @{
+  "prog"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\ProgrammingJournal.md"
+  "stem"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\STEMJournal.md"
+  "windows"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\OSJournal.md"
+  "til"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\OtherKnowledgeJournal.md"
+  "lowsw"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\FirmwareJournal.md"
+  "soft"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\SoftwareJournal.md"
+  "media"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\NewsJournal.md"
+  "work"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Business\\WorkJournal.md"
+  "quote"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PhraseJournal.md"
+  "vocab"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\VocabJournal.md"
+  "firm"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\FirmwareJournal.md"
+  ":1688"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Items\\1688Journal.md"
+  "fw"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\FirmwareJournal.md"
+  "vid"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_entertainment\\note_discography\\VideoJournal.md"
+  "book"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\ReadAndListenJournal.md"
+  "lang"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\LangJournal.md"
+  "cad"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_IDEAndTools\\Asset\\CAD\\CADJournal.md"
+  "qt"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PhraseJournal.md"
+  "life"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\LifeJournal.md"
+  "mech"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_IDEAndTools\\Asset\\CAD\\CADJournal.md"
+  "eco"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\EconomyJournal.md"
+  "hard"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\HardwareJournal.md"
+  "read"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\ReadAndListenJournal.md"
+  "edit"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_IDEAndTools\\Asset\\Art\\ArtToolsJournal.md"
+  "kicad"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\note_EDA\\EDAJournal.md"
+  "come"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\WholesomeJournal.md"
+  "phrase"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PhraseJournal.md"
+  "stm"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\FirmwareJournal.md"
+  "news"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\NewsJournal.md"
+  "video"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_entertainment\\note_discography\\VideoJournal.md"
+  "new"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\NewsJournal.md"
+  "asset"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Items\\AssetJournal.md"
+  "meme"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\WholesomeJournal.md"
+  "art"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_IDEAndTools\\Asset\\Art\\ArtToolsJournal.md"
+  "event"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\EventJournal.md"
+  "acc"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\secret\\AccountJournal.md"
+  "blog"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\ReadAndListenJournal.md"
+  "math"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\STEMJournal.md"
+  "web"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\WebJournal.md"
+  "place"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PlacesJournal.md"
+  "eda"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\note_EDA\\EDAJournal.md"
+  "item"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Items\\OtherItemsJournal.md"
+  "wf"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Business\\WorkflowJournal.md"
+  "person"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PeopleJournal.md"
+  "sw"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\SoftwareJournal.md"
+  "default"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\MainJournal.md"
+  "econ"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\EconomyJournal.md"
+  "phr"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PhraseJournal.md"
+  "hw"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\HardwareJournal.md"
+  "acro"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\AcronymJournal.md"
+  "ev"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\EventJournal.md"
+  "per"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PeopleJournal.md"
+  "taobao"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Items\\TaobaoJournal.md"
+  "embed"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\ProgrammingJournal.md"
+  "comp"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Embedded\\ComponentJournal.md"
+  "workflow"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Business\\WorkflowJournal.md"
+  "other"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\OtherKnowledgeJournal.md"
+  "os"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\OSJournal.md"
+  "music"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_entertainment\\note_discography\\VideoJournal.md"
+  "people"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\PeopleJournal.md"
+  "hh"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_Knowledge\\journal\\WholesomeJournal.md"
+  "linux"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_software\\journal\\OSJournal.md"
+  "physic"= "D:\\ProgramDataD\\Notes\\Obsidian\\Vault_2401\\note_algo_lang\\journal\\STEMJournal.md"
 }
 
 # NOTE: Obsidian trigger function.
@@ -199,7 +221,7 @@ function :obsidian()
   } else
   {
     $inputString = $args[0]
-    $phrase = $tableJournal[$inputString]
+    $phrase = $tableJrnl[$inputString]
     if($phrase -eq $null)
     {
       # Second chance to match the phrase.
@@ -207,7 +229,7 @@ function :obsidian()
       if(($inputString -match "j$") -or ($inputString -match " $"))
       {
         $clippedPhrase = $inputString -replace " $" -replace "j$" 
-        $phrase = $tableJournal[$clippedPhrase]
+        $phrase = $tableJrnl[$clippedPhrase]
       }
     } 
 
@@ -402,9 +424,21 @@ function Get-UniqueEntryJrnl
   Import-Module powershell-yaml  
   #[System.Collections.ArrayList]$ResultList = @()
   $all_list = @()
-  $os_list = (ConvertFrom-Yaml -yaml (get-content -Raw $jrnlYamlPath))
+  $os_list = ConvertFrom-Yaml -yaml (get-content -Raw $jrnlYamlPath)
   $initial_keys_list = $os_list.journals.Keys
-  $final_dir = $os_list.journals.Values.Values | Sort-Object | Get-Unique
+  $final_dir = $os_list.journals.Values.Values 
+  # INFO: Could also create a hashTable of keys and value here.
+  if ($args[0] -match "^table")
+  {
+    $myHash = @{}
+    $initial_keys_list | ForEach-Object -Begin { $i = 0 } -Process {
+      $myHash["`'$_`'"] = "`'$($final_dir[$i])`'"
+      $i++
+    }
+    return $myHash  | ConvertTo-Yaml | % {$_ -replace "'","" -replace '": "','"= "'}
+  }
+
+  $final_dir = $final_dir | Sort-Object | Get-Unique
   [System.Collections.ArrayList]$finalDir = $final_Dir
   foreach ($shortName in $initial_keys_list)
   {
