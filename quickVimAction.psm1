@@ -428,9 +428,19 @@ function Test-AllEntryJrnl
 {
   # INFO: Each and everyone of them have alias, in case you want to golf,
   # I prefer to KISS.
+  $sites = @{
+    "w750" = "https://new.750words.com/write"
+    "whoney" = "https://app.writehoney.com/write"
+  }
+
+  foreach($s in $sites.Values)
+  {
+    Start-Process $s
+  }
+
   Get-UniqueEntryJrnl | ForEach-Object { `
       Write-Host $_ -ForegroundColor Cyan && Invoke-Expression "j $_ -today" } `
-  | % {$_  -replace '^(\d{4}-\d{2}-\d{2})', "`n" } | Set-Clipboard
+  | ForEach-Object {$_  -replace '^(\d{4}-\d{2}-\d{2})', "`n" } | Set-Clipboard
   # | % {$_  -replace '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (.*)', "`n" } | Set-Clipboard
 }
 
