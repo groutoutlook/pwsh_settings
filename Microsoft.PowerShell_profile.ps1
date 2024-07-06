@@ -311,6 +311,8 @@ function cd++($rep = 1)
 
 
 
+# FIX: Better way to resolve all this is calculate backward/forward dir and just changed it.
+# Should not be like this though.
 function cd..($rep = 1)
 {
 	foreach($i in (1..$rep))
@@ -330,7 +332,7 @@ function ...($rep = 1)
 
 function ....($rep = 1)
 {
-	foreach($i in (1..$rep+2))
+	foreach($i in (1..($rep+2)))
  {
 		Set-Location ..
 	}

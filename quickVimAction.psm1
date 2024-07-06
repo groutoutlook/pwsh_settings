@@ -442,6 +442,7 @@ function Test-AllEntryJrnl
       Write-Host $_ -ForegroundColor Cyan && Invoke-Expression "j $_ -today" } `
   | ForEach-Object {$_  -replace '^(\d{4}-\d{2}-\d{2})', "`n" } | Set-Clipboard
   # | % {$_  -replace '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (.*)', "`n" } | Set-Clipboard
+  [console]::beep(500,400)
 }
 
 Set-Alias -Name j -Value :jrnl
