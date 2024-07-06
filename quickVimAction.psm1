@@ -59,7 +59,20 @@ function :v
   {
     $codeEditor = "nvim"
   }
-  if ($args[0] -eq $null)
+  # INFO: Process line number. `VSCode` and `subl` deal with this natively.
+  # `helix`/`hx` deal with this natively too.
+  # for Vim and Neovim, we need an extra wrapper like this.
+
+  $argsWithLineNumber = $args -split ":",""
+  # INFO: check if more than 2 elements and final element is number, then modify.
+  # I havent think of a better deal right now.
+  if (($argsWithLineNumber.Count -gt 2) -and ($argsWithLineNumber[-1] -match "^\d+$"))
+  {
+    $args[0] = ($argsWithLineNumber[0..1] -join ':') +" +$($argsWithLineNumber[-1])"
+  }
+
+  echo $argsWithLineNumber
+  if ($null -eq $args[0])
   {
     # $args = "."
     Invoke-Expression "$codeEditor ." # -c "lua require('resession')" -c "call feedkeys(`"<leader>..`")"
@@ -250,17 +263,17 @@ $placeAndEventJrnlList =@(
 
 
 $global:JrnlGroup =@{
-  "all" = $jrnlMainList
-  "prg" = $jrnlMainList
-  "idea" = $jrnlMainList
-  "busy" = $businessJrnlList
-  "wk" =  $businessJrnlList
-  "bs" = $businessJrnlList
-  "word" = $knowledgeJrnlList
-  "know" = $knowledgeJrnlList
-  "vc" = $knowledgeJrnlList
-  "pl" = $placeAndEventJrnlList
-  "plev" = $placeAndEventJrnlList
+  # "all" = $jrnlMainList
+  # "prg" = $jrnlMainList
+  # "idea" = $jrnlMainList
+  # "busy" = $businessJrnlList
+  # "wk" =  $businessJrnlList
+  # "bs" = $businessJrnlList
+  # "word" = $knowledgeJrnlList
+  # "know" = $knowledgeJrnlList
+  # "vc" = $knowledgeJrnlList
+  # "pl" = $placeAndEventJrnlList
+  # "plev" = $placeAndEventJrnlList
 }
 
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
@@ -269,6 +282,8 @@ function :jrnl
   # rerowk list by specify first argument.
   $jrnlList = $null
   $argument = ""
+  # HACK: retired all of JrnlGroup matching, since it's quite useless right now.
+  # And possibly make some misunderstandment in the main program.
   foreach($keyword in $JrnlGroup.Keys)
   {
     if($args[0] -match $keyword)

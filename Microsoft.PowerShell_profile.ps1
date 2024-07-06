@@ -58,7 +58,7 @@ function Format-LimitLength($String,$limitString = 50)
 }
 function global:Backup-Environment($Verbose = $null)
 {
-	Copy-Item $localPathNvim "$PROFILE"
+	Copy-Item $global:localPathNvim $($PROFILE.CurrentUserCurrentHost) -Force
 	Write-Host "[$(Get-Date)] Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
