@@ -63,12 +63,12 @@ function :v
   # `helix`/`hx` deal with this natively too.
   # for Vim and Neovim, we need an extra wrapper like this.
 
-  $argsWithLineNumber = $args -split ":",""
+  $argsWithLineNumber = $args[0] -split ":",""
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent think of a better deal right now.
-  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d"))
+  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d+"))
   {
-    $args[0] = ($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ':') +" +$($argsWithLineNumber[-1])"
+    $args[0] = ($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ':') +" +$($Matches.Values)"
   }
 
   echo $args[0]
