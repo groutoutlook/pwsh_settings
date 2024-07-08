@@ -117,7 +117,6 @@ $sessionMap = @{
   "nv" = "nvim_dotfiles"
   "ob" = "obsidian"
   "vk" = "vulkan-samples"
-  "cs" = "stylish-css"
 }
 function :vs
 {
@@ -130,7 +129,7 @@ function :vs
   }
   $processedString = $sessionMap[$inputString]
   
-  if($null -eq $inputString)
+  if($null -eq $processedString)
   {
     Write-Host "What do you want?" -ForegroundColor Yellow
     :v ls "$args"
