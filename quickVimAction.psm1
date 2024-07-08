@@ -66,12 +66,12 @@ function :v
   $argsWithLineNumber = $args -split ":",""
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent think of a better deal right now.
-  if (($argsWithLineNumber.Count -gt 2) -and ($argsWithLineNumber[-1] -match "^\d+$"))
+  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d"))
   {
-    $args[0] = ($argsWithLineNumber[0..1] -join ':') +" +$($argsWithLineNumber[-1])"
+    $args[0] = ($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ':') +" +$($argsWithLineNumber[-1])"
   }
 
-  echo $argsWithLineNumber
+  echo $args[0]
   if ($null -eq $args[0])
   {
     # $args = "."
