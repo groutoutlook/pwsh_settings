@@ -66,12 +66,12 @@ function :v
   $argsWithLineNumber = $args[0] -split ":",""
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent think of a better deal right now.
-  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d+"))
+  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d+.*"))
   {
-    $args[0] = ($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ':') +" +$($Matches.Values)"
+    $args[0] = "$($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ':')" +" +$($Matches.Values)"
   }
 
-  echo $args[0]
+  # echo $args[0]
   if ($null -eq $args[0])
   {
     # $args = "."
@@ -103,11 +103,11 @@ function :vl
   :v last "$args"
 }
 
-function :vg
+function :vc
 {
-  :v ls gui
-  :v last
+  :v (Get-Clipboard)
 }
+
 
 
 # INFO: Quick pwsh_profiles session.
@@ -117,6 +117,7 @@ $sessionMap = @{
   "nv" = "nvim_dotfiles"
   "ob" = "obsidian"
   "vk" = "vulkan-samples"
+  "wts" = "wt_shader"
 }
 function :vs
 {
@@ -313,6 +314,7 @@ function :jrnl
       $jrnlList = $JrnlGroup[$keyword]
     }
   }
+
   if ($null -ne $jrnlList)
   {
     if ($args.Length -lt 2)
@@ -324,10 +326,10 @@ function :jrnl
     }
   } else
   {
-    # casual passing argument. Dont omit anything.
+    # If no match to jrnlList, Dont omit anything.
     $argument = $args
   }
-
+  # echo $argument
 
   # Rework argument.
   $specialArgumentList = @{
@@ -408,7 +410,7 @@ function :jrnl
       foreach($jrnlFile in $jrnlList)
       {
         # Write-Host "$jrnlFile notes" -ForegroundColor Cyan # -BackgroundColor Red 
-        Write-Output "- $jrnlFile notes`n" 
+        # Write-Output "- $jrnlFile notes`n" 
 
         Invoke-Expression "jrnl $jrnlFile  $argument"
       }
@@ -569,7 +571,7 @@ function :e
 
 # INFO: Justfile runner. 
 # I think its syntax is quite suitable to put it in each of folders. which need tasks to run.
-Set-Alias -Name ju -Value just
+Set-Alias -Name js -Value just
 
 
 
