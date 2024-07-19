@@ -26,9 +26,11 @@ function ripgrepFileName(
   [System.String]
   [Alias("s")]
   $String
+
 )
 {
-  $fileNameWithLineNumber = (rg "$String" -o -n) -replace ":(\d+):.*",":`$1" 
+  $fileNameWithLineNumber = (rg "$String" -o -n $args[1..($args.length - 1)]) `
+    -replace ":(\d+):.*",":`$1" 
   return $fileNameWithLineNumber
 }
 

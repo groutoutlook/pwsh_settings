@@ -177,7 +177,7 @@ function Invoke-SudoPwsh
   sudo pwsh -Command "$args"
 }
 $sudoRunParameters = @{
-  Key = 'Ctrl+x'
+  Key = 'Ctrl+shift+x'
   BriefDescription = 'Execute as sudo (in pwsh).'
   LongDescription = 'Call sudo on current command or latest command in history.'
   ScriptBlock = {

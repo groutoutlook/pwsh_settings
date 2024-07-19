@@ -190,18 +190,21 @@ function Set-LocationWhere($files = (Get-Clipboard))
 		{
 			"Application"
 			{
-				# for global executable files.
-				# We need something to detect executable here. Mostly exe files but there could also be other type as well.
+				# INFO: We need something to detect executable here. Mostly exe files but there could also be other type as well.
 				if ($commandInfo.Extension -match "exe")
 				{
-					$listBinaries = (where.exe $files) 
-					if ($listBinaries.GetType().BaseType.Name -eq "Array")
+					$listBinaries = (where.exe $files) | Out-Null
+					$fileType = ${listBinaries}?.GetType().BaseType.Name
+					if ($fileType -eq "Array")
 					{
 						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
-					} else
+					} elseif ($fileType -eq "String")
 					{
 						$finalBinariesPath = $listBinaries
+					} else
+					{
+						$finalBinariesPath = $files
 					}
 					Set-Location (split-path ($finalBinariesPath) -Parent)
 				} else
@@ -216,6 +219,10 @@ function Set-LocationWhere($files = (Get-Clipboard))
 				Set-Location (split-path (($commandInfo).Definition) -Parent)
 				; break;
 			}
+			default 
+			{ 
+				echo "wtf"
+			}  # optional
 		} 
 	} else
 	{
