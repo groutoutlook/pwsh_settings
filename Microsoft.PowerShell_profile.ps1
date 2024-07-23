@@ -3,8 +3,8 @@ Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell
 function zsh
 {
 	# INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
-	# wsl --cd ~
-	wsl
+	wsl --cd ~
+	# wsl
 }
 function Dirs
 {
@@ -180,6 +180,7 @@ function cdcb($defaultDir = (Get-Clipboard))
 		Set-Location (Split-Path -Path $copiedPath -Parent)
 	}
 }
+
 function Set-LocationWhere($files = (Get-Clipboard))
 {
 	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
@@ -193,19 +194,21 @@ function Set-LocationWhere($files = (Get-Clipboard))
 				# INFO: We need something to detect executable here. Mostly exe files but there could also be other type as well.
 				if ($commandInfo.Extension -match "exe")
 				{
-					$listBinaries = (where.exe $files) | Out-Null
-					$fileType = ${listBinaries}?.GetType().BaseType.Name
-					if ($fileType -eq "Array")
+					$listBinaries = (where.exe $files)
+					# echo ($listBinaries).psobject
+					$fileType = ${listBinaries}?.PsObject.TypeNames
+					if ($fileType[0] -match "Array")
 					{
 						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
-					} elseif ($fileType -eq "String")
+					} elseif ($fileType[0] -match "String")
 					{
 						$finalBinariesPath = $listBinaries
 					} else
 					{
 						$finalBinariesPath = $files
 					}
+					# echo $finalBinariesPath.psobject
 					Set-Location (split-path ($finalBinariesPath) -Parent)
 				} else
 				{
@@ -228,13 +231,14 @@ function Set-LocationWhere($files = (Get-Clipboard))
 	{
 		if(($info = Get-Item $files).LinkType -eq "SymbolicLink")
 		{
-			cd $info.Target
+			Set-Location $info.Target
 		} else
 		{
 			cdcb $files
 		}
 	}
 }
+
 Set-Alias -Name cdw -Value Set-LocationWhere
 Set-Alias -Name cdwhere -Value Set-LocationWhere
 function addPath($dirList)
