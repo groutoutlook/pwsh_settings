@@ -384,7 +384,7 @@ function :jrnl
         $convertToInt = [int]$day #- [System.Char]"0"
         $fromDate = (Get-Date).AddDays(-$convertToInt)
         $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
-        $argument += " -from $trimDate"
+        $argument[-1] = " -from $trimDate"
       }
       3
       {
@@ -392,13 +392,16 @@ function :jrnl
       }
       4
       {
-        $matchValue = (Select-String -InputObject $argLast -pattern "^\d*").Matches.Value ?? 2
-        $argument += " -$matchValue --edit"
+        $match = (Select-String -InputObject $argLast -pattern "^\d*")
+        $matchValue = $match.Matches.Value ?? 2
+        $argument[-1] = " -$matchValue --edit"
       }
       5
       {
-        $matchValue = (Select-String -InputObject $argLast -pattern "^\d*").Matches.Value ?? 2
-        $argument += " -$matchValue --delete"
+        $match = (Select-String -InputObject $argLast -pattern "^\d*")
+        # echo $match
+        $matchValue = $match.Matches.Value ?? 2
+        $argument[-1] = " -$matchValue --delete"
       }
     }
     if($null -ne $flagRaise)
