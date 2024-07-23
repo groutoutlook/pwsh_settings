@@ -34,6 +34,19 @@ function ripgrepFileName(
   return $fileNameWithLineNumber
 }
 
+function :vr(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String]
+  [Alias("s")]
+  $String
+)
+{
+  ripgrepFileName "$String" | fzf | ForEach-Object{
+    :v $_
+  }
+}
+
 Set-Alias -Name rgrep -Value ripgrepFileName
 
 

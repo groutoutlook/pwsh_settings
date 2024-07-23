@@ -35,19 +35,6 @@ function initGuiApp
 }
 
 $global:localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
-$global:p7Profile = $localPathNvim
-function global:p7Env
-{
-	$LastWrite = (Get-ItemProperty ($localPathNvim)).LastWriteTimeString
-	nvim $localPathNvim
-	$NewLastWrite = (Get-ItemProperty ($localPathNvim)).LastWriteTimeString
-	if($NewLastWrite -ne $LastWrite)
-	{
-		Backup-Environment
-		Write-Host "Env change, jump to backup." -ForegroundColor Green
-	}
-}
-
 function Format-LimitLength($String,$limitString = 50)
 {
 	if($String.Length -gt $limitString)
@@ -92,6 +79,7 @@ $global:initialModuleList=@(
 	"quickWebAction",
 	"quickVimAction",
 	"quickPSReadLine",
+	"quickPwshUtils.psm1",
 	"CLI-Basic"
 )
 
@@ -328,6 +316,7 @@ function global:initProfileEnv
 		$Env:Path += ";"+$d;
 	}
 	# $Env:PSModulePath += ";" + $Env:p7settingDir 
+	# $global:VIM = "$HOME"
 }
 
 # INFO: cd- and cd--, same logic with cd+ and cd++
