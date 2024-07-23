@@ -144,7 +144,9 @@ $cdHandlerParameters = @{
     #Store to history for future use.
 
     [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction ")
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction (")
+    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert(")")
     # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
     #Store to history for future use.
     # Can InvertLine() here to return empty line.

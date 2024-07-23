@@ -190,7 +190,7 @@ function Set-LocationWhere(
 )
 {
 	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
-	
+	# echo ($commandInfo).psobject
 	if ($null -ne $commandInfo)
 	{
 		switch -Exact ($commandInfo.CommandType)
@@ -205,13 +205,14 @@ function Set-LocationWhere(
 					# TypeNames           : {System.Object[], System.Array, System.Object}
 					try
 					{ $fileType = (${listBinaries}?.PsObject.TypeNames[0]) 
-     } catch
-					{Write-Host "From local dir not path." -ForegroundColor Blue
+					} catch
+					{
+						Write-Host "From local dir not path." -ForegroundColor Blue
 					}
-					
+					# echo ($fileType).psobject
 					if ($fileType -match "Array" -or $fileType -match "Object\[\]")
 					{
-						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
+						Write-Host "Multiple Locations!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
 					} elseif ($fileType -match "String")
 					{
@@ -224,6 +225,7 @@ function Set-LocationWhere(
 					Set-Location (split-path ($finalBinariesPath) -Parent)
 				} else
 				{
+					echo "cdcb"
 					# other extensions 
 					cdcb $files
 				}
@@ -241,14 +243,20 @@ function Set-LocationWhere(
 		} 
 	}
 	# INFO: deal with directory.
-	elseif(($info = Get-Item $files).LinkType -eq "SymbolicLink")
+	elseif(($info = Get-Item $files -ErrorAction SilentlyContinue).LinkType -eq "SymbolicLink")
 	{
 		Set-Location $info.Target
 	} else
 	{
+		$fileType = (($files).PsObject.TypeNames)[0]
 		echo $files
+		if ($fileType -match "Array" -or $fileType -match "Object\[\]")
+		{
+			$finalBinariesPath = $files | fzf
+			Set-Location (split-path ($finalBinariesPath) -Parent)
+			# return $null;
+		} 
 	}
-	
 }
 
 Set-Alias -Name cdw -Value Set-LocationWhere
