@@ -61,15 +61,29 @@ function :v
   # INFO: Process line number. `VSCode` and `subl` deal with this natively.
   # `helix`/`hx` deal with this natively too.
   # for Vim and Neovim, we need an extra wrapper like this.
-  $argsWithLineNumber = @($args | ForEach-Object { $_ -split ":","" -split " ",""})
-  # echo ($argsWithLineNumber).Psobject
+  $parsedArgs = @($args | ForEach-Object { $_ -split ":","" -split " ",""})
+  echo ($parsedArgs).Psobject
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent thought of a better deal right now.
-  if (($argsWithLineNumber.Count -ge 2) -and ($argsWithLineNumber[-1] -match "^\d*.*"))
+  if ($parsedArgs.Count -ge 2 -and $parsedArgs[-1] -match "^\d*")
   {
-    $processedArgs =                                                              `
-      "$($argsWithLineNumber[0..($argsWithLineNumber.Count - 2)] -join ' ')" `
-      + " +" + "$($Matches.Values)" 
+    $finalIndex = $parsedArgs.Count - 2
+    $lineNumber = ($Matches.Values)
+    # HACK: join drive letter with the rest of path(s).
+    if ($parsedArgs[0] -match "^\p{L}$")
+    {
+      # $parsedArgs = @($parsedArgs[0]+":"+$parsedArgs[1],$parsedArgs[2..$finalIndex])
+      $parsedArgs[0] = $parsedArgs[0]+":"+$parsedArgs[1]
+      $parsedArgs[1] = $null
+      $processedArgs =                                                              `
+        "`"$($parsedArgs[0..$finalIndex] -join ' ')`""                              `
+        + " +" + "$lineNumber" 
+    } else
+    {
+      $processedArgs =                                                              `
+        "`"$($parsedArgs[0..$finalIndex] -join ' ')`""                              `
+        + " +" + "$lineNumber"
+    }
     echo ($processedArgs).Psobject
   } else
   {

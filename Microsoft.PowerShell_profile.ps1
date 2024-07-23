@@ -196,8 +196,9 @@ function Set-LocationWhere($files = (Get-Clipboard))
 				{
 					$listBinaries = (where.exe $files)
 					# echo ($listBinaries).psobject
+					# TypeNames           : {System.Object[], System.Array, System.Object}
 					$fileType = ${listBinaries}?.PsObject.TypeNames
-					if ($fileType[0] -match "Array")
+					if ($fileType[0] -match "Array" -or $fileType[0] -match "Object\[\]")
 					{
 						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
