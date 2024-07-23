@@ -12,8 +12,8 @@ Set-Alias -Name qqq -Value :q
 # There's some other effects, so I may need to dig further I think?
 function :t($p7 = 0) 
 {
-  Push-Location
-  $old_dirs = dirs
+  # Push-Location
+  # $old_dirs = dirs
   $old_pid = $pid
   if($p7 -eq 0)
   {
@@ -22,13 +22,13 @@ function :t($p7 = 0)
 
   } else
   {
-    $pushCommand = ""
-    foreach ($dir in $old_dirs.Path)
-    {
-      $pushCommand += "&& Push-Location $dir "
-    }
-    # echo $pushCommand
-    pwsh -Noexit -Command "p7 && p7mod $pushCommand"
+    # $pushCommand = ""
+    # foreach ($dir in $old_dirs.Path)
+    # {
+    #   $pushCommand += "&& Push-Location $dir "
+    # }
+    # pwsh -Noexit -Command "p7 && p7mod $pushCommand"
+    pwsh -Noexit -Command "p7 && p7mod"
     Stop-Process -id $old_pid 
   }
 }

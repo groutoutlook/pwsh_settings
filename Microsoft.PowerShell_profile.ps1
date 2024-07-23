@@ -109,9 +109,9 @@ function MoreTerminalModule
 	# Import-Module -Name F7History -Scope Global 
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r'
-	Set-PsFzfOption -TabExpansion
+	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	;
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
@@ -181,7 +181,13 @@ function cdcb($defaultDir = (Get-Clipboard))
 	}
 }
 
-function Set-LocationWhere($files = (Get-Clipboard))
+function Set-LocationWhere(
+	[Parameter(
+		# Mandatory = $true,
+		ValueFromPipeline = $true
+	)]
+	$files = (Get-Clipboard)
+)
 {
 	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
 	
@@ -197,12 +203,17 @@ function Set-LocationWhere($files = (Get-Clipboard))
 					$listBinaries = (where.exe $files)
 					# echo ($listBinaries).psobject
 					# TypeNames           : {System.Object[], System.Array, System.Object}
-					$fileType = ${listBinaries}?.PsObject.TypeNames
-					if ($fileType[0] -match "Array" -or $fileType[0] -match "Object\[\]")
+					try
+					{ $fileType = (${listBinaries}?.PsObject.TypeNames[0]) 
+     } catch
+					{Write-Host "From local dir not path." -ForegroundColor Blue
+					}
+					
+					if ($fileType -match "Array" -or $fileType -match "Object\[\]")
 					{
 						Write-Host "There are 2 Location!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
-					} elseif ($fileType[0] -match "String")
+					} elseif ($fileType -match "String")
 					{
 						$finalBinariesPath = $listBinaries
 					} else
@@ -228,25 +239,49 @@ function Set-LocationWhere($files = (Get-Clipboard))
 				echo "wtf"
 			}  # optional
 		} 
+	}
+	# INFO: deal with directory.
+	elseif(($info = Get-Item $files).LinkType -eq "SymbolicLink")
+	{
+		Set-Location $info.Target
 	} else
 	{
-		if(($info = Get-Item $files).LinkType -eq "SymbolicLink")
-		{
-			Set-Location $info.Target
-		} else
-		{
-			cdcb $files
-		}
+		echo $files
 	}
+	
 }
 
 Set-Alias -Name cdw -Value Set-LocationWhere
 Set-Alias -Name cdwhere -Value Set-LocationWhere
-function addPath($dirList)
-{
-	foreach($d in $dirList)
+
+function addPath
+{ 
+	param (# Parameter help description
+  [Parameter(
+			# Mandatory = $true,
+			ValueFromPipeline = $true
+		)]
+  [Alias("d")]
+  $dirList = $pwd,
+
+  
+  [Parameter(Mandatory=$false)]
+  [Alias("p")]
+  $parent = $null
+	)
+
+
+	foreach($dir in $dirList)
 	{
-		$d = Resolve-Path $d
+		if($null -ne $parent)
+  {
+			$dir = Split-Path $dir -Parent
+		} else
+		{
+			$dir
+		}
+		$d = Resolve-Path $dir
+		
 		$Env:Path += ";"+$d;
 	}
 }
