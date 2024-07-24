@@ -47,6 +47,13 @@ function :vr(
   }
 }
 
+
+function rgj
+{
+  # HACK: lots of dirty trick.
+  rg "$args" -g "*Journal.md" (zoxide query obs)
+}
+
 Set-Alias -Name rgrep -Value ripgrepFileName
 
 
