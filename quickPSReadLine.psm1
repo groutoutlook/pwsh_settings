@@ -178,7 +178,7 @@ $omniSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     
-    $line = "Get-History | Sort-Object -Property CommandLine -Unique | select -Property CommandLine | fzf --query '^j '" 
+    $line = "Get-History | Sort-Object -Property CommandLine -Unique | select -Property CommandLine | fzf --query '^j '| % {Invoke-Expression `"`$_ 4e`" }" 
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$line")
     # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
@@ -200,7 +200,7 @@ $HistorySearchGlobalParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     
-    $line = " Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | Select-String -Pattern '^j' | fzf --query '^j ' | Invoke-Expression"
+    $line = " Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | Select-String -Pattern '^j' | fzf --query '^j ' | % {Invoke-Expression `"`$_ 4e`" }"
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$line")
     # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
@@ -208,8 +208,8 @@ $HistorySearchGlobalParameters = @{
 }
 
 
-
-
+# Custom implementation of the ViEditVisually PSReadLine function.
+Set-PSReadLineKeyHandler -Chord 'Alt+e' -Function ViEditVisually
 
 $cdHandlerParameters = @{
   Key = 'Alt+x'
