@@ -373,8 +373,8 @@ function :jrnl
     "^lt" = 2
     "^tg" = 3
     "^tag" = 3
-    "^\d*e" = 4
-    "^\d*d" = 5
+    "^\d+e" = 4
+    "^\d+d" = 5
   }
 
   foreach( $specialArgument in $specialArgumentList.Keys)
