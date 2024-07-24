@@ -200,7 +200,7 @@ $HistorySearchGlobalParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     
-    $line = " Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | select-Object -Unique | fzf --query '^j '"
+    $line = " Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | Select-String -Pattern '^j' | fzf --query '^j '"
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$line")
     # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
