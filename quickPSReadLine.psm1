@@ -65,36 +65,74 @@ $ggSearch_1_Parameters = @{
 }
 
 # Setup for (!s) 
-$AuxSearchParameters = @{
+$IterateCommandParameters = @{
   Key = 'Alt+s'
-  BriefDescription = 'Alt ddg mode'
-  LongDescription = 'since ctrl g sometimes awkward to press.'
+  BriefDescription = 'iterate commands in the current line.'
+  LongDescription = 'want to be like alt a'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
 
-    # GetBufferState gives us the command line (with the cursor position)
-    $line = $null
+    $ast = $null
+    $tokens = $null
+    $errors = $null
     $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-      [ref]$cursor)
-    $searchFunction = "Search-DuckDuckGo"
-    if ($line -match "[a-z]")
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
+      [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
+    )
+    # echo ($global:ast).PSObject
+    
+     
+    $asts = $ast.FindAll( {
+        $args[0] -is [System.Management.Automation.Language.ExpressionAst] `
+          -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 
+        # -and $args[0].Parent -is [System.Management.Automation.Language.ExpressionAst]
+        # -and $args[0].Extent.StartOffset -ne $args[0].Parent.Extent.StartOffset
+      }, $true)
+  
+    if ($asts.Count -eq 0)
     {
-      $SearchWithQuery = "$searchFunction $line"
+      [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
+      return
+    }
+    
+    $nextAst = $null
+
+    if ($null -ne $arg)
+    {
+      $nextAst = $asts[$arg - 1]
     } else
     {
-      $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+      foreach ($ast in $asts)
+      {
+        if ($ast.Extent.StartOffset -ge $cursor)
+        {
+          $nextAst = $ast
+          break
+        }
+      } 
+        
+      if ($null -eq $nextAst)
+      {
+        $nextAst = $asts[0]
+      }
     }
-    #Store to history for future use.
-    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
-    Invoke-Expression $SearchWithQuery
-    # Can InvertLine() here to return empty line.
-    # [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-    # Rather than that, I put the cursor at the end instead.
-      
+
+    $startOffsetAdjustment = 0
+    $endOffsetAdjustment = 0
+
+    if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
+      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
+    {
+      $startOffsetAdjustment = 1
+      $endOffsetAdjustment = 2
+    }
+
+    # INFO: jump to next symbols
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
   }
 }
-
 
 # Setup for (^O) 
 $omniSearchParameters = @{
@@ -182,7 +220,8 @@ $sudoRunParameters = @{
   Key = 'Ctrl+shift+x'
   BriefDescription = 'Execute as sudo (in pwsh).'
   LongDescription = 'Call sudo on current command or latest command in history.'
-  ScriptBlock = {
+  ScriptBlock =
+  {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -316,7 +355,7 @@ $ExtraKillWord1Parameters = @{
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "gg1Handler"   = $ggSearch_1_Parameters
-  # "AuxGgHandler"   = $AuxSearchParameters
+  "ItCmHandler"   = $IterateCommandParameters
   "obsHandler"  = $omniSearchParameters
   "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
@@ -401,6 +440,7 @@ Set-PSReadLineKeyHandler -Key "Alt+5" `
       }
     }
   }
+
 }
 
 
