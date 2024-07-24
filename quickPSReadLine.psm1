@@ -79,9 +79,9 @@ $IterateCommandParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
       [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
     )
-    # echo ($global:ast).PSObject
-    
-     
+    # INFO: filtering with FindAll API.
+    # HACK: dont understand the type and member syntaxes at all.read blog then?
+    # [Abstract Syntax Tree - powershell.one](https://powershell.one/powershell-internals/parsing-and-tokenization/abstract-syntax-tree)
     $asts = $ast.FindAll( {
         $args[0] -is [System.Management.Automation.Language.ExpressionAst] `
           -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 
@@ -164,6 +164,52 @@ $omniSearchParameters = @{
       
   }
 }
+
+$omniSearchParameters = @{
+  Key = 'Ctrl+j'
+  BriefDescription = 'Jrnl edit back?'
+  LongDescription = 'draft.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    
+    $line = "Get-History | Sort-Object -Property CommandLine -Unique | select -Property CommandLine | fzf --query '^j '" 
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$line")
+    # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+  }
+}
+
+
+
+$HistorySearchGlobalParameters = @{
+  Key = 'Ctrl+Shift+j'
+  BriefDescription = 'Jrnl edit back?'
+  LongDescription = 'draft.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    
+    $line = " Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | select-Object -Unique | fzf --query '^j '"
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$line")
+    # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+  }
+}
+
+
+
+
 
 $cdHandlerParameters = @{
   Key = 'Alt+x'
@@ -357,6 +403,7 @@ $HandlerParameters = @{
   "gg1Handler"   = $ggSearch_1_Parameters
   "ItCmHandler"   = $IterateCommandParameters
   "obsHandler"  = $omniSearchParameters
+  "histJSearchHandler"= $HistorySearchGlobalParameters
   "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
   "sudoHandler"  = $sudoRunParameters
