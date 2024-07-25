@@ -62,16 +62,21 @@ function :v
   # `helix`/`hx` deal with this natively too.
   # for Vim and Neovim, we need an extra wrapper like this.
   $parsedArgs = @($args | ForEach-Object { 
-      $_ -split ":","" -split " ",""
+      $_ -split ":","" -split " ","" 
     })
   echo ($parsedArgs).Psobject
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent thought of a better deal right now.
   if ($parsedArgs.Count -ge 2 -and $parsedArgs[-1] -match "^\d*")
   {
+    if ($parsedArgs[0] -eq "")
+    {
+      $parsedArgs[0] = $null
+    }
     $finalIndex = $parsedArgs.Count - 2
     $lineNumber = ($Matches.Values)
     # HACK: join drive letter with the rest of path(s).
+
     if ($parsedArgs[0] -match "^\p{L}$")
     {
       # $parsedArgs = @($parsedArgs[0]+":"+$parsedArgs[1],$parsedArgs[2..$finalIndex])

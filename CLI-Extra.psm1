@@ -51,8 +51,18 @@ function :vr(
 function rgj
 {
   # HACK: lots of dirty trick.
-  rg "$args" -g "*Journal.md" (zoxide query obs)
+  # echo "$args"
+  rg "$args" -g "*Journal.md" (zoxide query obs) 
 }
+
+
+function rgjn
+{
+  # HACK: lots of dirty trick.
+  # echo "$args"
+  rg "$args" -g !"*Journal.md" (zoxide query obs)
+}
+
 
 Set-Alias -Name rgrep -Value ripgrepFileName
 
