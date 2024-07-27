@@ -23,7 +23,7 @@ Set-Alias -Name :cp -Value Import-Completion
 function ripgrepFileName(
   # Parameter help description
   [Parameter(Mandatory=$true)]
-  [System.String]
+  [System.String[]]
   [Alias("s")]
   $String,
   
@@ -42,7 +42,7 @@ function ripgrepFileName(
 function :vr(
   # Parameter help description
   [Parameter(Mandatory=$true)]
-  [System.String]
+  [System.String[]]
   [Alias("s")]
   $String
 )
@@ -55,7 +55,7 @@ function :vr(
 function :vrj(
   # Parameter help description
   [Parameter(Mandatory=$true)]
-  [System.String]
+  [System.String[]]
   [Alias("s")]
   $String
 )
@@ -68,19 +68,31 @@ function :vrj(
 
 
 
-function rgj
+function rgj(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  rg "$args" -g "*Journal.md" (zoxide query obs) 
+  rg "$String" -g "*Journal.md" (zoxide query obs) 
 }
 
 
-function rgjn
+function rgjn(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  rg "$args" -g !"*Journal.md" (zoxide query obs)
+  rg "$String" -g !"*Journal.md" (zoxide query obs)
 }
 
 
