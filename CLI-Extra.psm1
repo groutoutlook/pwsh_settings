@@ -25,11 +25,16 @@ function ripgrepFileName(
   [Parameter(Mandatory=$true)]
   [System.String]
   [Alias("s")]
-  $String
+  $String,
+  
+  [Parameter(Mandatory=$false)]
+  [System.String]
+  [Alias("d")]
+  $Dir = "."
 
 )
 {
-  $fileNameWithLineNumber = (rg "$String" -o -n $args[1..($args.length - 1)]) `
+  $fileNameWithLineNumber = (rg "$String" -o -n $Dir) `
     -replace ":(\d+):.*",":`$1" 
   return $fileNameWithLineNumber
 }
@@ -46,6 +51,21 @@ function :vr(
     :v $_
   }
 }
+
+function :vrj(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: query the directory in here.
+  ripgrepFileName "$String" -Dir (zoxide query obs) | fzf | ForEach-Object{
+    :v $_
+  }
+}
+
 
 
 function rgj
