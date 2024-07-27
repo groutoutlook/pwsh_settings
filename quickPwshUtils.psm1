@@ -7,7 +7,7 @@ function buildIndex
   foreach($row in $inputArray)
   {
     $key = $row.($keyName);
-    if($key -eq $null -or $key.Equals([DBNull]::Value) -or $key.Length -eq 0)
+    if($null -eq $key -or $key.Equals([DBNull]::Value) -or $key.Length -eq 0)
     {
       $key = "<empty>"
     }
