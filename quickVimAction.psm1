@@ -564,14 +564,17 @@ function :hw($destinationName=$null,$HighWaylinkName = "hw",$dir = $global:HighW
     rm "$currentDir/$HighWaylinkName"
   } else
   {
+    # HACK: create highway symlink within $pwd. To be fair, avoid this altogether.
     if((Test-Path "$currentDir/$HighWaylinkName") -eq $false)
     {
-      New-Item $HighWaylinkName -ItemType SymbolicLink -Value $dir
+      # New-Item $HighWaylinkName -ItemType SymbolicLink -Value $dir
       Write-Output "$HighWaylinkName`n" | Add-Content -Path .\.gitignore
     } else
     {
       Write-Host "Symlink $HighWaylinkName Already Exist" -ForegroundColor Green
     }
+
+    # INFO: source of highway.
     if($destinationName -eq $null)
     {
       $destinationName = $currentDirLeaf

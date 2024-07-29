@@ -2,7 +2,7 @@
 ---
 This include `pwsh` settings and `Windows Terminal` settings
 
-## Powershell
+## PowerShell
 - :clock1: Loading...
 - Caution: .gitconfig here is the backup of "~/.gitconfig", which is my global config.
 
