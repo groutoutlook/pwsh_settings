@@ -373,9 +373,9 @@ $ExtraKillWordParameters = @{
 
 
 $ExtraKillWord1Parameters = @{
-  Key = 'Alt+Backspace'
+  Key = 'Alt+w'
   BriefDescription = 'Smarter kill word '
-  LongDescription = 'Call sudo on current command or latest command in history.'
+  LongDescription = 'Kill Forward, but hit ceiling then kill backward.'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
 
@@ -386,12 +386,12 @@ $ExtraKillWord1Parameters = @{
       [ref]$cursor)
      
     #Info 
-    if($cursor -eq 0)
-    {
-      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
-    } else
+    if($cursor -ge ($line.length - 2))
     {
       [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
     }
   }
 }
