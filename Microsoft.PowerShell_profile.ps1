@@ -68,6 +68,7 @@ function P7()
 {
 	Invoke-Expression (&starship init powershell)
 	# oh-my-posh init pwsh | Invoke-Expression
+	Invoke-Expression (direnv hook pwsh)
 	Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 	AppendPrompt
