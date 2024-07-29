@@ -154,3 +154,11 @@ function lsd
 }
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
+
+# INFO: it's better to keep stdout/console output.
+function clearScrn
+{
+  [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
+}
+Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
+Set-Alias -Name clear -Value clearScrn -Scope Global -Option AllScope

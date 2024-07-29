@@ -159,7 +159,9 @@ function Get-CodeStats($webui = 0)
     msedge https://codestats.net/users/groutlloyd
   } else
   {
-    $global:currentCodeStats = (Invoke-restMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1)
+    $global:currentCodeStats = (`
+        Invoke-RestMethod -Method GET -URI http://codestats.net/api/users/groutlloyd -HttpVersion 1.1
+    )
 		
     Write-Host "new_xp which is on streak: " -ForegroundColor Green -NoNewline
     Write-Host " $($global:currentCodeStats.new_xp)" -ForegroundColor Red
