@@ -58,13 +58,21 @@ Set-Alias -Name shv -Value Show-Neovide
 function bc
 {
   Write-Host "Numbat started." -ForegroundColor Red
-  numbat
+  numbat -e "$args"
 }
 
+
 # INFO: Copy previous command in history.
-function cp!
+# Either index? or some initial. Return best match I supposed.
+function cp!(
+  [Parameter(Mandatory=$false)]
+  [System.Int32]
+  [Alias("i")]
+  $index = 1
+)
 {
-  $previousCommand = Get-History -Count 1 
+  $previousCommand = Get-History -Count $index
+  Write-Host $previousCommand -ForegroundColor Yellow
   Set-Clipboard $previousCommand
 }
 
