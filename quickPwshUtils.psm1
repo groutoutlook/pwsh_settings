@@ -88,3 +88,6 @@ function buildIndex
   $index
 }
 
+# HACK: alias `Measure-Command`
+Set-Alias -Name mcm -Value Measure-Command
+Set-Alias -Name time -Value Measure-Command

@@ -625,6 +625,12 @@ Set-PSReadLineKeyHandler -Key Alt+a `
 # Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 # Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineOption -PredictionViewStyle ListView
+# HACK: Emacs key...
+Set-PSReadLineKeyHandler -Key Alt+b -Function ShellBackwardWord
+Set-PSReadLineKeyHandler -Key Alt+f -Function ShellForwardWord
+Set-PSReadLineKeyHandler -Key Alt+B -Function SelectShellBackwardWord
+Set-PSReadLineKeyHandler -Key Alt+F -Function SelectShellForwardWord
+
 
 # INFO: Here is the main function. To add the large chunk of keymap into shell.
 $parameters = $HandlerParameters[$handler]
