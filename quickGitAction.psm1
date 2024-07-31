@@ -18,13 +18,25 @@ function openWebRemote
 
 function gitCloneClipboard($link = (Get-Clipboard))
 {
-	if ($link -match "^https")
- {
-		# INFO: here we trim the `?.*` queries part of the URL.
-		$trimmedQueryURI = $link -replace "\?.*",""
-		git clone ($trimmedQueryURI)
+	# HACK: Real hack is extracting links from the Markdown links.
+	if ($link -match '^\[')
+	{
+		$processedLink = $link -replace '^\[(.*)\]\(',"" -replace '\)$',""
 	} else
 	{
+		$processedLink = $link
+	}
+
+	# INFO: match http at start.
+	# HACK: in my vimium settings it's pressing `Y`
+	if ($processedLink -match "^https")
+ {
+		# INFO: here we trim the `?.*` queries part of the URL.
+		$trimmedQueryURI = $processedLink -replace "\?.*","" -replace "/tree/.*",""
+		git clone  "--recursive" ($trimmedQueryURI)
+	} else
+	{
+		echo ($link).psobject
 		Write-Host "Not a link." -ForegroundColor Red
 	}
 
