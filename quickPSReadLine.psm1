@@ -1,3 +1,4 @@
+using namespace System.Console
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 
@@ -164,6 +165,47 @@ $omniSearchParameters = @{
       
   }
 }
+
+# INFO: search character at current word.
+$CharacterSearchParameters = @{
+  Key = 'F4'
+  BriefDescription = 'Character Surfing'
+  LongDescription = 'Surfing char.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+    #
+    #   $ast = $null
+    #   $tokens = $null
+    #   $errors = $null
+    #   $cursor = $null
+    #   [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    # New-Variable -Name consoleKey -type [System.ConsoleKeyInfo]
+    # $consoleKey = "a" -as [System.ConsoleKeyInfo]
+    # HACK: [ConsoleKeyInfo(Char, ConsoleKey, Boolean, Boolean, Boolean) Constructor (System) | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/api/system.consolekeyinfo.-ctor?view=net-8.0#system-consolekeyinfo-ctor(system-char-system-consolekey-system-boolean-system-boolean-system-boolean))
+    if($cursor -ge ($line.length - 2))
+    {
+      $cursor = 0
+      $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
+      $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
+          $line[$cursor], $conkey,$false,$false,$false))
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey ,1)
+    } else
+    {
+
+      $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
+      $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
+          $line[$cursor], $conkey,$false,$false,$false))
+      [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey,1)
+    }
+
+  }
+}
+
 
 $omniSearchParameters = @{
   Key = 'Ctrl+j'
@@ -433,6 +475,7 @@ $HandlerParameters = @{
   "killword" = $smartKillWordParameters
   "extrakillword" = $ExtraKillWordParameters
   "extrakillword1" = $ExtraKillWord1Parameters
+  "chrsHandler" = $CharacterSearchParameters
   # "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)

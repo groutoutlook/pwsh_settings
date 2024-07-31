@@ -61,6 +61,7 @@ function bc
   numbat -e "$args"
 }
 
+Set-Alias -Name cal -Value Show-Neovide
 
 # INFO: Copy previous command in history.
 # Either index? or some initial. Return best match I supposed.
@@ -158,6 +159,7 @@ Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 # INFO: it's better to keep stdout/console output.
 function clearScrn
 {
+  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
   [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
 }
 Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
