@@ -1,3 +1,13 @@
+
+# INFO: it's better to keep stdout/console output.
+function clearScrn
+{
+  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+  [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
+}
+Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
+Set-Alias -Name clear -Value clearScrn -Scope Global -Option AllScope
+
 # INFO: All basic function about other external apps better reside here.
 function Restart-ForceApp($fileDir)
 {
@@ -14,21 +24,8 @@ function Restart-ForceApp($fileDir)
       Start-Process $fileDir
   }
 }
-function goviet()
-{
-  $fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
-  Restart-ForceApp -fileDir $fileDir	
-}
-function pentab()
-{
-  $fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
-  Restart-ForceApp -fileDir $fileDir	
-}
-function vdhelper()
-{
-  $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
-  Restart-ForceApp -fileDir $fileDir
-}
+
+# INFO: Show Window based on title.
 function Show-Window
 {
   param(
@@ -36,8 +33,8 @@ function Show-Window
     [string] $ProcessName
   )
   $ProcessName = $ProcessName -replace '\.exe$'
-  # WARN: This method om;y return the latest windows which have title. many which have titles but it's retained...
-  # IF you want to truly switch between them, must switch using different method.
+  # WARN: This method return the latest windows which have title. many have titles but cant show.
+  # IF you want to switch between them, must use different method like powertoys run.
   $procId = (Get-Process -ErrorAction Ignore "*$ProcessName*"
   ).Where({ $_.MainWindowTitle }, 'First').Id
 
@@ -47,21 +44,7 @@ function Show-Window
   }
   $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
-function Show-Neovide
-{
-  Show-Window("Neovide.exe")
-}
 Set-Alias -Name shw -Value Show-Window
-Set-Alias -Name shv -Value Show-Neovide
-
-# INFO: numbat is a kind of bc in both Windows/Linux.
-function bc
-{
-  Write-Host "Numbat started." -ForegroundColor Red
-  numbat -e "$args"
-}
-
-Set-Alias -Name cal -Value Show-Neovide
 
 # INFO: Copy previous command in history.
 # Either index? or some initial. Return best match I supposed.
@@ -77,6 +60,30 @@ function cp!(
   Set-Clipboard $previousCommand
 }
 
+function goviet()
+{
+  $fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
+  Restart-ForceApp -fileDir $fileDir	
+}
+function pentab()
+{
+  $fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
+  Restart-ForceApp -fileDir $fileDir	
+}
+function vdhelper()
+{
+  $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
+  Restart-ForceApp -fileDir $fileDir
+}
+# INFO: numbat is a kind of bc in both Windows/Linux.
+function bc
+{
+  Write-Host "Numbat started." -ForegroundColor Red
+  numbat -e "$args"
+}
+
+Set-Alias -Name cal -Value Show-Neovide
+
 function omniSearchObsidian
 {
   $query = ""
@@ -88,6 +95,7 @@ function omniSearchObsidian
 
 
 
+# INFO: yazi quick call.
 function yy
 {
   $tmp = [System.IO.Path]::GetTempFileName()
@@ -100,14 +108,13 @@ function yy
   Remove-Item -Path $tmp
 }
 
-# INFO: yazi on the download folders?
 function yyd
 {
   yy "~/Downloads/"
 }
 Set-Alias -Name dd -Value yy
 
-function ycb
+function yc
 {
   try
   {
@@ -131,21 +138,11 @@ function mousemt
 }
 Set-Alias -Name msmt -Value mousemt
 
-
-
-# INFO: Misc files on the terminal.
-function clock
-{
-  tenki --mode meteor --timer-color green --show-fps
-}
-
-
-
+# INFO: Zoxide quick action.
 function cdd
 {
   zi $args
 }
-
 
 # HACK: `lsd` and `ls` to `exa`
 # There could be more function at this point though.
@@ -156,11 +153,3 @@ function lsd
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
-# INFO: it's better to keep stdout/console output.
-function clearScrn
-{
-  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
-  [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
-}
-Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
-Set-Alias -Name clear -Value clearScrn -Scope Global -Option AllScope
