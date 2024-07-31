@@ -68,7 +68,7 @@ function :v
   echo ($parsedArgs).Psobject
   # INFO: check if more than 2 elements and final element is number, then modify.
   # I havent thought of a better deal right now.
-  if ($parsedArgs.Count -ge 2 -and $parsedArgs[-1] -match "^\d*")
+  if ($parsedArgs.Count -ge 2 -and $parsedArgs[-1] -match "^\d+")
   {
     if ($parsedArgs[0] -eq "")
     {
