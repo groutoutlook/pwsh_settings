@@ -227,11 +227,23 @@ $omniSearchParameters = @{
     {
 
       $finalOptions = $null
-      Get-History | Sort-Object -Property CommandLine -Unique | `
-          Select-Object -Property CommandLine | fzf --query '^j '| `
-          ForEach-Object { $finalOptions = $_ + " 4e"}
+      $checkHistory = (Get-History `
+        | Sort-Object -Property CommandLine -Unique `
+        | Select-Object -ExpandProperty CommandLine `
+        | Select-String -Pattern '^j +' )
+      if(($checkHistory).Length -lt 2)
+      {
+        $global:checkLength = ($checkHistory).Length
+        $historySource = (Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
+          | Select-String -Pattern '^j +' )
+      } else
+      {
+        $historySource = $checkHistory
+      }
+      $historySource `
+      | fzf --query '^j '`
+      | ForEach-Object { $finalOptions = $_ + " 4e"}
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
-      # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
   }
@@ -260,9 +272,10 @@ $HistorySearchGlobalParameters = @{
     {
 
 
-      Get-Content -tail 100 (Get-PSReadlineOption).HistorySavePath | `
-          Select-String -Pattern '^j' | fzf --query '^j ' | `
-          ForEach-Object { $finalOptions = $_ + " 4e" }
+      Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
+      | Select-String -Pattern '^j +' `
+      | fzf --query '^j ' `
+      | ForEach-Object { $finalOptions = $_ + " 4e" }
 
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
       # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
