@@ -35,5 +35,8 @@ placeholder:
     if($env:pwsh_env) {Write-Host "$env:pwsh_env"}
     else {Write-Host "Apparently no .env as well" -ForegroundColor Yellow}
 
+alias j := editjust
+editjust:
+    nvim ./justfile
 
 build: placeholder

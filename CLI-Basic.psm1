@@ -80,7 +80,7 @@ Set-Alias -Name msmt -Value mousemt
 # INFO: neko, for the fun of it.
 function neko
 {
-  (neko-windows-amd64 -scale "1.2" -speed "4" &)
+  (neko-windows-amd64 -scale "1.2" -speed "4" -mousepassthrough "true" &)
 }
 
 function mcat
