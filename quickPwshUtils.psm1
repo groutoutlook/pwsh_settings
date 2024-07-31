@@ -91,3 +91,38 @@ function buildIndex
 # HACK: alias `Measure-Command`
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
+
+# INFO: URI maniulation
+function filterURI
+{
+  
+  $link = $args
+  if (($link -match ' *^\[\p{L}') -or ($link -match '^- *\[\p{L}'))
+  {
+    Write-Host "Markdown Link" -ForegroundColor Green -BackgroundColor Magenta
+    $processedLink = $link `
+      -replace '- ',"" `
+      -replace '^\[(.*)\]\(',"" `
+      -replace '\)$',""  
+    if ($processedLink -notmatch '^http')
+    {
+      Write-Host 'Somehow Invalid' -ForegroundColor Red  
+      echo $processedLink
+      $processedLink = $null
+    }
+  } elseif ($link -match '^http')
+  {
+    Write-Host "Plain link" -ForegroundColor Yellow -BackgroundColor Blue
+    $processedLink = $link  
+  } else
+  {
+    Write-Host "What?" -ForegroundColor Red 
+    $processedLink = $null
+  }
+  return $processedLink
+
+}
+
+
+
+

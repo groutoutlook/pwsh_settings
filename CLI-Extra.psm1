@@ -21,7 +21,6 @@ Set-Alias -Name :cp -Value Import-Completion
 
 # INFO: `ripgrep`.
 function ripgrepFileName(
-  # Parameter help description
   [Parameter(Mandatory=$true)]
   [System.String[]]
   [Alias("s")]
