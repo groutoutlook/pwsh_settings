@@ -270,16 +270,12 @@ $HistorySearchGlobalParameters = @{
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" 4e")
     } else
     {
-
-
       Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
       | Select-String -Pattern '^j +' `
       | fzf --query '^j ' `
       | ForEach-Object { $finalOptions = $_ + " 4e" }
 
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
-      # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
-      # [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
   }
