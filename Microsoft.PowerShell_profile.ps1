@@ -226,7 +226,10 @@ function Set-LocationWhere(
 			}
 			default 
 			{ 
-				echo "wtf"
+				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
+				# echo ($files).PSObject
+				cdcb "$env:LOCALAPPDATA/shims"
+				ls
 			}  # optional
 		} 
 	}
