@@ -132,8 +132,15 @@ function Get-Playlistmpv(
 
 # HACK: launch in different pwsh process.
 function mpvc(
-  [Parameter(Mandatory=$false)]
+  [Parameter(
+    # Mandatory = $true,
+    ValueFromPipeline = $true
+  )]
   [System.String[]]
+  $strings = (Get-Clipboard),
+	
+  [Parameter(Mandatory=$false)]
+  [System.Boolean]
   [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
   [Alias("b")]
   $Background = $true
@@ -148,7 +155,7 @@ function mpvc(
     {
       Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
     }
-    Get-Playlistmpv 
+    Get-Playlistmpv ($strings)
     pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &
   } else
   {

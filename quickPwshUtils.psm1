@@ -97,29 +97,31 @@ function filterURI
 {
   
   $link = $args
-  if (($link -match ' *^\[\p{L}') -or ($link -match '^- *\[\p{L}'))
+  if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}'))
   {
-    Write-Host "Markdown Link" -ForegroundColor Green -BackgroundColor Magenta
-    $processedLink = $link `
-      -replace '- ',"" `
-      -replace '^\[(.*)\]\(',"" `
-      -replace '\)$',""  
+    # Write-Host "Markdown Link" -ForegroundColor Green 
+    $processedLink = $link -replace '^-',"" -replace '^ *-.*',"" -replace "`t.*",""
+    $markdownName = ($processedLink | Select-String '^.*\[(.*)\]').Matches.Value
+    # echo $markdownName
+    $processedLink = ($processedLink | Select-String 'http.*').Matches.Value -replace '\)$',""
+    # $processedLink = $processedLink -replace '^.*\[(.*)\]\(',"" 
+    # $processedLink = $processedLink -replace '\)$',""  
     if ($processedLink -notmatch '^http')
     {
       Write-Host 'Somehow Invalid' -ForegroundColor Red  
-      echo $processedLink
+      # echo $processedLink
       $processedLink = $null
     }
   } elseif ($link -match '^http')
   {
-    Write-Host "Plain link" -ForegroundColor Yellow -BackgroundColor Blue
+    Write-Host "Plain link" -ForegroundColor Yellow 
     $processedLink = $link  
   } else
   {
-    Write-Host "What?" -ForegroundColor Red 
+    # Write-Host "What?" -ForegroundColor Red 
     $processedLink = $null
   }
-  return $processedLink
+  return  $markdownName +"`n" + $processedLink
 
 }
 
