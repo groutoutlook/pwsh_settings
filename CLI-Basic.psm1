@@ -137,6 +137,7 @@ function mpvc(
     ValueFromPipeline = $true
   )]
   [System.String[]]
+  [Alias("s")]
   $strings = (Get-Clipboard),
 	
   [Parameter(Mandatory=$false)]
@@ -156,7 +157,8 @@ function mpvc(
       Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
     }
     Get-Playlistmpv ($strings)
-    pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &
+    # INFO: supress output from start-job.
+    (pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &) | Out-Null
   } else
   {
     Get-Playlistmpv (Get-Clipboard)
