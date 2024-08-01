@@ -108,18 +108,19 @@ function filterURI
     {
       Write-Host 'Somehow Invalid' -ForegroundColor Red  
       # echo $processedLink
-      $processedLink = $null
+      return $null
     }
+    return  $markdownName +"`n" + $processedLink
   } elseif ($link -match '^http')
   {
     Write-Host "Plain link" -ForegroundColor Yellow 
-    $processedLink = $link  
+    return $link  
   } else
   {
     # Write-Host "What?" -ForegroundColor Red 
-    $processedLink = $null
+    return $null
   }
-  return  $markdownName +"`n" + $processedLink
+  
 
 }
 
