@@ -657,6 +657,7 @@ Set-PSReadLineKeyHandler -Key Alt+a `
 }
 
 
+
 # INFO: (https://github.com/PowerShell/PSReadLine/blob/61f598d8a733eba35810a4de6dc76f17433bbefc/PSReadLine/Options.cs#L23)
 # All the options, on the code.
 # Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward

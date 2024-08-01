@@ -46,7 +46,9 @@ function :vr(
   $String
 )
 {
-  ripgrepFileName "$String" | fzf | ForEach-Object{
+  ripgrepFileName "$String" `
+  | fzf `
+  | ForEach-Object{
     :v $_
   }
 }
@@ -60,7 +62,9 @@ function :vrj(
 )
 {
   # HACK: query the directory in here.
-  ripgrepFileName "$String" -Dir (zoxide query obs) | fzf | ForEach-Object{
+  ripgrepFileName "$String" -Dir (zoxide query obs) `
+  | fzf `
+  | ForEach-Object{
     :v $_
   }
 }
@@ -100,4 +104,4 @@ Set-Alias -Name rgrep -Value ripgrepFileName
 
 
 # INFO: Default completion import.
-Import-Completion just
+# Import-Completion just
