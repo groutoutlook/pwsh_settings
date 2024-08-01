@@ -114,8 +114,12 @@ function Get-Playlistmpv(
   # HACK: in case we copy a chunk of text with newline.
   $listURI = $string -split "`n",""
   # echo ($listURI).PSobject
-
   $global:playlistTemp = "$HOME/mpv-playing.txt"
+  $conditionPlaylist = Test-Path $global:playlistTemp
+  if ($conditionPlaylist)
+  {
+    Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
+  }
   New-Item $global:playlistTemp
   foreach($junkText in $listURI)
   {
@@ -151,11 +155,7 @@ function mpvc(
   if($Background)
   {
     # HACK: clean up old playlist.
-    $conditionPlaylist = Test-Path $global:playlistTemp
-    if ($conditionPlaylist)
-    {
-      Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
-    }
+
     Get-Playlistmpv ($strings)
     # INFO: supress output from start-job.
     (pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &) | Out-Null
