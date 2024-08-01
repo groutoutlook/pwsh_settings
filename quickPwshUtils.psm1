@@ -100,12 +100,10 @@ function filterURI
   if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}'))
   {
     # Write-Host "Markdown Link" -ForegroundColor Green 
-    $processedLink = $link -replace '^-',"" -replace '^ *-.*',"" -replace "`t.*",""
+    $processedLink = ($link | Select-String "-.*").Matches.Value 
     $markdownName = ($processedLink | Select-String '^.*\[(.*)\]').Matches.Value
     # echo $markdownName
     $processedLink = ($processedLink | Select-String 'http.*').Matches.Value -replace '\)$',""
-    # $processedLink = $processedLink -replace '^.*\[(.*)\]\(',"" 
-    # $processedLink = $processedLink -replace '\)$',""  
     if ($processedLink -notmatch '^http')
     {
       Write-Host 'Somehow Invalid' -ForegroundColor Red  
