@@ -16,8 +16,11 @@ function openWebRemote
 	chrome (git remote get-url origin)
 }
 
-function gitCloneClipboard($link = (Get-Clipboard))
+function gitCloneClipboard(
+	$finalDir = $null
+)
 {
+	$link = (Get-Clipboard)
 	# HACK: Real hack is extracting links from the Markdown links.
 	if ($link -match '^\[')
 	{
@@ -33,7 +36,7 @@ function gitCloneClipboard($link = (Get-Clipboard))
  {
 		# INFO: here we trim the `?.*` queries part of the URL.
 		$trimmedQueryURI = $processedLink -replace "\?.*","" -replace "/tree/.*",""
-		git clone  "--recursive" ($trimmedQueryURI)
+		git clone  "--recursive" ($trimmedQueryURI) $finalDir
 	} else
 	{
 		echo ($link).psobject

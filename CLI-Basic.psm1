@@ -33,6 +33,87 @@ function omniSearchObsidian
 }
 
 
+# INFO: `ripgrep`.
+function ripgrepFileName(
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String,
+  
+  [Parameter(Mandatory=$false)]
+  [System.String]
+  [Alias("d")]
+  $Dir = "."
+
+)
+{
+  $fileNameWithLineNumber = (rg "$String" -o -n $Dir) `
+    -replace ":(\d+):.*",":`$1" 
+  return $fileNameWithLineNumber
+}
+
+function :vr(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  ripgrepFileName "$String" `
+  | fzf `
+  | ForEach-Object{
+    :v $_
+  }
+}
+
+function :vrj(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: query the directory in here.
+  ripgrepFileName "$String" -Dir (zoxide query obs) `
+  | fzf `
+  | ForEach-Object{
+    :v $_
+  }
+}
+
+
+
+function rgj(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: lots of dirty trick.
+  # echo "$args"
+  rg "$String" -g "*Journal.md" (zoxide query obs) 
+}
+
+
+function rgjn(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: lots of dirty trick.
+  # echo "$args"
+  rg "$String" -g !"*Journal.md" (zoxide query obs)
+}
+
+
+
 
 # INFO: yazi quick call.
 function yy
@@ -103,64 +184,3 @@ function lsd
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
-function Get-Playlistmpv(
-  [Parameter(Mandatory=$false)]
-  [System.String[]]
-  [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
-  [Alias("s")]
-  $String = @(Get-Clipboard)
-)
-{
-  # HACK: in case we copy a chunk of text with newline.
-  $listURI = $string -split "`n",""
-  # echo ($listURI).PSobject
-  $global:playlistTemp = "$HOME/mpv-playing.txt"
-  $conditionPlaylist = Test-Path $global:playlistTemp
-  if ($conditionPlaylist)
-  {
-    Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
-  }
-  New-Item $global:playlistTemp
-  foreach($junkText in $listURI)
-  {
-    filterURI $junkText `
-    | ForEach-Object {if ($_)
-      {
-        # (mpv $_ &) | Wait-Job
-        "$_`n" >> $global:playlistTemp
-      }
-    }
-  }
-  cat $global:playlistTemp
-}
-
-# HACK: launch in different pwsh process.
-function mpvc(
-  [Parameter(
-    # Mandatory = $true,
-    ValueFromPipeline = $true
-  )]
-  [System.String[]]
-  [Alias("s")]
-  $strings = (Get-Clipboard),
-	
-  [Parameter(Mandatory=$false)]
-  [System.Boolean]
-  [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
-  [Alias("b")]
-  $Background = $true
-
-)
-{
-  if($Background)
-  {
-    # HACK: clean up old playlist.
-
-    Get-Playlistmpv ($strings)
-    # INFO: supress output from start-job.
-    (pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &) | Out-Null
-  } else
-  {
-    Get-Playlistmpv (Get-Clipboard)
-  }
-}

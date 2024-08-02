@@ -219,10 +219,19 @@ $omniSearchParameters = @{
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
+    $defaultValue = 4
+    
     if($line -match "^j +")
     {
-
-      [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" 4e")
+      if ($line -match '4e$')
+      {
+        $defaultValue = 8
+        Write-Error $line.Length
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace($line.Length - 4,$line.Length - 1," $($defaultValue)e")
+      } else
+      {
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
+      }
     } else
     {
 
@@ -240,9 +249,11 @@ $omniSearchParameters = @{
       {
         $historySource = $checkHistory
       }
+      
       $historySource `
       | fzf --query '^j '`
-      | ForEach-Object { $finalOptions = $_ + " 4e"}
+      | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e"}
+
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
@@ -264,19 +275,16 @@ $HistorySearchGlobalParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $finalOptions = $null
-    if($line -match "^j +")
-    {
+    $defaultValue = 8
+    
 
-      [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" 4e")
-    } else
-    {
-      Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
-      | Select-String -Pattern '^j +' `
-      | fzf --query '^j ' `
-      | ForEach-Object { $finalOptions = $_ + " 4e" }
+    Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
+    | Select-String -Pattern '^j +' `
+    | fzf --query '^j ' `
+    | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e" }
 
-      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
-    }
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
+    
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
   }
 }
@@ -302,9 +310,9 @@ $cdHandlerParameters = @{
     #Store to history for future use.
 
     [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction (")
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction `'")
     [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert(")")
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("`'")
     # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
     #Store to history for future use.
     # Can InvertLine() here to return empty line.
@@ -312,6 +320,38 @@ $cdHandlerParameters = @{
       
   }
 }
+
+
+
+
+$rgToNvimParameters = @{
+  Key = 'alt+v'
+  BriefDescription = 'Set-LocationWhere the paste directory.'
+  LongDescription = 'Invoke cdwhere with the current directory in the command line'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    if($line -match '^rg')
+    {
+       
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
+    } else
+    {
+
+    }
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+      
+  }
+}
+
+
+
+
 
 $quickEscParameters = @{
   Key = 'Ctrl+k'
@@ -513,6 +553,7 @@ $HandlerParameters = @{
   "extrakillword1" = $ExtraKillWord1Parameters
   "chrsHandler" = $CharacterSearchParameters
   "parenHandler" = $ParenthesesParameter
+  "rtnHandler" = $rgToNvimParameters
   # "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
