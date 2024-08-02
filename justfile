@@ -39,4 +39,5 @@ alias j := editjust
 editjust:
     nvim ./justfile
 
+alias b := build
 build: placeholder
