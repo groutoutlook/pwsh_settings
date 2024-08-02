@@ -184,3 +184,15 @@ function lsd
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
+function zsh
+{
+  # INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
+  wsl --cd ~
+  # wsl
+}
+
+# INFO: absolute dire need of some program in linux.
+function zellij
+{
+  Invoke-Expression "wsl zellij $args --cd ~"
+}
