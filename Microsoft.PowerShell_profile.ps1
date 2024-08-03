@@ -1,11 +1,6 @@
 # powershell-5.1
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-function zsh
-{
-	# INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
-	wsl --cd ~
-	# wsl
-}
+
 function Dirs
 {
 	Get-Location -Stack
@@ -287,6 +282,9 @@ function addPath
 
 function global:initProfileEnv
 { 
+	[Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new()
+	$PSDefaultParameterValues['Out-File:Encoding']='utf8'
+
 	$Env:ProgramFilesD = "D:\Program Files"
 	$Env:ProgramDataD = "D:\ProgramDataD"
 	$Env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"

@@ -223,11 +223,11 @@ $omniSearchParameters = @{
     
     if($line -match "^j +")
     {
-      if ($line -match '4e$')
+      if ($line -match '\de$')
       {
         $defaultValue = 8
         Write-Error $line.Length
-        [Microsoft.PowerShell.PSConsoleReadLine]::Replace($line.Length - 4,$line.Length - 1," $($defaultValue)e")
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(($line).Length - 4,($line).Length - 2," $($defaultValue)e ")
       } else
       {
         [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
