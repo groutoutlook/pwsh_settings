@@ -291,33 +291,29 @@ function global:initProfileEnv
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
-	$Env:ahkDirD = "$env:ProgramDataD\ahk\"
-	$Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
+	# $Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
 	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
 	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
 	$Env:pipxLocalDir = "~\.local\bin"
 
-	$Env:obsVault = "D:\ProgramDataD\Notes\Obsidian\Vault_2401\"
-	$Env:VulkanSDK="C:\VulkanSDK\*\"
-	$Env:cargoDir = "~\.cargo\bin"
+	$Env:obsVault = "$Env:ProgramDataD\Notes\Obsidian\Vault_2401\"
 	$Env:usrbinD="D:\usr\bin"
 	$Env:edgeDir = "${env:PROGRAMFILES(X86)}\Microsoft\Edge\Application\"
 	$diradd = @(
-		$Env:usrbinD,
-		$Env:PhotoshopDir,
-		$Env:ChromeDir,
-		$Env:kicadDir,
-		$Env:pipxLocalDir,
-		$Env:cargoDir,
-		$Env:edgeDir,
-		$Env:SysInternalSuite
+		$Env:usrbinD
+		,$Env:PhotoshopDir
+		,$Env:ChromeDir
+		,$Env:kicadDir
+		,$Env:pipxLocalDir
+		,$Env:edgeDir
+		# ,$Env:SysInternalSuite
 	)
 	foreach($d in $diradd)
 	{
 		$Env:Path += ";"+$d;
 	}
 	# $Env:PSModulePath += ";" + $Env:p7settingDir 
-	# $global:VIM = "$HOME"
+	# $global:EDITOR = "~\\scoop\\shims\\nvim.exe" # for unbootstrap device?
 }
 
 # INFO: cd- and cd--, same logic with cd+ and cd++
