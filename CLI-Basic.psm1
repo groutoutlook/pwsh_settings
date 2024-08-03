@@ -39,6 +39,11 @@ function ripgrepFileName(
   [System.String[]]
   [Alias("s")]
   $String,
+ 
+  [Parameter(Mandatory=$false)]
+  [System.String[]]
+  [Alias("g")]
+  $glob="*",
   
   [Parameter(Mandatory=$false)]
   [System.String]
@@ -47,8 +52,9 @@ function ripgrepFileName(
 
 )
 {
-  $fileNameWithLineNumber = (rg "$String" -o -n $Dir) `
+  $fileNameWithLineNumber = (rg "$String" -o -n $Dir -g $glob) `
     -replace ":(\d+):.*",":`$1" 
+    
   return $fileNameWithLineNumber
 }
 
@@ -67,24 +73,6 @@ function :vr(
   }
 }
 
-function :vrj(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
-)
-{
-  # HACK: query the directory in here.
-  ripgrepFileName "$String" -Dir (zoxide query obs) `
-  | fzf `
-  | ForEach-Object{
-    :v $_
-  }
-}
-
-
-
 function rgj(
   # Parameter help description
   [Parameter(Mandatory=$true)]
@@ -98,6 +86,21 @@ function rgj(
   rg "$String" -g "*Journal.md" (zoxide query obs) 
 }
 
+function :vrj(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: query the directory in here.
+  ripgrepFileName "$String"  -g "*Journal.md" -Dir (zoxide query obs) `
+  | fzf `
+  | ForEach-Object{
+    :v $_
+  }
+}
 
 function rgjn(
   # Parameter help description
@@ -111,6 +114,23 @@ function rgjn(
   # echo "$args"
   rg "$String" -g !"*Journal.md" (zoxide query obs)
 }
+
+function :vrjn(
+  # Parameter help description
+  [Parameter(Mandatory=$true)]
+  [System.String[]]
+  [Alias("s")]
+  $String
+)
+{
+  # HACK: query the directory in here.
+  ripgrepFileName "$String" -g '!*Journal.md' -Dir (zoxide query obs) `
+  | fzf `
+  | ForEach-Object{
+    :v $_
+  }
+}
+
 
 
 
