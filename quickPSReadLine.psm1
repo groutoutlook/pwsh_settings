@@ -343,6 +343,9 @@ $rgToNvimParameters = @{
     } else
     {
 
+      $SearchWithQuery = "$(Get-History -Count 1)"
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       

@@ -1,33 +1,13 @@
-# Cross platform shebang:
 shebang := if os() == 'windows' { 'pwsh.exe' } else { '/usr/bin/env pwsh' }
-
-# Set shell for non-Windows OSs:
 set shell := ["pwsh", "-c"]
-
-# Set shell for Windows OSs:
 set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
-
-# control whether or not to load dotenv. 
 set dotenv-load := true
 # set dotenv-filename	:= ".env"
 # set dotenv-required := true
-
-# If you have PowerShell Core installed and want to use it,
-# use `pwsh.exe` instead of `powershell.exe`
+# INFO: if you want to edit the justfile use js -e.
 
 hello:
     Write-Host "Hello, world!" -ForegroundColor Yellow
-
-shebang:
-    #!{{ shebang }}
-    $PSV = $PSVersionTable.PSVersion | % {"$_" -split "\." }
-    $psver = $PSV[0] + "." + $PSV[1]
-    if ($PSV[2].Length -lt 4) {
-    	$psver += "." + $PSV[2] + " Core"
-    } else {
-    	$psver += " Desktop"
-    }
-     echo "PowerShell $psver"
 
 placeholder:
     #!{{ shebang }}
@@ -35,9 +15,12 @@ placeholder:
     if($env:pwsh_env) {Write-Host "$env:pwsh_env"}
     else {Write-Host "Apparently no .env as well" -ForegroundColor Yellow}
 
-alias j := editjust
-editjust:
-    nvim ./justfile
+# INFO: basic `run` recipe.
+alias r := run
+default_args := 'args here'
+run args=default_args:
+    Write-Host {{default_args}} -ForegroundColor Red
+
 
 alias b := build
 build: placeholder
