@@ -35,30 +35,16 @@ function omniSearchObsidian
 
 # INFO: `ripgrep`.
 function ripgrepFileName(
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String,
- 
-  [Parameter(Mandatory=$false)]
-  [System.String[]]
-  [Alias("g")]
-  $glob="*",
-  
-  [Parameter(Mandatory=$false)]
-  [System.String]
-  [Alias("d")]
-  $Dir = "."
-
 )
 {
-  $fileNameWithLineNumber = (rg "$String" -o -n $Dir -g $glob) `
-    -replace ":(\d+):.*",":`$1" 
+  $fileNameWithLineNumber = 
+  Invoke-Expression("rg $args -o -n") `
+  | % {$_ -replace ":(\d+):.*",':$1'}
     
   return $fileNameWithLineNumber
-}
 
-function :vr(
+
+}function :vr(
   # Parameter help description
   [Parameter(Mandatory=$true)]
   [System.String[]]
@@ -74,28 +60,20 @@ function :vr(
 }
 
 function rgj(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
+
 )
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  rg "$String" -g "*Journal.md" (zoxide query obs) 
+  Invoke-Expression("rg $args -g '*Journal.md' (zoxide query obs)")
 }
 
 function :vrj(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
+
 )
 {
   # HACK: query the directory in here.
-  ripgrepFileName "$String"  -g "*Journal.md" -Dir (zoxide query obs) `
+  Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
   | fzf `
   | ForEach-Object{
     :v $_
@@ -124,7 +102,7 @@ function :vrjn(
 )
 {
   # HACK: query the directory in here.
-  ripgrepFileName "$String" -g '!*Journal.md' -Dir (zoxide query obs) `
+  ripgrepFileName "$String" -g '!*Journal.md' (zoxide query obs) `
   | fzf `
   | ForEach-Object{
     :v $_

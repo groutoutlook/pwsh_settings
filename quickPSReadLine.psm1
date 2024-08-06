@@ -213,25 +213,55 @@ $omniSearchParameters = @{
   LongDescription = 'draft.'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
+    <#
+    .SYNOPSIS
+    
+    .DESCRIPTION
 
+    .PARAMETERS
+
+    .EXAMPLES
+
+
+    #>
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $defaultValue = 4
-    
+    $editPattern =  '\d+e$'
     if($line -match "^j +")
     {
-      if ($line -match '\de$')
+      if ($line -match $editPattern)
       {
+        # INFO: if there are 
         $defaultValue = 8
-        Write-Error $line.Length
-        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(($line).Length - 4,($line).Length - 2," $($defaultValue)e ")
+        
+        $startPosition = $line `
+        | Select-String -Pattern  $editPattern `
+        | ForEach-Object {$_.Matches}
+        if ($startPosition.Index -ne 0)
+        {
+          [Microsoft.PowerShell.PSConsoleReadLine]::Replace($startPosition.Index,$startPosition.Count,"6e")
+        } else
+        {
+          [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e ")
+        }
       } else
       {
         [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
       }
+    } elseif ($line -eq "j")
+    {
+      # INFO: most recent jrnl 
+      $defaultValue = 6
+      $SearchWithQuery = Get-History -Count 40 `
+      | Sort-Object -Property Id -Descending `
+      | select-object -Index 0 `
+      | %{$_ -replace $editPattern,'' -replace '^j',''}
+      
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$SearchWithQuery $($defaultValue)e")
     } else
     {
 
@@ -242,7 +272,6 @@ $omniSearchParameters = @{
         | Select-String -Pattern '^j +' )
       if(($checkHistory).Length -lt 2)
       {
-        $global:checkLength = ($checkHistory).Length
         $historySource = (Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
           | Select-String -Pattern '^j +' )
       } else
