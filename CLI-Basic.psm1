@@ -44,15 +44,13 @@ function ripgrepFileName(
   return $fileNameWithLineNumber
 
 
-}function :vr(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
+}
+
+function :vr(
+  
 )
 {
-  ripgrepFileName "$String" `
+  Invoke-Expression("ripgrepFileName $args") `
   | fzf `
   | ForEach-Object{
     :v $_

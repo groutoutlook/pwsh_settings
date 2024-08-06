@@ -371,8 +371,14 @@ $rgToNvimParameters = @{
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
     } else
     {
+      # INFO: check history for the latest match commands
+      $SearchWithQuery = Get-History -Count 40 `
+      | Sort-Object -Property Id -Descending `
+      | Where-Object {$_.CommandLine -match "^rg"}
+      | select-object -Index 0 `
 
-      $SearchWithQuery = "$(Get-History -Count 1)"
+      
+
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
     }
