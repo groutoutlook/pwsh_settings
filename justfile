@@ -6,8 +6,11 @@ set dotenv-load := true
 # set dotenv-required := true
 # INFO: if you want to edit the justfile use js -e.
 
+help:
+    @just --list -f "{{home_directory()}}/justfile"
+
 hello:
-    Write-Host "Hello, world!" -ForegroundColor Yellow
+    @Write-Host "Hello, world!" -ForegroundColor Yellow
 
 placeholder:
     #!{{ shebang }}
@@ -19,8 +22,7 @@ placeholder:
 alias r := run
 default_args := 'args here'
 run args=default_args:
-    Write-Host {{default_args}} -ForegroundColor Red
-
+    @Write-Host {{default_args}} -ForegroundColor Red
 
 alias b := build
 build: placeholder

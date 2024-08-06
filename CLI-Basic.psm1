@@ -51,6 +51,7 @@ function :vr(
 )
 {
   Invoke-Expression("ripgrepFileName $args") `
+  | Sort-object -Unique `
   | fzf `
   | ForEach-Object{
     :v $_
@@ -72,6 +73,7 @@ function :vrj(
 {
   # HACK: query the directory in here.
   Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
+  | Sort-object -Unique `
   | fzf `
   | ForEach-Object{
     :v $_
