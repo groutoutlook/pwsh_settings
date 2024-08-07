@@ -9,6 +9,9 @@ set dotenv-load := true
 help:
     @just --list -f "{{home_directory()}}/justfile"
 
+todo:
+    @rg "TODO:" -g '!justfile' -g "!third_party"
+
 hello:
     @Write-Host "Hello, world!" -ForegroundColor Yellow
 
@@ -23,6 +26,7 @@ alias r := run
 default_args := 'args here'
 run args=default_args:
     @Write-Host {{default_args}} -ForegroundColor Red
+
 
 alias b := build
 build: placeholder

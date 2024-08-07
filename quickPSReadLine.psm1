@@ -258,6 +258,7 @@ $omniSearchParameters = @{
       $defaultValue = 6
       $SearchWithQuery = Get-History -Count 40 `
       | Sort-Object -Property Id -Descending `
+      | Where-Object {$_.CommandLine -match '^j'}
       | select-object -Index 0 `
       | %{$_ -replace $editPattern,'' -replace '^j',''}
       
@@ -283,6 +284,7 @@ $omniSearchParameters = @{
       | fzf --query '^j '`
       | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e"}
 
+      [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
