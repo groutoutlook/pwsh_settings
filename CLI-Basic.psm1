@@ -47,7 +47,7 @@ function ripgrepFileName(
 }
 
 # WARN: now new alternative is `ig` since it's in scoop.
-function :vr(
+function vr(
   
 )
 {
@@ -69,7 +69,7 @@ function rgj(
   Invoke-Expression("rg $args -g '*Journal.md' (zoxide query obs)")
 }
 
-function :vrj(
+function vrj(
 
 )
 {

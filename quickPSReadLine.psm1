@@ -365,8 +365,9 @@ $rgToNvimParameters = @{
       [ref]$cursor)
     if($line -match '^rg')
     {
-       
-      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
+      # INFO: Replace could actually increase the length of original strings.
+      # So I could be longer than the start.
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
     } else
     {
       # INFO: check history for the latest match commands
@@ -375,10 +376,8 @@ $rgToNvimParameters = @{
       | Where-Object {$_.CommandLine -match "^rg"}
       | select-object -Index 0 `
 
-      
-
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
-      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, ":vr")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
