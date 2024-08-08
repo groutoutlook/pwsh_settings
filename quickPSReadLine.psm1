@@ -353,8 +353,8 @@ $cdHandlerParameters = @{
 
 $rgToNvimParameters = @{
   Key = 'Alt+v'
-  BriefDescription = 'Set-LocationWhere the paste directory.'
-  LongDescription = 'Invoke cdwhere with the current directory in the command line'
+  BriefDescription = 'open `ig`'
+  LongDescription = 'Invoke vr in place of rg.'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
 
@@ -378,6 +378,40 @@ $rgToNvimParameters = @{
 
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
+    }
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+      
+  }
+}
+
+
+$rgToRggParameters = @{
+  Key = 'Ctrl+h'
+  BriefDescription = 'replace in `rgr`'
+  LongDescription = 'Invoke rgr in place of rg.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+    if($line -match '^rg ')
+    {
+      # INFO: Replace could actually increase the length of original strings.
+      # So I could be longer than the start.
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
+    } else
+    {
+      # INFO: check history for the latest match commands
+      $SearchWithQuery = Get-History -Count 40 `
+      | Sort-Object -Property Id -Descending `
+      | Where-Object {$_.CommandLine -match "^rg "}
+      | select-object -Index 0 `
+
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
     }
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
@@ -589,7 +623,7 @@ $HandlerParameters = @{
   "chrsHandler" = $CharacterSearchParameters
   "parenHandler" = $ParenthesesParameter
   "rtnHandler" = $rgToNvimParameters
-  # "yankword" = $YankWordParameters
+  "rggHandler" = $rgToRggParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {
