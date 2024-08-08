@@ -28,37 +28,22 @@ function hashmapMatch($argsToMatch)
   return $argsToMatch
 
 }
-#  TODO: May switch default engine to edge, since I found I have many things to ask the AI.
 function Search-Google
 {
-  if($args[0] -match "^yt")
+  if ($args[0] -match "^(?:cb|gcb)")
   {
-    if ($args[1] -match "^(?:cb|gcb)")
-    {
-      $args[1] = (Get-Clipboard)
-    }
-    $query = 'https://www.youtube.com/results?search_query='
-    $reargs = $args | Select-Object -Skip 1
-    foreach($ar in $reargs)
-    {
-      $query = $query + "$ar+"
-    }
-  } else
+    $args[0] = (Get-Clipboard)
+  } elseif ($args[0] -match "^ok$")
   {
-    if ($args[0] -match "^(?:cb|gcb)")
-    {
-      $args[0] = (Get-Clipboard)
-    } elseif ($args[0] -match "^ok$")
-    {
-      $args[0] = "PlaceholderQuery"
-    }
-
-    $args[-1] = hashmapMatch($args[-1])
-    $global:oldQuery = $args
-		
-    $query = 'https://www.google.com/search?q='
-    $args | ForEach-Object { $query = $query + "$_+" }
+    $args[0] = "PlaceholderQuery"
   }
+
+  $args[-1] = hashmapMatch($args[-1])
+  $global:oldQuery = $args
+		
+  $query = 'https://www.google.com/search?q='
+  $args | ForEach-Object { $query = $query + "$_+" }
+  
   $url = $query.Substring(0, $query.Length - 1)
   Invoke-Expression "$global:defaultBrowser $url"
 }
@@ -87,7 +72,8 @@ function hvdic(
   }
 }
 
-
+# INFO: Bang! syntax is useful. You could always search for it.
+# 
 function Search-DuckDuckGo
 {
   # TODO: Should make a list of abbrev about what to saerch here.

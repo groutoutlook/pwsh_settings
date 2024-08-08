@@ -14,7 +14,7 @@ function vdhelper()
   $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
   Restart-ForceApp -fileDir $fileDir
 }
-# INFO: numbat is a kind of bc in both Windows/Linux.
+# INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
 function bc
 {
   Write-Host "Numbat started." -ForegroundColor Red
@@ -46,16 +46,18 @@ function ripgrepFileName(
 
 }
 
+# WARN: now new alternative is `ig` since it's in scoop.
 function :vr(
   
 )
 {
-  Invoke-Expression("ripgrepFileName $args") `
-  | Sort-object -Unique `
-  | fzf `
-  | ForEach-Object{
-    :v $_
-  }
+  ig "$args"
+  # Invoke-Expression("ripgrepFileName $args") `
+  # | Sort-object -Unique `
+  # | fzf `
+  # | ForEach-Object{
+  #   :v $_
+  # }
 }
 
 function rgj(
@@ -72,46 +74,14 @@ function :vrj(
 )
 {
   # HACK: query the directory in here.
-  Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
-  | Sort-object -Unique `
-  | fzf `
-  | ForEach-Object{
-    :v $_
-  }
+  ig $args -g '*Journal.md' (zoxide query obs)
+  # Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
+  # | Sort-object -Unique `
+  # | fzf `
+  # | ForEach-Object{
+  #   :v $_
+  # }
 }
-
-function rgjn(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
-)
-{
-  # HACK: lots of dirty trick.
-  # echo "$args"
-  rg "$String" -g !"*Journal.md" (zoxide query obs)
-}
-
-function :vrjn(
-  # Parameter help description
-  [Parameter(Mandatory=$true)]
-  [System.String[]]
-  [Alias("s")]
-  $String
-)
-{
-  # HACK: query the directory in here.
-  ripgrepFileName "$String" -g '!*Journal.md' (zoxide query obs) `
-  | fzf `
-  | ForEach-Object{
-    :v $_
-  }
-}
-
-
-
-
 
 # INFO: yazi quick call.
 function yy
@@ -194,3 +164,9 @@ function zellij
 {
   Invoke-Expression "wsl --cd ~ zellij $args "
 }
+function task
+{
+  Invoke-Expression "wsl task $args"
+}
+
+

@@ -7,7 +7,7 @@ using namespace System.Management.Automation.Language
 # (https://stackoverflow.com/a/76991018/22954711)
 $ggSearchParameters = @{
   Key = 'Ctrl+s'
-  BriefDescription = 'Google Mode'
+  BriefDescription = 'Web Search Mode'
   LongDescription = 'Maybe other search function, but who knows.'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
@@ -17,7 +17,7 @@ $ggSearchParameters = @{
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
-    $searchFunction = "Search-Google"
+    $searchFunction = "Search-DuckDuckGo" 
     if ($line -match "[a-z]")
     {
       $SearchWithQuery = "$searchFunction $line"
@@ -25,12 +25,8 @@ $ggSearchParameters = @{
     {
       $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
     }
-    #Store to history for future use.
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
-    # Can InvertLine() here to return empty line.
-    # [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-    # Rather than that, I put the cursor at the end instead.
       
   }
 }

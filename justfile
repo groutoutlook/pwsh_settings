@@ -9,8 +9,9 @@ set dotenv-load := true
 help:
     @just --list -f "{{home_directory()}}/justfile"
 
-todo:
-    @rg "TODO:" -g '!justfile' -g "!third_party"
+default_arg := 'TODO:'
+todo todo=default_arg:
+    @rg {{todo}} -g '!justfile' -g "!third_party" 
 
 hello:
     @Write-Host "Hello, world!" -ForegroundColor Yellow
