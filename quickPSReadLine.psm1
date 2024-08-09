@@ -587,25 +587,48 @@ $ParenthesesParameter = @{
 
 }
 
+$emacsCommandParameters = @{
+  Key = 'Ctrl+x'
+  BriefDescription = 'emacs'
+  LongDescription = 'Emacs muxing command'
+  ScriptBlock = {
+    param($key, $arg)
 
-# # INFO: yank word. The latest killed one.
-# # Currently therer is no way to access a list  of tjust killed words.
-# $YankWordParameters = @{
-#   Key = 'Ctrl+q'
-#   BriefDescription = 'Yank word pararmeter'
-#   LongDescription = 'yank word that we just kill, it is currently limited to the latest in ring.'
-#   ScriptBlock = {
-#     param($key, $arg)   # The arguments are ignored in this example
-#
-#     # GetBufferState gives us the command line (with the cursor position)
-#     $line = $null
-#     $cursor = $null
-#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-#       [ref]$cursor)
-#      
-#     [Microsoft.PowerShell.PSConsoleReadLine]::Yank()
-#   }
-# }
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($key -eq  'Ctrl+x')
+    {
+      Write-Host "ThatS ctrl+x"
+      [Microsoft.PowerShell.PSConsoleReadLine]::SearchForward()
+    }
+  }
+
+}
+
+
+# INFO: yank word. The latest killed one.
+# Currently therer is no way to access a list  of tjust killed words.
+$YankWordParameters = @{
+  Key = 'Ctrl+q,ctrl+q'
+  BriefDescription = 'Yank word pararmeter'
+  LongDescription = 'yank word that we just kill, it is currently limited to the latest in ring.'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    # GetBufferState gives us the command line (with the cursor position)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+      [ref]$cursor)
+
+    [Microsoft.PowerShell.PSConsoleReadLine]::Yank()
+  }
+}
 
 # INFO: Self-made function.
 $HandlerParameters = @{
@@ -624,6 +647,8 @@ $HandlerParameters = @{
   "parenHandler" = $ParenthesesParameter
   "rtnHandler" = $rgToNvimParameters
   "rggHandler" = $rgToRggParameters
+  "emacsHandler" = $emacsCommandParameters
+  "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {
@@ -703,71 +728,6 @@ Set-PSReadLineKeyHandler -Key "Alt+5" `
 
 }
 
-
-# Cycle through arguments on current line and select the text. This makes it easier to quickly change the argument if re-running a previously run command from the history
-# or if using a psreadline predictor. You can also use a digit argument to specify which argument you want to select, i.e. Alt+1, Alt+a selects the first argument
-# on the command line.
-Set-PSReadLineKeyHandler -Key Alt+a `
-  -BriefDescription SelectCommandArguments `
-  -LongDescription "Set current selection to next command argument in the command line. Use of digit argument selects argument by position" `
-  -ScriptBlock {
-  param($key, $arg)
-  
-  $ast = $null
-  $cursor = $null
-  [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$null, [ref]$null, [ref]$cursor)
-  
-  $asts = $ast.FindAll( {
-      $args[0] -is [System.Management.Automation.Language.ExpressionAst] -and
-      $args[0].Parent -is [System.Management.Automation.Language.CommandAst] -and
-      $args[0].Extent.StartOffset -ne $args[0].Parent.Extent.StartOffset
-    }, $true)
-  
-  if ($asts.Count -eq 0)
-  {
-    [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
-    return
-  }
-    
-  $nextAst = $null
-
-  if ($null -ne $arg)
-  {
-    $nextAst = $asts[$arg - 1]
-  } else
-  {
-    foreach ($ast in $asts)
-    {
-      if ($ast.Extent.StartOffset -ge $cursor)
-      {
-        $nextAst = $ast
-        break
-      }
-    } 
-        
-    if ($null -eq $nextAst)
-    {
-      $nextAst = $asts[0]
-    }
-  }
-
-  $startOffsetAdjustment = 0
-  $endOffsetAdjustment = 0
-
-  if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
-    $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
-  {
-    $startOffsetAdjustment = 1
-    $endOffsetAdjustment = 2
-  }
-  
-  [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
-  [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
-  [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
-}
-
-
-
 # INFO: (https://github.com/PowerShell/PSReadLine/blob/61f598d8a733eba35810a4de6dc76f17433bbefc/PSReadLine/Options.cs#L23)
 # All the options, on the code.
 # Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
@@ -778,7 +738,8 @@ Set-PSReadLineKeyHandler -Key Alt+b -Function ShellBackwardWord
 Set-PSReadLineKeyHandler -Key Alt+f -Function ShellForwardWord
 Set-PSReadLineKeyHandler -Key Alt+B -Function SelectShellBackwardWord
 Set-PSReadLineKeyHandler -Key Alt+F -Function SelectShellForwardWord
-
+# HACK: [Is it possible to add a keyboard shortcut to Powershell? - Stack Overflow](https://stackoverflow.com/questions/47079321/is-it-possible-to-add-a-keyboard-shortcut-to-powershell/47080226#47080226)
+Set-PSReadlineKeyHandler -Key 'Escape,_' -Function YankLastArg
 
 # INFO: Here is the main function. To add the large chunk of keymap into shell.
 $parameters = $HandlerParameters[$handler]
