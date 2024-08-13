@@ -254,7 +254,7 @@ $omniSearchParameters = @{
       $defaultValue = 6
       $SearchWithQuery = Get-History -Count 40 `
       | Sort-Object -Property Id -Descending `
-      | Where-Object {$_.CommandLine -match '^j'}
+      | Where-Object {$_.CommandLine -match '^j +'}
       | select-object -Index 0 `
       | %{$_ -replace $editPattern,'' -replace '^j',''}
       
@@ -318,7 +318,7 @@ $HistorySearchGlobalParameters = @{
 
 
 # Custom implementation of the ViEditVisually PSReadLine function.
-Set-PSReadLineKeyHandler -Chord 'Alt+e' -Function ViEditVisually
+Set-PSReadLineKeyHandler -Chord 'ctrl+x,ctrl+e' -Function ViEditVisually
 
 $cdHandlerParameters = @{
   Key = 'Alt+x'
@@ -587,30 +587,6 @@ $ParenthesesParameter = @{
 
 }
 
-$emacsCommandParameters = @{
-  Key = 'Ctrl+x'
-  BriefDescription = 'emacs'
-  LongDescription = 'Emacs muxing command'
-  ScriptBlock = {
-    param($key, $arg)
-
-    $selectionStart = $null
-    $selectionLength = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
-
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
-    if ($key -eq  'Ctrl+x')
-    {
-      Write-Host "ThatS ctrl+x"
-      [Microsoft.PowerShell.PSConsoleReadLine]::SearchForward()
-    }
-  }
-
-}
-
-
 # INFO: yank word. The latest killed one.
 # Currently therer is no way to access a list  of tjust killed words.
 $YankWordParameters = @{
@@ -647,7 +623,7 @@ $HandlerParameters = @{
   "parenHandler" = $ParenthesesParameter
   "rtnHandler" = $rgToNvimParameters
   "rggHandler" = $rgToRggParameters
-  "emacsHandler" = $emacsCommandParameters
+  # "emacsHandler" = $emacsCommandParameters
   "yankword" = $YankWordParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
