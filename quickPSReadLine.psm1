@@ -131,6 +131,73 @@ $IterateCommandParameters = @{
   }
 }
 
+$IterateCommandBackwardParameters = @{
+  Key = 'Ctrl+Shift+s'
+  BriefDescription = 'iterate commands in the current line.'
+  LongDescription = 'want to be like alt a'
+  ScriptBlock = {
+    param($key, $arg)   # The arguments are ignored in this example
+
+    $ast = $null
+    $tokens = $null
+    $errors = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
+      [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
+    )
+  
+    $asts = $ast.FindAll( {
+        $args[0] -is [System.Management.Automation.Language.ExpressionAst] `
+          -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 
+      }, $true)
+  
+    if ($asts.Count -eq 0)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
+      return
+    }
+    
+    
+    $nextAst = $null
+
+    if ($null -ne $arg)
+    {
+      $nextAst = $asts[$arg - 1]
+    } else
+    {
+      # HACK: reverse the ast?
+      foreach ($ast in $asts)
+      {
+        if ($ast.Extent.StartOffset -ge $cursor)
+        {
+          $nextAst = $ast
+          break
+        }
+      } 
+        
+      if ($null -eq $nextAst)
+      {
+        $nextAst = $asts[-1]
+      }
+    }
+
+    $startOffsetAdjustment = 0
+    $endOffsetAdjustment = 0
+
+    if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and 
+      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
+    {
+      $startOffsetAdjustment = 1
+      $endOffsetAdjustment = 2
+    }
+
+    # INFO: jump to next symbols
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
+  }
+}
+
 # Setup for (^O) 
 $omniSearchParameters = @{
   Key = 'Ctrl+o'
@@ -625,6 +692,8 @@ $HandlerParameters = @{
   "rggHandler" = $rgToRggParameters
   # "emacsHandler" = $emacsCommandParameters
   "yankword" = $YankWordParameters
+  "iterateBackward" = $IterateCommandBackwardParameters
+  "iterateForward" = $IterateCommandParameters
 }
 ForEach($handler in $HandlerParameters.Keys)
 {

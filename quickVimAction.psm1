@@ -302,7 +302,7 @@ function :obsidian(
 
     if($phrase -eq $null)
     {
-      omniSearchObsidian $String | Out-Null
+      omniSearchObsidian "$($String -join ' ')" | Out-Null
     } else
     {
       ((Start-Process "obsidian://open?path=$phrase")  &) | Out-Null
