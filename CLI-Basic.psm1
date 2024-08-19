@@ -66,7 +66,7 @@ function rgj(
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  Invoke-Expression("rg $args -g '*Journal.md' (zoxide query obs)")
+  Invoke-Expression("rg $args -g '*Journal.md' (zoxide query obs) -M 400")
 }
 
 function vrj(
