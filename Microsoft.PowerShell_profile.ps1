@@ -183,8 +183,10 @@ function Set-LocationWhere(
 				# INFO: We need something to detect executable here. Mostly exe files but there could also be other type as well.
 				if ($commandInfo.Extension -match "exe")
 				{
-					$listBinaries = (where.exe $files)
+					# $listBinaries = (where.exe $files)
+					$listBinaries = (Resolve-Path (scoop w $files)).ToString()
 					# echo ($listBinaries).psobject
+					
 					# TypeNames           : {System.Object[], System.Array, System.Object}
 					try
 					{ $fileType = (${listBinaries}?.PsObject.TypeNames[0]) 
@@ -205,7 +207,7 @@ function Set-LocationWhere(
 						$finalBinariesPath = $files
 					}
 					# echo $finalBinariesPath.psobject
-					Set-Location (split-path ($finalBinariesPath) -Parent)
+					Set-Location (Split-Path ($finalBinariesPath) -Parent)
 				} else
 				{
 					echo "cdcb"

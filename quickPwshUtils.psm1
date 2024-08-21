@@ -93,10 +93,18 @@ Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
 
 # INFO: URI maniulation
-function filterURI
+function filterURI(
+  [Parameter(
+    # Mandatory = $true,
+    ValueFromPipeline = $true
+  )]
+  [System.String[]]
+  [Alias("s")]
+  $strings = (Get-Clipboard)
+)
 {
   
-  $link = $args
+  $link = $strings
   if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}'))
   {
     # Write-Host "Markdown Link" -ForegroundColor Green 

@@ -10,8 +10,9 @@ help:
     @just --list -f "{{home_directory()}}/justfile"
 
 default_arg := 'TODO:'
+alias td := todo
 todo todo=default_arg:
-    @rg {{todo}} -g '!justfile' -g "!third_party" 
+    rg {{todo}} -g '!justfile' -g "!third_party" 
 
 hello:
     @Write-Host "Hello, world!" -ForegroundColor Yellow
