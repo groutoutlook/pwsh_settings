@@ -270,7 +270,7 @@ $CharacterSearchParameters = @{
 }
 
 
-$omniSearchParameters = @{
+$JrnlParameters = @{
   Key = 'Ctrl+j'
   BriefDescription = 'Jrnl edit back?'
   LongDescription = 'draft.'
@@ -679,6 +679,7 @@ $HandlerParameters = @{
   "gg1Handler"   = $ggSearch_1_Parameters
   "ItCmHandler"   = $IterateCommandParameters
   "obsHandler"  = $omniSearchParameters
+  "jrnlHandler" = $JrnlParameters 
   "histJSearchHandler"= $HistorySearchGlobalParameters
   "cdHandler"  = $cdHandlerParameters
   "escHandler"  = $quickEscParameters
