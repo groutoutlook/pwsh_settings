@@ -58,7 +58,7 @@ function hvdic(
 )
 {	
   $query = 'https://hvdic.thivien.net/whv/'
-  if ($phrase -match "^(?:cb|gcb)")
+  if ($null -eq $phrase)
   {
     $phrase = (Get-Clipboard)
   }

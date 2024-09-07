@@ -76,6 +76,24 @@ function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2
 			&& cat .\flash_log.txt && sleep 1
 	}
 }
+
+function Build-Keil(
+
+)
+{
+	$count = 0
+	# INFO: load Keil file. Used first at $at_dir
+	# HACK: A kludge for looping load files.
+	# while($true){Build-Keil; sleep 5}
+	uv4 (fd '.uvprojx' -HI) -f -j0 -l ./flash_log.txt 
+	while( -not (rg "Flash Load finished" -g "*log.txt"))
+	{ 
+		$count += 1
+		Write-Host "waiting $count"
+		Start-Sleep -Second 1
+	} 
+	Get-Content -Tail 10 .\flash_log.txt
+}
 EmbedEnv
 
 function enterp($path = "D:\ProgramDataD\Mua ban TQ VN\Electrical-23\Edited")
