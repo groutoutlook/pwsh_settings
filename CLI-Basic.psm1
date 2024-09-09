@@ -51,7 +51,7 @@ function vr(
   
 )
 {
-  ig "$args"
+  ig "$args" 
   # Invoke-Expression("ripgrepFileName $args") `
   # | Sort-object -Unique `
   # | fzf `

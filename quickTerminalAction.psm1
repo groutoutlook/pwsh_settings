@@ -24,11 +24,11 @@ function cdSymLink($currentPath = (Get-Location))
 Set-Alias -Name cdsl -Value cdSymLink
 	
 $CommandNewWt = @{
-	"win" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod"'
-	"and" = '-f new-tab --suppressApplicationTitle -p "P7_Android"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "P7_Android" pwsh -NoExit -Command "p7 && p7mod && anddev"'
+	"win" = '-f new-tab -p "PowerShell" pwsh -NoExit -Command "p7 && p7mod"; split-pane --size 0.5 -H -p "PowerShell" pwsh -NoExit -Command "p7 && p7mod"'
+	"and" = '-f new-tab --suppressApplicationTitle -p "PowerShell"  pwsh -NoExit -Command "p7 && p7mod && anddev"; split-pane --size 0.5 -H -p "PowerShell_HLSL" pwsh -NoExit -Command "p7 && p7mod && anddev"'
 	"ssh" = '-f new-tab -p "ssh" split-pane --size 0.5 -V -p "ssh_1" ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -V -p "ssh_1" ; move-focus first ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" ; move-focus right ; split-pane --size 0.5 -H -p "ssh_2" pwsh -NoExit -Command "anddev && p7 && p7mod"'
-	"lin" = '-f new-tab -p "P7_OrangeBackground" wsl'
-	"obs" = '-f new-tab -p "P7_OrangeBackground" pwsh -NoExit -Command "p7 && p7mod && Set-Location $env:obsVault && jnl -3"'
+	"lin" = '-f new-tab -p "PowerShell" wsl'
+	"obs" = '-f new-tab -p "PowerShell" pwsh -NoExit -Command "p7 && p7mod && Set-Location $env:obsVault && jnl -3"'
 }
 
 function term($which = "win")
