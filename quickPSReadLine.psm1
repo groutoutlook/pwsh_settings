@@ -639,8 +639,8 @@ $viSwitchParameters = @{
 
 $viSwitch_Command_Parameters = @{
   Key = 'Ctrl+x,Ctrl+x'
-  BriefDescription = 'toggle vi navigation'
-  LongDescription = 'This is only included when in ViMode.'
+  BriefDescription = 'toggle vi navigation in command(normal) mode'
+  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
   ViMode  = "Command"
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
