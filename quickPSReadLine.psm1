@@ -654,62 +654,42 @@ $viSwitch_Command_Parameters = @{
   }
 }
 
+# HACK: Solution [at here as today](https://github.com/PowerShell/PSReadLine/issues/1701#issuecomment-1019386349)
+$j_timer = New-Object System.Diagnostics.Stopwatch
+
 $twoKeyEscape_k_Parameters = @{
   Key = 'k'
-  BriefDescription = 'kj escape'
-  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
-  ViMode  = "Insert"
-  ScriptBlock = {
-    param($key, $arg)   
-    mapTwoLetterNormal 'k' 'j'
-  }
-}
-
-$twoKeyEscape_j_Parameters = @{
-  Key = 'j'
   BriefDescription = 'jk escape'
   LongDescription = 'This is only included when in ViMode,in command(normal) mode'
   ViMode  = "Insert"
   ScriptBlock = {
     param($key, $arg)   
-    mapTwoLetterNormal 'j' 'k'
+    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 1000)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("k")
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+      $line = $null
+      $cursor = $null
+      [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor, 1)
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor-1)
+    }
+
   }
 }
 
 
-function mapTwoLetterNormal($a, $b)
-{
-  mapTwoLetterFunc $a $b -func $function:setViCommandMode
-}
-
-function setViCommandMode()
-{
-  [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
-}
-
-function mapTwoLetterFunc($a,$b,$func)
-{
-  if ([Microsoft.PowerShell.PSConsoleReadLine]::InViInsertMode())
-  {
-    $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    if ($key.Character -eq $b)
-    {
-      &$func
-    } else
-    {
-      [Microsoft.Powershell.PSConsoleReadLine]::Insert("$a")
-      # Representation of modifiers (like shift) when ReadKey uses IncludeKeyDown
-      if ($key.Character -eq 0x00)
-      {
-        return
-      } else
-      {
-        # Insert func above converts escape characters to their literals, e.g.
-        # converts return to ^M. This doesn't.
-        $wshell = New-Object -ComObject wscript.shell
-        $wshell.SendKeys("{$($key.Character)}")
-      }
-    }
+$twoKeyEscape_j_Parameters = @{
+  Key = 'j'
+  BriefDescription = 'jk/jj escape'
+  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode  = "Insert"
+  ScriptBlock = {
+    param($key, $arg)   
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
+    $j_timer.Restart()
   }
 }
 
@@ -848,14 +828,14 @@ function viswitch()
     }
     Set-PSReadLineOption @PSReadLineOptions
     [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
-   
     # INFO: Here is the main function. To add the large chunk of keymap into shell.
     ForEach($handler in $extraHandlerParameters.Keys)
     {
       $parameters = $extraHandlerParameters[$handler]
       Set-PSReadLineKeyHandler @parameters
     }
-
+    # HACK: other customized options 
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+Oem4' -Function Abort -ViMode Command
   } else
   {
     $PSReadLineOptions = @{
