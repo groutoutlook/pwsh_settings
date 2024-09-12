@@ -200,44 +200,44 @@ $omniSearchParameters = @{
 }
 
 # INFO: search character at current word.
-$CharacterSearchParameters = @{
-  Key = 'F4'
-  BriefDescription = 'Character Surfing'
-  LongDescription = 'Surfing char.'
-  ScriptBlock = {
-    param($key, $arg)   # The arguments are ignored in this example
-    #
-    #   $ast = $null
-    #   $tokens = $null
-    #   $errors = $null
-    #   $cursor = $null
-    #   [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-      [ref]$cursor)
-    # New-Variable -Name consoleKey -type [System.ConsoleKeyInfo]
-    # $consoleKey = "a" -as [System.ConsoleKeyInfo]
-    # HACK: [ConsoleKeyInfo(Char, ConsoleKey, Boolean, Boolean, Boolean) Constructor (System) | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/api/system.consolekeyinfo.-ctor?view=net-8.0#system-consolekeyinfo-ctor(system-char-system-consolekey-system-boolean-system-boolean-system-boolean))
-    if($cursor -ge ($line.length - 2))
-    {
-      $cursor = 0
-      $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
-      $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
-          $line[$cursor], $conkey,$false,$false,$false))
-      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
-      [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey ,1)
-    } else
-    {
-
-      $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
-      $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
-          $line[$cursor], $conkey,$false,$false,$false))
-      [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey,1)
-    }
-
-  }
-}
+# $CharacterSearchParameters = @{
+#   Key = 'F4'
+#   BriefDescription = 'Character Surfing'
+#   LongDescription = 'Surfing char.'
+#   ScriptBlock = {
+#     param($key, $arg)   # The arguments are ignored in this example
+#     #
+#     #   $ast = $null
+#     #   $tokens = $null
+#     #   $errors = $null
+#     #   $cursor = $null
+#     #   [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+#     $line = $null
+#     $cursor = $null
+#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+#       [ref]$cursor)
+#     # New-Variable -Name consoleKey -type [System.ConsoleKeyInfo]
+#     # $consoleKey = "a" -as [System.ConsoleKeyInfo]
+#     # HACK: [ConsoleKeyInfo(Char, ConsoleKey, Boolean, Boolean, Boolean) Constructor (System) | Microsoft Learn](https://learn.microsoft.com/en-us/dotnet/api/system.consolekeyinfo.-ctor?view=net-8.0#system-consolekeyinfo-ctor(system-char-system-consolekey-system-boolean-system-boolean-system-boolean))
+#     if($cursor -ge ($line.length - 2))
+#     {
+#       $cursor = 0
+#       $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
+#       $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
+#           $line[$cursor], $conkey,$false,$false,$false))
+#       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
+#       [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey ,1)
+#     } else
+#     {
+#
+#       $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
+#       $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
+#           $line[$cursor], $conkey,$false,$false,$false))
+#       [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey,1)
+#     }
+#
+#   }
+# }
 
 
 $JrnlParameters = @{
@@ -643,33 +643,80 @@ $viSwitch_Command_Parameters = @{
   LongDescription = 'This is only included when in ViMode,in command(normal) mode'
   ViMode  = "Command"
   ScriptBlock = {
-    param($key, $arg)   # The arguments are ignored in this example
+    param($key, $arg)  
     viswitch 
     setAllHandler
     MoreTerminalModule
   }
 }
 
+$twoKeyEscape_k_Parameters = @{
+  Key = 'k'
+  BriefDescription = 'kj escape'
+  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode  = "Insert"
+  ScriptBlock = {
+    param($key, $arg)   
+    mapTwoLetterNormal 'k' 'j'
+  }
+}
+
+$twoKeyEscape_j_Parameters = @{
+  Key = 'j'
+  BriefDescription = 'jk escape'
+  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode  = "Insert"
+  ScriptBlock = {
+    param($key, $arg)   
+    mapTwoLetterNormal 'j' 'k'
+  }
+}
+
+
+function mapTwoLetterNormal($a, $b)
+{
+  mapTwoLetterFunc $a $b -func $function:setViCommandMode
+}
+
+function mapTwoLetterFunc($a,$b,$func)
+{
+  if ([Microsoft.PowerShell.PSConsoleReadLine]::InViInsertMode())
+  {
+    $key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    if ($key.Character -eq $b)
+    {
+      &$func
+    } else
+    {
+      [Microsoft.Powershell.PSConsoleReadLine]::Insert("$a")
+      # Representation of modifiers (like shift) when ReadKey uses IncludeKeyDown
+      if ($key.Character -eq 0x00)
+      {
+        return
+      } else
+      {
+        # Insert func above converts escape characters to their literals, e.g.
+        # converts return to ^M. This doesn't.
+        $wshell = New-Object -ComObject wscript.shell
+        $wshell.SendKeys("{$($key.Character)}")
+      }
+    }
+  }
+}
 
 # INFO: Self-made function.
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
-  "ItCmHandler"   = $IterateCommandParameters
   "obsHandler"  = $omniSearchParameters
   "jrnlHandler" = $JrnlParameters 
-  "histJSearchHandler"= $HistorySearchGlobalParameters
-  "cdHandler"  = $cdHandlerParameters
-  "escHandler"  = $quickEscParameters
+  "histJSearchHandler" = $HistorySearchGlobalParameters
   "sudoHandler"  = $sudoRunParameters
   "killword" = $smartKillWordParameters
   "extrakillword" = $ExtraKillWordParameters
   "extrakillword1" = $ExtraKillWord1Parameters
-  "chrsHandler" = $CharacterSearchParameters
   "parenHandler" = $ParenthesesParameter
   "rtnHandler" = $rgToNvimParameters
   "rggHandler" = $rgToRggParameters
-  # "emacsHandler" = $emacsCommandParameters
-  # "yankword" = $YankWordParameters
   "iterateBackward" = $IterateCommandBackwardParameters
   "iterateForward" = $IterateCommandParameters
   "viswitch" = $viSwitchParameters
@@ -678,6 +725,8 @@ $HandlerParameters = @{
 # INFO: For Vi mode.
 $extraHandlerParameters = @{
   "viswitch_c" = $viSwitch_Command_Parameters
+  # "two-kj" = $twoKeyEscape_k_Parameters 
+  # "two-jk" = $twoKeyEscape_j_Parameters 
 }
 
 function setAllHandler()

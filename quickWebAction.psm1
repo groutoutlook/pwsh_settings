@@ -28,29 +28,6 @@ function hashmapMatch($argsToMatch)
   return $argsToMatch
 
 }
-function Search-Google
-{
-  if ($args[0] -match "^(?:cb|gcb)")
-  {
-    $args[0] = (Get-Clipboard)
-  } elseif ($args[0] -match "^ok$")
-  {
-    $args[0] = "PlaceholderQuery"
-  }
-
-  $args[-1] = hashmapMatch($args[-1])
-  $global:oldQuery = $args
-		
-  $query = 'https://www.google.com/search?q='
-  $args | ForEach-Object { $query = $query + "$_+" }
-  
-  $url = $query.Substring(0, $query.Length - 1)
-  Invoke-Expression "$global:defaultBrowser $url"
-}
-
-Set-Alias -Name gos -Value Search-Google
-Set-Alias -Name gg -Value Search-Google
-
 
 function hvdic(
   $phrase,
@@ -97,6 +74,30 @@ function Search-DuckDuckGo
 
 Set-Alias -Name ddg -Value Search-DuckDuckGo
 Set-Alias -Name dg -Value Search-DuckDuckGo
+
+# function Search-Google
+# {
+#   if ($args[0] -match "^(?:cb|gcb)")
+#   {
+#     $args[0] = (Get-Clipboard)
+#   } elseif ($args[0] -match "^ok$")
+#   {
+#     $args[0] = "PlaceholderQuery"
+#   }
+#
+#   $args[-1] = hashmapMatch($args[-1])
+#   $global:oldQuery = $args
+# 		
+#   $query = 'https://www.google.com/search?q='
+#   $args | ForEach-Object { $query = $query + "$_+" }
+#   
+#   $url = $query.Substring(0, $query.Length - 1)
+#   Invoke-Expression "$global:defaultBrowser $url"
+# }
+
+Set-Alias -Name gos -Value Search-DuckDuckGo
+Set-Alias -Name gg -Value Search-DuckDuckGo
+
 
 $global:ggmode = $true
 
