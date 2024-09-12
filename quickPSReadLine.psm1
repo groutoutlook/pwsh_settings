@@ -632,11 +632,15 @@ $viSwitchParameters = @{
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
     viswitch 
+    # HACK: it's all reset after we reset the PSReadLineOptions.
     setAllHandler
+    # HACK: set the ctrl+r and ctrl+t
     MoreTerminalModule
   }
 }
 
+
+# INFO: Start Command Mode commands.
 $viSwitch_Command_Parameters = @{
   Key = 'Ctrl+x,Ctrl+x'
   BriefDescription = 'toggle vi navigation in command(normal) mode'
@@ -676,6 +680,11 @@ $twoKeyEscape_j_Parameters = @{
 function mapTwoLetterNormal($a, $b)
 {
   mapTwoLetterFunc $a $b -func $function:setViCommandMode
+}
+
+function setViCommandMode()
+{
+  [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
 }
 
 function mapTwoLetterFunc($a,$b,$func)
@@ -725,8 +734,8 @@ $HandlerParameters = @{
 # INFO: For Vi mode.
 $extraHandlerParameters = @{
   "viswitch_c" = $viSwitch_Command_Parameters
-  # "two-kj" = $twoKeyEscape_k_Parameters 
-  # "two-jk" = $twoKeyEscape_j_Parameters 
+  "two-kj" = $twoKeyEscape_k_Parameters 
+  "two-jk" = $twoKeyEscape_j_Parameters 
 }
 
 function setAllHandler()
