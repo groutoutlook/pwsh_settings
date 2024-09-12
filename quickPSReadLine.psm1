@@ -664,7 +664,7 @@ $twoKeyEscape_k_Parameters = @{
   ViMode  = "Insert"
   ScriptBlock = {
     param($key, $arg)   
-    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 1000)
+    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500)
     {
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("k")
     } else
@@ -688,8 +688,22 @@ $twoKeyEscape_j_Parameters = @{
   ViMode  = "Insert"
   ScriptBlock = {
     param($key, $arg)   
+    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500)
+    {
+
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
+      $j_timer.Restart()
+      return
+    }
+    
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
-    $j_timer.Restart()
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor-1, 2)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor-2)
+    
   }
 }
 
