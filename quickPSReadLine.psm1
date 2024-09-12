@@ -355,36 +355,44 @@ $HistorySearchGlobalParameters = @{
 
 
 # Custom implementation of the ViEditVisually PSReadLine function.
-Set-PSReadLineKeyHandler -Chord 'ctrl+x,ctrl+e' -Function ViEditVisually
-
-$cdHandlerParameters = @{
-  Key = 'Alt+x'
+$openEditorParameters = @{
+  Key = 'ctrl+x,ctrl+e' 
   BriefDescription = 'Set-LocationWhere the paste directory.'
   LongDescription = 'Invoke cdwhere with the current directory in the command line'
   ScriptBlock = {
-    param($key, $arg)   # The arguments are ignored in this example
-
-    # GetBufferState gives us the command line (with the cursor position)
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-      [ref]$cursor)
-    $invokeFunction = "Set-LocationWhere"
-    $Query = "$invokeFunction `'$line`'"
-    #Store to history for future use.
-
-    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction `'")
-    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
-    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("`'")
-    # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
-    #Store to history for future use.
-    # Can InvertLine() here to return empty line.
-    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
-      
+    param($key, $arg)
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViEditVisually()
   }
 }
 
+# $cdHandlerParameters = @{
+#   Key = 'Alt+x'
+#   BriefDescription = 'Set-LocationWhere the paste directory.'
+#   LongDescription = 'Invoke cdwhere with the current directory in the command line'
+#   ScriptBlock = {
+#     param($key, $arg)   # The arguments are ignored in this example
+#
+#     # GetBufferState gives us the command line (with the cursor position)
+#     $line = $null
+#     $cursor = $null
+#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+#       [ref]$cursor)
+#     $invokeFunction = "Set-LocationWhere"
+#     $Query = "$invokeFunction `'$line`'"
+#     #Store to history for future use.
+#
+#     [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+#     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction `'")
+#     [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+#     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("`'")
+#     # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
+#     #Store to history for future use.
+#     # Can InvertLine() here to return empty line.
+#     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+#       
+#   }
+# }
+#
 
 
 
@@ -624,15 +632,45 @@ $ParenthesesParameter = @{
 
 }
 
+
+
+$ParenthesesAllParameter = @{
+  Key = 'Alt+9'
+  BriefDescription = 'parentheses all or the selection'
+  LongDescription = 'As brief.'
+  ScriptBlock = {
+
+    param($key, $arg)
+
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($selectionStart -ne -1)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
+      [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+    }
+
+  }
+
+}
+
 # INFO: switch between windows mode and vi mode. for easier navigation
-$viSwitchParameters = @{
+$OptionsSwitchParameters = @{
   Key = 'Ctrl+x,Ctrl+x'
   BriefDescription = 'toggle vi navigation'
   LongDescription = 'as I mimic the behaviour in zsh'
   ScriptBlock = {
     param($key, $arg)   # The arguments are ignored in this example
-    viswitch 
-    # HACK: it's all reset after we reset the PSReadLineOptions.
+    OptionsSwitch 
     setAllHandler
     # HACK: set the ctrl+r and ctrl+t
     MoreTerminalModule
@@ -641,14 +679,14 @@ $viSwitchParameters = @{
 
 
 # INFO: Start Command Mode commands.
-$viSwitch_Command_Parameters = @{
+$OptionsSwitch_Command_Parameters = @{
   Key = 'Ctrl+x,Ctrl+x'
   BriefDescription = 'toggle vi navigation in command(normal) mode'
   LongDescription = 'This is only included when in ViMode,in command(normal) mode'
   ViMode  = "Command"
   ScriptBlock = {
     param($key, $arg)  
-    viswitch 
+    OptionsSwitch 
     setAllHandler
     MoreTerminalModule
   }
@@ -690,14 +728,14 @@ $twoKeyEscape_j_Parameters = @{
     param($key, $arg)   
     if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500)
     {
-
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
       $j_timer.Restart()
-      return
+      return # HACK: return right before anything got executed below.
     }
     
     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
     [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+
     $line = $null
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
@@ -707,7 +745,19 @@ $twoKeyEscape_j_Parameters = @{
   }
 }
 
-# INFO: Self-made function.
+$ctrlBracket_Parameters = @{
+  # HACK: on the key code, using [System.Console]::ReadKey() -> `[` as Oem4.
+  Key = 'ctrl+Oem4'
+  BriefDescription = 'ctrl+['
+  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode  = "Insert"
+  ScriptBlock = {
+    param($key, $arg)   
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+  }
+}
+
+# INFO: Common Windows/Vi Mode Key handlers
 $HandlerParameters = @{
   "ggHandler"   = $ggSearchParameters
   "obsHandler"  = $omniSearchParameters
@@ -717,153 +767,84 @@ $HandlerParameters = @{
   "killword" = $smartKillWordParameters
   "extrakillword" = $ExtraKillWordParameters
   "extrakillword1" = $ExtraKillWord1Parameters
-  "parenHandler" = $ParenthesesParameter
+  "parentSel" = $ParenthesesParameter
+  "parentAll" = $ParenthesesAllParameter
   "rtnHandler" = $rgToNvimParameters
   "rggHandler" = $rgToRggParameters
   "iterateBackward" = $IterateCommandBackwardParameters
   "iterateForward" = $IterateCommandParameters
-  "viswitch" = $viSwitchParameters
+  "OptionsSwitch" = $OptionsSwitchParameters
+  "openEditor" = $openEditorParameters
 }
 
-# INFO: For Vi mode.
-$extraHandlerParameters = @{
-  "viswitch_c" = $viSwitch_Command_Parameters
+# INFO: Unique for Vi mode.
+$ViHandlerParameters = @{
+  "OptionsSwitch_c" = $OptionsSwitch_Command_Parameters
   "two-kj" = $twoKeyEscape_k_Parameters 
   "two-jk" = $twoKeyEscape_j_Parameters 
+  "esc-ctrlbracket" = $ctrlBracket_Parameters
+}
+
+# INFO: IF you want to go real freaky
+# Consider Unique for Emacs mode.
+
+#INFO: Default of Windows PSReadLineOptions
+$PSReadLineOptions_Windows = @{
+  EditMode = "Windows"
+  HistoryNoDuplicates = $true
+  HistorySearchCursorMovesToEnd = $true
+  PredictionViewStyle = "ListView"
+  Colors = @{
+    "Command" = "#f9f1a5"
+  }
+}
+
+$PSReadLineOptions_Vi = @{
+  EditMode = "Vi"
+  HistoryNoDuplicates = $true
+  HistorySearchCursorMovesToEnd = $true
+  PredictionViewStyle = "ListView"
+  Colors = @{
+    "Command" = "#8181f7"
+  }
 }
 
 function setAllHandler()
 {
-  # Sometimes you want to get a property of invoke a member on what you've entered so far
-  # but you need parens to do that.  This binding will help by putting parens around the current selection,
-  # or if nothing is selected, the whole line.
-  # $ original is alt+(
-  Set-PSReadLineKeyHandler -Key 'Alt+9' `
-    -BriefDescription ParenthesizeSelection `
-    -LongDescription "Put parenthesis around the selection or entire line and move the cursor to after the closing parenthesis" `
-    -ScriptBlock {
-    param($key, $arg)
-
-    $selectionStart = $null
-    $selectionLength = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
-
-    $line = $null
-    $cursor = $null
-    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
-    if ($selectionStart -ne -1)
-    {
-      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
-      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
-    } else
-    {
-      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
-      [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
-    }
-  }
-
-  # This example will replace any aliases on the command line with the resolved commands.
-  # Original is alt+%
-  # Set-PSReadLineKeyHandler -Key "Alt+5" `
-  #   -BriefDescription ExpandAliases `
-  #   -LongDescription "Replace all aliases with the full command" `
-  #   -ScriptBlock {
-  #   param($key, $arg)
-  #
-  #   $ast = $null
-  #   $tokens = $null
-  #   $errors = $null
-  #   $cursor = $null
-  #   [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
-  #
-  #   $startAdjustment = 0
-  #   foreach ($token in $tokens)
-  #   {
-  #     if ($token.TokenFlags -band [TokenFlags]::CommandName)
-  #     {
-  #       $alias = $ExecutionContext.InvokeCommand.GetCommand($token.Extent.Text, 'Alias')
-  #       if ($alias -ne $null)
-  #       {
-  #         $resolvedCommand = $alias.ResolvedCommandName
-  #         if ($resolvedCommand -ne $null)
-  #         {
-  #           $extent = $token.Extent
-  #           $length = $extent.EndOffset - $extent.StartOffset
-  #           [Microsoft.PowerShell.PSConsoleReadLine]::Replace(
-  #             $extent.StartOffset + $startAdjustment,
-  #             $length,
-  #             $resolvedCommand)
-  #
-  #           # Our copy of the tokens won't have been updated, so we need to
-  #           # adjust by the difference in length
-  #           $startAdjustment += ($resolvedCommand.Length - $length)
-  #         }
-  #       }
-  #     }
-  #   }
-  #
-  # }
-
-  # INFO: [some options](https://github.com/PowerShell/PSReadLine/blob/61f598d8a733eba35810a4de6dc76f17433bbefc/PSReadLine/Options.cs#L23)
-  # All the options, on the code.
-  # Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-  # Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-  Set-PSReadLineOption -PredictionViewStyle ListView
-  # HACK: Emacs key...
-  # Set-PSReadLineKeyHandler -Key Alt+b -Function ShellBackwardWord
-  # Set-PSReadLineKeyHandler -Key Alt+f -Function ShellForwardWord
-  # Set-PSReadLineKeyHandler -Key Alt+B -Function SelectShellBackwardWord
-  # Set-PSReadLineKeyHandler -Key Alt+F -Function SelectShellForwardWord
-  # HACK: [Is it possible to add a keyboard shortcut to Powershell? - Stack Overflow](https://stackoverflow.com/questions/47079321/is-it-possible-to-add-a-keyboard-shortcut-to-powershell/47080226#47080226)
-  # Set-PSReadlineKeyHandler -Key 'Escape,_' -Function YankLastArg
-
-  # INFO: Here is the main function. To add the large chunk of keymap into shell.
+  # INFO: custom default keyhandler.
   ForEach($handler in $HandlerParameters.Keys)
   {
     $parameters = $HandlerParameters[$handler]
     Set-PSReadLineKeyHandler @parameters
   }
 
-}
-
-
-function viswitch()
-{
+  # INFO: Add Vi Handler.
   $currentMode = (Get-PSReadLineOption).EditMode 
-  if ($currentMode -eq "Windows")
+  if ($currentMode -eq "Vi")
   {
-    $PSReadLineOptions = @{
-      EditMode = "Vi"
-      HistoryNoDuplicates = $true
-      HistorySearchCursorMovesToEnd = $true
-      Colors = @{
-        "Command" = "#8181f7"
-      }
-    }
-    Set-PSReadLineOption @PSReadLineOptions
-    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
-    # INFO: Here is the main function. To add the large chunk of keymap into shell.
-    ForEach($handler in $extraHandlerParameters.Keys)
+    ForEach($handler in $ViHandlerParameters.Keys)
     {
-      $parameters = $extraHandlerParameters[$handler]
+      $parameters = $ViHandlerParameters[$handler]
       Set-PSReadLineKeyHandler @parameters
     }
-    # HACK: other customized options 
-    Set-PSReadLineKeyHandler -Chord 'Ctrl+Oem4' -Function Abort -ViMode Command
-  } else
-  {
-    $PSReadLineOptions = @{
-      EditMode = "Windows"
-      HistoryNoDuplicates = $true
-      HistorySearchCursorMovesToEnd = $true
-      Colors = @{
-        "Command" = "#f9f1a5"
-      }
-    }
-    Set-PSReadLineOption @PSReadLineOptions
   }
 
 }
 
+function OptionsSwitch()
+{
+  $currentMode = (Get-PSReadLineOption).EditMode 
+  if ($currentMode -eq "Windows")
+  {
+    Set-PSReadLineOption @PSReadLineOptions_Vi
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+  } else
+  {
+    Set-PSReadLineOption @PSReadLineOptions_Windows
+  }
 
+}
+
+# HACK: preset of the initial settings.
+Set-PSReadLineOption @PSReadLineOptions_Windows
 setAllHandler
