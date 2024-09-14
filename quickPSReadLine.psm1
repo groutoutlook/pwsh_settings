@@ -192,9 +192,9 @@ $omniSearchParameters = @{
  
     #Store to history for future use.
     [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
+    [Microsoft.PowerShell.PSConsoleReadLine]::CancelLine()
     Invoke-Expression $SearchWithQuery
     # Can InvertLine() here to return empty line.
-    [Microsoft.PowerShell.PSConsoleReadLine]::InvertLine()
       
   }
 }
