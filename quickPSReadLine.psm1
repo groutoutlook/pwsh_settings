@@ -289,11 +289,11 @@ $JrnlParameters = @{
     {
       # INFO: most recent jrnl 
       $defaultValue = 6
-      $SearchWithQuery = Get-History -Count 40 `
-      | Sort-Object -Property Id -Descending `
-      | Where-Object {$_.CommandLine -match '^j +'}
+      $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadlineOption).HistorySavePath `
+      | Where-Object {$_ -match '^j +'} `
       | select-object -Index 0 `
-      | %{$_ -replace $editPattern,'' -replace '^j',''}
+      | ForEach-Object {$_ -replace $editPattern,'' -replace '^j',''}
+      
       
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$SearchWithQuery $($defaultValue)e")
     } else
