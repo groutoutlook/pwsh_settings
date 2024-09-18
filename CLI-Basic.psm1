@@ -152,6 +152,8 @@ function lsd
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
+Set-Alias -Name cat -Value mdcat -Scope Global -Option AllScope
+
 function zsh
 {
   # INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.

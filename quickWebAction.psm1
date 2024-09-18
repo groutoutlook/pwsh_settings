@@ -132,9 +132,27 @@ function ocr
 
 function trans
 {
-  Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=translate"
-  Start-Sleep -Milliseconds 800
- 	[System.Windows.Forms.SendKeys]::SendWait("^v")
+  $isClipboardString = (Get-Clipboard).Length
+  # INFO: ocr definitely.
+  if ($isClipboardString -eq 0)
+  {
+    Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=translate"
+    Start-Sleep -Milliseconds 800
+    [System.Windows.Forms.SendKeys]::SendWait("^v")
+  } else
+  {
+    if($args[0] -eq "zh")
+    {
+      $translateFragment = "sl=en&tl=zh-CN"
+    } else
+    {
+      $translateFragment = "sl=zh-CN&tl=en"
+    }
+    $uri = "https://translate.google.com/?$translateFragment&text="
+    (get-clipboard).ToCharArray() | % {$uri += $_}
+    $finalUri = $uri + '&op=translate'
+    Start-Process $finalUri
+  }
 }
 
 
