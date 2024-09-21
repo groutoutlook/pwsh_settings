@@ -126,19 +126,19 @@ Add-Type -AssemblyName System.Windows.Forms
 function ocr
 {
   Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
-  Start-Sleep -Milliseconds 850
+  Start-Sleep -Milliseconds 1000
  	[System.Windows.Forms.SendKeys]::SendWait("^v")
 }
 
-function trans
+# HACK: abbreviate translation function to this.
+function tra
 {
   $isClipboardString = (Get-Clipboard).Length
-  # INFO: ocr definitely.
   if ($isClipboardString -eq 0)
   {
-    Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=translate"
-    Start-Sleep -Milliseconds 800
-    [System.Windows.Forms.SendKeys]::SendWait("^v")
+    # INFO: ocr definitely.
+    ocr 
+
   } else
   {
     if($args[0] -eq "zh")

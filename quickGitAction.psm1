@@ -1,6 +1,6 @@
 # Git quick action Powershell Modules.
-#Import-Module posh-git
-#Add-PoshGitToProfile -AllHosts
+Import-Module posh-git
+# Add-PoshGitToProfile -AllHosts
 
 
 function quickInitGit
