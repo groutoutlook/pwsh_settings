@@ -290,9 +290,8 @@ $JrnlParameters = @{
       # INFO: most recent jrnl 
       $defaultValue = 6
       $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadlineOption).HistorySavePath `
-      | Where-Object {$_ -match '^j +'} `
-      | select-object -Index 0 `
-      | ForEach-Object {$_ -replace $editPattern,'' -replace '^j',''}
+      | Where-Object {$_ -match '^j [\w.-]+'}
+      $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,'' -replace '^j',''
       
       
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$SearchWithQuery $($defaultValue)e")
@@ -301,21 +300,21 @@ $JrnlParameters = @{
 
       $finalOptions = $null
       $checkHistory = (Get-History `
-        | Sort-Object -Property CommandLine -Unique `
-        | Select-Object -ExpandProperty CommandLine `
-        | Select-String -Pattern '^j +' )
+      | Sort-Object -Property CommandLine -Unique `
+      | Select-Object -ExpandProperty CommandLine `
+      | Select-String -Pattern '^j +' )
       if(($checkHistory).Length -lt 2)
       {
         $historySource = (Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
-          | Select-String -Pattern '^j +' )
+        | Select-String -Pattern '^j +' )
       } else
       {
         $historySource = $checkHistory
       }
       
       $historySource `
-      | fzf --query '^j '`
-      | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e"}
+    | fzf --query '^j '`
+    | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e"}
 
       [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
       [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")

@@ -136,11 +136,13 @@ function :vc
 
 
 
-# INFO: Quick pwsh_profiles session.
-# Table first
+# INFO: Quick pwsh_profiles session. Very shorthand.
+# although better checkout [root dir]($env:LOCALAPPDATA\nvim-data\session)
 $sessionMap = @{
   "pw" = "pwsh_settings"
   "nv" = "nvim_dotfiles"
+  "nvs" = "nvim-vscode"
+  "vsc" = "vscode-config"
   "ob" = "obsidian"
   "vk" = "vulkan-samples"
   "wts" = "wt_shader"

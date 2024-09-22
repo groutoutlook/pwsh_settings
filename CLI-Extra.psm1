@@ -82,5 +82,11 @@ function mpvc(
   }
 }
 
-# INFO: Default completion import.
-# Import-Completion just
+# INFO: currently it's 1688 desktop chat client.
+function aliim
+{ 
+  Stop-Process -Name "aliim"
+  Start-Sleep -Seconds 2
+  Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"
+  Start-Process "C:\Program Files (x86)\AliWangWang\AliIM.exe"
+}
