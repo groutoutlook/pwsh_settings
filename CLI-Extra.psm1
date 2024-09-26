@@ -85,8 +85,22 @@ function mpvc(
 # INFO: currently it's 1688 desktop chat client.
 function aliim
 { 
-  Stop-Process -Name "aliim"
-  Start-Sleep -Seconds 2
-  Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"
-  Start-Process "C:\Program Files (x86)\AliWangWang\AliIM.exe"
+  Stop-Process -Name "aliim*"
+  if ($args[0] -eq $null)
+  {
+    Start-Sleep -Seconds 2
+    Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"
+    Start-Process "C:\Program Files (x86)\AliWangWang\AliIM.exe"
+  } elseif ($args[0] -eq "16")
+  {
+    Start-Sleep -Seconds 2
+    Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"
+  } elseif ($args[0] -eq "tb")
+  {
+    Start-Sleep -Seconds 2
+    Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"
+  } else
+  {
+    Write-Host "should be nothing" -ForegroundColor Yellow
+  }
 }

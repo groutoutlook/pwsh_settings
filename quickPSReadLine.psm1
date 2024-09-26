@@ -290,7 +290,7 @@ $JrnlParameters = @{
       # INFO: most recent jrnl 
       $defaultValue = 6
       $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadlineOption).HistorySavePath `
-      | Where-Object {$_ -match '^j [\w.-]+'}
+      | Where-Object {$_ -match '^j +'}
       $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,'' -replace '^j',''
       
       
