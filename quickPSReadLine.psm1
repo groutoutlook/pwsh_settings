@@ -291,10 +291,10 @@ $JrnlParameters = @{
       $defaultValue = 6
       $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadlineOption).HistorySavePath `
       | Where-Object {$_ -match '^j +'}
-      $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,'' -replace '^j',''
+      $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,''
       
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
       
-      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$SearchWithQuery $($defaultValue)e")
     } else
     {
 

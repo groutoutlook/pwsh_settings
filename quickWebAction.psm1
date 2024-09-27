@@ -123,7 +123,7 @@ Set-Alias -Name comps -Value compSearch
 
 
 Add-Type -AssemblyName System.Windows.Forms
-function ocr
+function pwshOcr
 {
   Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
   Start-Sleep -Milliseconds 1000
@@ -136,8 +136,8 @@ function tra
   $isClipboardString = (Get-Clipboard).Length
   if ($isClipboardString -eq 0)
   {
-    # INFO: ocr definitely.
-    ocr 
+    # INFO: pwsh-ocr definitely.
+    pwshOcr 
 
   } else
   {
