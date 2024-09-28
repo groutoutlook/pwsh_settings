@@ -82,11 +82,23 @@ function mpvc(
   }
 }
 
+# HACK: wait for mpv then shutdown hibernate
+function Wait-MPVHibernate()
+{
+  while(ps -name mpv)
+  {
+    Start-Sleep -Second 5
+    Write-Host "INFO: [$(Get-Date)] mpv running"
+  } 
+  shutdown /h
+}
+
+
 # INFO: currently it's 1688 desktop chat client.
 function aliim
 { 
   Stop-Process -Name "aliim*"
-  if ($args[0] -eq $null)
+  if ($null -eq $args[0])
   {
     Start-Sleep -Seconds 2
     Start-Process "C:\Program Files (x86)\Ali1688Buyer\AliIM.exe"

@@ -294,7 +294,6 @@ $JrnlParameters = @{
       $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,''
       
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
-      
     } else
     {
 

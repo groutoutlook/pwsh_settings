@@ -172,3 +172,5 @@ function task
 }
 
 
+# HACK: hook this into scoop.
+Invoke-Expression (&sfsu hook)
