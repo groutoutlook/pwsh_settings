@@ -66,7 +66,14 @@ function rgj(
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  Invoke-Expression("rg $args -g '*Journal.md' (zoxide query obs) -M 400")
+  rg ($args -join " ") -g '*Journal.md' (zoxide query obs) -M 400 
+  # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
+  if($? -eq $false)
+  {
+    Write-Host "not in those journal.md" -ForegroundColor Red
+    Invoke-Expression("rg $args -g !'*Journal.md' (zoxide query obs) -M 400")
+    Write-Host "Again, not in those journal.md" -ForegroundColor Blue
+  }
 }
 
 function vrj(
