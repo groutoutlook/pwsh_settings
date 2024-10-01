@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/groutoutlook/pwsh_settings/compare/v1.0.0...v1.1.0) (2024-10-01)
+
+
+### Features
+
+* **utils:** add fallback to the `rgj` commands ([b965e8b](https://github.com/groutoutlook/pwsh_settings/commit/b965e8be265755d69a99ee01ac69714302274bb1))
+
+
+### Bug Fixes
+
+* **utils:** mousemaster manually reset. ([6e4a948](https://github.com/groutoutlook/pwsh_settings/commit/6e4a9485965d5417fb740ae1cfdf00a4821e2f8c))
+
 ## 1.0.0 (2024-10-01)
 
 
