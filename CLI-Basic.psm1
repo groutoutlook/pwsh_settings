@@ -129,8 +129,10 @@ Set-Alias -Name dcb -Value ycb
 # INFO: mousemaster or something related to mouse controlling
 function mousemt
 {
+  Stop-Process -Name mousemaster*
   ( mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
 }
+
 Set-Alias -Name msmt -Value mousemt
 
 # INFO: neko, for the fun of it.
