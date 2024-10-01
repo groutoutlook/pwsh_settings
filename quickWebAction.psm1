@@ -189,6 +189,10 @@ function Get-CodeStats($webui = 0)
 
 Set-Alias -Name cst -Value Get-CodeStats 
 
+function awatch
+{
+  Start-Process http://localhost:5600/#/settings
+}
 
 # INFO: Streaming services quick-access
 # Twitch and Youtube.

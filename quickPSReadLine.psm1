@@ -18,9 +18,19 @@ $ggSearchParameters = @{
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = "Search-DuckDuckGo" 
+    $SearchWithQuery = ""
     if ($line -match "[a-z]")
     {
-      $SearchWithQuery = "$searchFunction $line"
+      if($line -match "^scoop")
+      {
+                
+        $SearchWithQuery = "$searchFunction $line; $line"
+      } else
+      {
+
+        $SearchWithQuery = "$searchFunction $line"
+      }
+
     } else
     {
       $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"

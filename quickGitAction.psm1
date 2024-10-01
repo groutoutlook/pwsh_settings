@@ -5,9 +5,10 @@ Import-Module posh-git
 
 function quickInitGit
 {
+	Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
 	Copy-Cliff `
 		&& Copy-Just `
-		&& git init && git add * && gitmoji -c `
+		&& git init && git add * && git commit 
 
 }
 
