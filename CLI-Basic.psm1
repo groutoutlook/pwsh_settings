@@ -70,9 +70,16 @@ function rgj(
   # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
   if($? -eq $false)
   {
-    Write-Host "not in those journal.md" -ForegroundColor Red
-    Invoke-Expression("rg $args -g !'*Journal.md' (zoxide query obs) -M 400")
-    Write-Host "Again, not in those journal.md" -ForegroundColor Blue
+    Write-Host "not in those journal.md" -ForegroundColor Magenta
+    rg ($args -join " ") -g !'*Journal.md' (zoxide query obs) -M 400
+    if($? -eq $false)
+    {
+      Search-DuckDuckGo ($args -join " ") 
+      Write-Host "Fall back to other search engine." -ForegroundColor Red
+    } else
+    {
+      Write-Host "In other Files in Vault, not in those journal.md" -ForegroundColor Blue
+    }
   }
 }
 
