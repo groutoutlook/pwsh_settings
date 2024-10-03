@@ -521,7 +521,8 @@ function Get-UniqueEntryJrnl
   $all_list = @()
   $os_list = ConvertFrom-Yaml -yaml (get-content -Raw $jrnlYamlPath)
   $initial_keys_list = $os_list.journals.Keys
-  $final_dir = $os_list.journals.Values.Values 
+  $final_dir = $os_list.journals.Values.Values | Where-Object {$_ -match "~/hw/obs"}
+  # echo $final_dir
   # INFO: Could also create a hashTable of keys and value here.
   if ($args[0] -match "^table")
   {
