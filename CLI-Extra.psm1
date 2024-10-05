@@ -21,15 +21,14 @@ Set-Alias -Name :cp -Value Import-Completion
 
 
 function Get-Playlistmpv(
-  [Parameter(Mandatory=$false)]
-  [System.String[]]
-  [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
-  [Alias("s")]
-  $String = @(Get-Clipboard)
+  # [Parameter(Mandatory=$false)]
+  # [System.String[]]
+  # [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
+  # [Alias("s")]
+  # $String = @("$(Get-content (fd musicjournal) -Tail 100)")
 )
 {
   # HACK: in case we copy a chunk of text with newline.
-  $listURI = $string -split "`n",""
   # echo ($listURI).PSobject
   $global:playlistTemp = "$HOME/mpv-playing.txt"
   $conditionPlaylist = Test-Path $global:playlistTemp
@@ -38,18 +37,16 @@ function Get-Playlistmpv(
     Remove-Item $global:playlistTemp -ErrorAction SilentlyContinue -Force
   }
   New-Item $global:playlistTemp
-  foreach($junkText in $listURI)
-  {
-    filterURI $junkText `
-    | ForEach-Object {if ($_)
-      {
-        # (mpv $_ &) | Wait-Job
-        "$_`n" >> $global:playlistTemp
-      }
-    }
-  }
-  cat $global:playlistTemp
+  $playlist_file = fd --hyperlink musicj --base-directory="$(zoxide query obs)" 
+  $playlist_file = Join-Path -Path "$(zoxide query obs)" -ChildPath $playlist_file
+ (get-content -Tail 100 $playlist_file)+(get-content -Head 100 $playlist_file) | %{filterURI $_ >> $global:playlistTemp}
+  mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1
+  # Get-Content $global:playlistTemp
 }
+
+Set-Alias jmpv Get-Playlistmpv
+
+
 
 # HACK: launch in different pwsh process.
 function mpvc(
