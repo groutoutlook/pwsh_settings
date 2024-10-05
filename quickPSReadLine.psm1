@@ -802,6 +802,7 @@ $PSReadLineOptions_Windows = @{
   HistoryNoDuplicates = $true
   HistorySearchCursorMovesToEnd = $true
   PredictionViewStyle = "ListView"
+
   Colors = @{
     "Command" = "#f9f1a5"
   }
@@ -819,6 +820,7 @@ $PSReadLineOptions_Vi = @{
 
 function setAllHandler()
 {
+  # Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
   # INFO: custom default keyhandler.
   ForEach($handler in $HandlerParameters.Keys)
   {

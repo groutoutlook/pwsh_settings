@@ -137,7 +137,7 @@ Set-Alias -Name dcb -Value ycb
 function mousemt
 {
   Stop-Process -Name mousemaster*
-  ( mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
+  ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
 }
 
 Set-Alias -Name msmt -Value mousemt

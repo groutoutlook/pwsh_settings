@@ -89,7 +89,6 @@ function MoreTerminalModule
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-	;
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	
 	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
