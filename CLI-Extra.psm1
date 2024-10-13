@@ -25,7 +25,9 @@ function Get-Playlistmpv(
   [System.String[]]
   [PSDefaultValue(help = "Text/Lines that contain links, hope we can evolve it to file(s)")]
   [Alias("m")]
-  $Mode = "normal"
+  $Mode = "normal",
+  $last = 100,
+  $first = 100
 )
 {
   # HACK: in case we copy a chunk of text with newline.
@@ -38,13 +40,13 @@ function Get-Playlistmpv(
   }
   New-Item $global:playlistTemp
 
-  if ($Mode -eq "normal")
+  if ($Mode -match "^n")
   {
     $playlist_file = fd --hyperlink musicj --base-directory="$(zoxide query obs)" 
     $playlist_file = Join-Path -Path "$(zoxide query obs)" -ChildPath $playlist_file
-    (Get-Content -Tail 100 $playlist_file)+(Get-Content -Head 100 $playlist_file) |
+    (Get-Content -Tail $last $playlist_file)+(Get-Content -Head $first $playlist_file) |
       ForEach-Object {filterURI $_ >> $global:playlistTemp}
-    mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1
+    mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1 --vid=no
   } elseif($Mode -eq "b")
   {
     $query = 'spacing'

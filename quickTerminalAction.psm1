@@ -115,7 +115,7 @@ $global:preferFont = "Iosevka Nerd Font Propo"
 function fontsw($fontName = $global:preferFont)
 {
 	# HACK: Find tab's profile name then search in that chunk.
-	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
+	$SettingsPath = (Resolve-Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = (Get-Content -Path $SettingsPath | ConvertFrom-Json)
 	$TestFont = $CurrentFileContent.profiles.list[$defaultWTProfile].font.face
 	echo $TestFont
@@ -139,7 +139,7 @@ function fontsw($fontName = $global:preferFont)
 $global:defaultShaderPath = "D:\ProgramDataD\VS\proj\general_shader\HLSL_Windows_Terminal"
 function swapWtShader($fileName = "orig")
 {
-	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
+	$SettingsPath = (Resolve-Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_*\LocalState\settings.json")
 	$CurrentFileContent = (Get-Content -Path $SettingsPath | ConvertFrom-Json)
 	$TestShaderPath = $CurrentFileContent.profiles.list[$defaultWTProfile].'experimental.pixelShaderPath'
 	# INFO: switch back case.
@@ -162,7 +162,7 @@ function swapWtShader($fileName = "orig")
 # INFO: Copy shaders from the original Terminal app. Could be somewhere else in another JSON files.
 function copyWtShader($fileName = "orig")
 {
-	$SettingsPath = (Resolve-Path "C:\Users\COHOTECH\AppData\Local\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json")
+	$SettingsPath = (Resolve-Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_*\LocalState\settings.json")
 	$CurrentFileContent = Get-Content -Path $SettingsPath | ConvertFrom-Json
 	$TestShaderPath = $CurrentFileContent.profiles.defaults.'experimental.pixelShaderPath'
 	$FinalShaderPath = "$defaultShaderPath\$fileName.hlsl"

@@ -67,9 +67,10 @@ function EmbedEnv()
 		$Env:Path += ";"+$d;
 	}
 }
-function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\2023-06-01 Project.uvprojx")
+function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\*.uvprojx")
 {
 	cd $uv4project
+	$project_dir = (rvpa $project_dir).Path
 	while($true)
 	{
 		uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
@@ -92,6 +93,7 @@ function Build-Keil(
 		Write-Host "waiting $count"
 		Start-Sleep -Second 1
 	} 
+	[console]::beep(500,400)
 	Get-Content -Tail 10 .\flash_log.txt
 }
 EmbedEnv

@@ -1,11 +1,9 @@
 # My config for Windows Environment
 ---
-This include `pwsh` settings and `Windows Terminal` settings
+This includes `pwsh` settings.
 
 ## PowerShell
-- :clock1: Loading...
-- Caution: .gitconfig here is the backup of "~/.gitconfig", which is my global config.
+- Multiple modules as seen.
 
 ## Windows Terminal
-
-- :clock10: WIP...
+- Some special `cmdlet`...

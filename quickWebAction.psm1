@@ -220,7 +220,7 @@ function Start-Streaming($defaultPages = "tw")
   } catch [Microsoft.PowerShell.Commands.ProcessCommandException]
   {
     Write-Host "Havent started OBS Studio yet." -ForegroundColor Red
-    Start-Process "C:\Users\COHOTECH\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Scoop Apps\OBS Studio.lnk"
+    Start-Process "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Scoop Apps\OBS Studio.lnk"
   }
 }
 Set-Alias sstream Start-Streaming

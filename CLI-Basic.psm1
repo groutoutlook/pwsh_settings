@@ -71,7 +71,7 @@ function rgj(
   if($? -eq $false)
   {
     Write-Host "not in those journal.md" -ForegroundColor Magenta
-    rg ($args -join " ") -g !'*Journal.md' (zoxide query obs) -M 400
+    rg "$($args -join " ")" -g !'*Journal.md' (zoxide query obs) -M 400
     if($? -eq $false)
     {
       Search-DuckDuckGo ($args -join " ") 
@@ -88,7 +88,7 @@ function vrj(
 )
 {
   # HACK: query the directory in here.
-  ig $args -g '*Journal.md' (zoxide query obs)
+  ig "$($args -join " ")" -g '*Journal.md' (zoxide query obs)
   # Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
   # | Sort-object -Unique `
   # | fzf `
