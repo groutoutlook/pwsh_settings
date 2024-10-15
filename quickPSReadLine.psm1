@@ -59,6 +59,7 @@ $IterateCommandParameters = @{
     # INFO: filtering with FindAll API.
     # HACK: dont understand the type and member syntaxes at all.read blog then?
     # [Abstract Syntax Tree - powershell.one](https://powershell.one/powershell-internals/parsing-and-tokenization/abstract-syntax-tree)
+    
     $asts = $ast.FindAll( {
         $args[0] -is [System.Management.Automation.Language.ExpressionAst] `
           -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 

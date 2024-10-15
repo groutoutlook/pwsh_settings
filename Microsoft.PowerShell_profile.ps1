@@ -6,24 +6,6 @@ function Dirs
 	Get-Location -Stack
 }
 
-function initAutomate
-{
-	# Set-Alias -Name keydell -Value "$env:ahkDirD\proj\PersonalAHKScripts\DellKeyboardRemap.ahk"  -Scope Global
-}
-function initIDE
-{
-	# visual studio
-	Set-Alias -Name devenv -Value 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe' -Scope Global #-Option AllScope
-	# keil UV4
-	Set-Alias -Name uv4 -Value 'C:\Keil_v5\UV4\uv4.exe' -Scope Global #-Option AllScope
-}
-function initGuiApp
-{
-	Set-Alias -Name VDcreate -Value "$env:ProgramFiles\VirtualDisplayDriver\bin\VirtualDisplayDriverControl" -Scope Global
-	Set-Alias -Name dsview -Value $env:ProgramFiles\DSView\DSView.exe -Scope Global	# Set-Alias -Name ptoy -Value "$env:ProgramFiles\PowerToys\PowerToys.exe" -Scope Global
-	Set-Alias -Name libload -Value "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Library Loader\Library Loader.lnk" -Scope Global
-}
-
 $global:localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
 function Format-LimitLength($String,$limitString = 50)
 {
@@ -286,10 +268,7 @@ function global:initProfileEnv
 	$Env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
 	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
 	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
-	$Env:CommercialDir = "$env:ProgramDataD/Mua ban TQ - VN\"
-	# $Env:SysInternalSuite = "$env:ProgramFilesD\SysinternalsSuite\"
-	$Env:kicadDir = "$env:ProgramFilesD\KiCad\8.0\bin"
-	$Env:kicadSettingDir = "$env:APPDATA\kicad\8.0"
+
 	$Env:pipxLocalDir = "~\.local\bin"
 
 	$Env:obsVault = "$Env:ProgramDataD\Notes\Obsidian\Vault_2401\"
@@ -299,17 +278,13 @@ function global:initProfileEnv
 		$Env:usrbinD
 		,$Env:PhotoshopDir
 		,$Env:ChromeDir
-		,$Env:kicadDir
 		,$Env:pipxLocalDir
 		,$Env:edgeDir
-		# ,$Env:SysInternalSuite
 	)
 	foreach($d in $diradd)
 	{
 		$Env:Path += ";"+$d;
 	}
-	# $Env:PSModulePath += ";" + $Env:p7settingDir 
-	# $global:EDITOR = "~\\scoop\\shims\\nvim.exe" # for unbootstrap device?
 }
 
 # INFO: cd- and cd--, same logic with cd+ and cd++
@@ -346,50 +321,35 @@ function cd++($rep = 1)
 	}
 }
 
-
-
-# FIX: Better way to resolve all this is calculate backward/forward dir and just changed it.
-# Should not be like this though.
 function cd..($rep = 1)
 {
+	$furtherParent = $pwd
 	foreach($i in (1..$rep))
  {
-		Set-Location ..
+		$furtherParent = Split-Path -Path $furtherParent -Parent
 	}
+	Set-Location $furtherParent
 }
 
 function ...($rep = 1)
 {
-	foreach($i in (1..$rep+1))
- {
-		Set-Location ..
-	}
+	cd.. $rep
 }
 
 
 function ....($rep = 1)
 {
-	foreach($i in (1..($rep+2)))
- {
-		Set-Location ..
-	}
+	cd.. ($rep+1)
 }
 
 
 # INFO: Rescue explorer function.
 function Restart-Explorer
 {
-	Stop-Process -Name explorer `
-		# && Stop-Process -Name "WindowsVirtualDesktopHelper" `
-		# && Start-Sleep -Milliseconds 1000 
-	# && VDhelper
+	Stop-Process -Name explorer 
 }
 Set-Alias -Name resexp -Value Restart-Explorer
 
 initProfileEnv
 initShellApp
-initIDE
-initAutomate
-initGuiApp
-
 # Import-Module PSCompletions

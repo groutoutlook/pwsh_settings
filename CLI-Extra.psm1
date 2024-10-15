@@ -27,7 +27,7 @@ function Get-Playlistmpv(
   [Alias("m")]
   $Mode = "normal",
   $last = 100,
-  $first = 100
+  $first = 0
 )
 {
   # HACK: in case we copy a chunk of text with newline.
