@@ -190,5 +190,8 @@ function zo
   zoxide query "$($args -join " ")"
 }
 
+Set-Alias zq zo
+
+
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
