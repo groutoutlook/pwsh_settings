@@ -213,13 +213,16 @@ function Set-LocationWhere(
 	} else
 	{
 		$fileType = (($files).PsObject.TypeNames)[0]
-		echo $files
+		# echo $files
 		if ($fileType -match "Array" -or $fileType -match "Object\[\]")
 		{
 			$finalBinariesPath = $files | fzf
 			Set-Location (split-path ($finalBinariesPath) -Parent)
 			# return $null;
-		} 
+		} else
+		{
+			cdcb $files
+		}
 	}
 }
 

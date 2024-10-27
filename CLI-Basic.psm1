@@ -1,26 +1,26 @@
-# INFO: quick open GUI/CLI app.
-function goviet()
-{
-  $fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
-  Restart-ForceApp -fileDir $fileDir	
-}
-function pentab()
-{
-  $fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
-  Restart-ForceApp -fileDir $fileDir	
-}
-function vdhelper()
-{
-  $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
-  Restart-ForceApp -fileDir $fileDir
-}
+# # INFO: quick open GUI/CLI app.
+# function goviet()
+# {
+#   $fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
+#   Restart-ForceApp -fileDir $fileDir	
+# }
+# function pentab()
+# {
+#   $fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
+#   Restart-ForceApp -fileDir $fileDir	
+# }
+# function vdhelper()
+# {
+#   $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
+#   Restart-ForceApp -fileDir $fileDir
+# }
 # INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
-function bc
-{
-  Write-Host "Numbat started." -ForegroundColor Red
-  numbat -e "$args"
-}
-
+# function bc
+# {
+#   Write-Host "Numbat started." -ForegroundColor Red
+#   numbat -e "$args"
+# }
+#
 Set-Alias -Name cal -Value Show-Neovide
 
 function omniSearchObsidian
@@ -110,27 +110,25 @@ function yy
   Remove-Item -Path $tmp
 }
 
-function yyd
-{
-  yy "~/Downloads/"
-}
-Set-Alias -Name dd -Value yy
-
-function yc
-{
-  try
-  {
-    $clipboardExtracted = ((Get-Clipboard) -replace '"',"" )
-    $processedPath = (Split-path -Path $clipboardExtracted)
-  } catch [System.Management.Automation.ParameterBindingValidationException]
-  {
-    Write-Error "Clipboard is not a system path."
-    $processedPath = "$pwd"
-  }
-  yy $processedPath
-}
-Set-Alias -Name dcb -Value ycb
-
+# Set-Alias -Name dd -Value yy
+Set-Alias -Name zz -Value yy
+#
+# function ycb
+# {
+#   try
+#   {
+#     $clipboardExtracted = ((Get-Clipboard) -replace '"',"" )
+#     $processedPath = (Split-path -Path $clipboardExtracted)
+#   } catch [System.Management.Automation.ParameterBindingValidationException]
+#   {
+#     Write-Error "Clipboard is not a system path."
+#     $processedPath = "$pwd"
+#   }
+#   yy $processedPath
+# }
+# Set-Alias -Name dcb -Value ycb
+# Set-Alias -Name zcb -Value ycb
+#
 
 
 # INFO: mousemaster or something related to mouse controlling
@@ -187,6 +185,10 @@ function task
   Invoke-Expression "wsl task $args"
 }
 
+function zo
+{
+  zoxide query "$($args -join " ")"
+}
 
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
