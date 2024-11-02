@@ -87,11 +87,22 @@ function Build-Keil(
 	# HACK: A kludge for looping load files.
 	# while($true){Build-Keil; sleep 5}
 	uv4 (fd '.uvprojx' -HI) -f -j0 -l ./flash_log.txt 
-	while( -not (rg "Flash Load finished" -g "*log.txt"))
+	while( -not (rg "Programming Done" -g "*log.txt"))
 	{ 
 		$count += 1
 		Write-Host "waiting $count"
-		Start-Sleep -Second 1
+		Start-Sleep -Milliseconds 500
+		if(($count -gt 9) -and (rg "Error"))
+		{
+			Write-Host "Break at $count because error"
+			break
+		}
+		if($count -gt 20)
+		{
+			Write-Host "Break at $count timeout"
+			break
+		}
+
 	} 
 	[console]::beep(500,400)
 	Get-Content -Tail 10 .\flash_log.txt
