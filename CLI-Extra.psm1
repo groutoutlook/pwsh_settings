@@ -27,7 +27,8 @@ function Get-Playlistmpv(
   [Alias("m")]
   $Mode = "normal",
   $last = 100,
-  $first = 0
+  $first = 0,
+  $videoOption = "1"
 )
 {
   # HACK: in case we copy a chunk of text with newline.
@@ -46,7 +47,7 @@ function Get-Playlistmpv(
     $playlist_file = Join-Path -Path "$(zoxide query obs)" -ChildPath $playlist_file
     (Get-Content -Tail $last $playlist_file)+(Get-Content -Head $first $playlist_file) |
       ForEach-Object {filterURI $_ >> $global:playlistTemp}
-    mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1 --vid=no
+    mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1 --vid=$videoOption
   } elseif($Mode -eq "b")
   {
     $query = 'spacing'

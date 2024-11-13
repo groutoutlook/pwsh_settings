@@ -1,19 +1,4 @@
-# # INFO: quick open GUI/CLI app.
-# function goviet()
-# {
-#   $fileDir = "$env:ProgramFilesD/GoTiengViet/GoTiengViet.exe"
-#   Restart-ForceApp -fileDir $fileDir	
-# }
-# function pentab()
-# {
-#   $fileDir = "$env:ProgramFiles\Pentablet\PenTablet.exe"
-#   Restart-ForceApp -fileDir $fileDir	
-# }
-# function vdhelper()
-# {
-#   $fileDir = "${env:ProgramFiles(x86)}\Windows Virtual Desktop Helper\WindowsVirtualDesktopHelper"
-#   Restart-ForceApp -fileDir $fileDir
-# }
+
 # INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
 # function bc
 # {
@@ -151,11 +136,17 @@ function mcat
   neko && mousemt
 }
 
-# INFO: Zoxide quick action.
-function cdd
-{
-  zi $args
+# # INFO: Zoxide quick action.
+# function cdd
+# {
+#   zi $args
+# }
+
+function jm
+{ 
+  jjmp.exe $args | cd 
 }
+
 
 # HACK: `lsd` and `ls` to `exa`
 # There could be more function at this point though.
@@ -176,14 +167,11 @@ function zsh
 }
 
 # INFO: absolute dire need of some program in linux.
-function zellij
-{
-  Invoke-Expression "wsl --cd ~ zellij $args "
-}
-function task
-{
-  Invoke-Expression "wsl task $args"
-}
+
+# function task
+# {
+#   Invoke-Expression "wsl task $args"
+# }
 
 function zo
 {

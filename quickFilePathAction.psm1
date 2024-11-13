@@ -106,6 +106,7 @@ function Build-Keil(
 	} 
 	[console]::beep(500,400)
 	Get-Content -Tail 10 .\flash_log.txt
+	# rm ./flash_log.txt 
 }
 EmbedEnv
 
