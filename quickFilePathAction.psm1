@@ -78,18 +78,13 @@ function keilLoad($uv4project = "$global:fmd_dir", $project_dir = "$uv4project\*
 	}
 }
 
-function Build-Keil(
-
-)
+function Invoke-BatchFlash()
 {
 	$count = 0
-	# INFO: load Keil file. Used first at $at_dir
-	# HACK: A kludge for looping load files.
-	# while($true){Build-Keil; sleep 5}
-	uv4 (fd '.uvprojx' -HI) -f -j0 -l ./flash_log.txt 
-	while( -not (rg "Programming Done" -g "*log.txt"))
+	$logfile = "flash_log.txt"
+	uv4 (fd '.uvprojx' -HI) -f -j0 -l $logfile
+	while( -not (rg "Programming Done" -g $logfile))
 	{ 
-		$count += 1
 		Write-Host "waiting $count"
 		Start-Sleep -Milliseconds 500
 		if(($count -gt 9) -and (rg "Error"))
@@ -97,16 +92,34 @@ function Build-Keil(
 			Write-Host "Break at $count because error"
 			break
 		}
-		if($count -gt 20)
+		if($count -gt 15)
 		{
 			Write-Host "Break at $count timeout"
 			break
 		}
-
+		$count += 1
 	} 
 	[console]::beep(500,400)
-	Get-Content -Tail 10 .\flash_log.txt
+	Get-Content -Tail 10 $logfile
 	# rm ./flash_log.txt 
+}
+
+function Build-FromKeil($clean = $null)
+{
+	$count = 0
+	$logfile = "build_log.txt"
+	$buildflag = $clean ? "-c" : "-b" 
+	Invoke-Expression('uv4 '+$buildflag+' -j0 (fd ".uvprojx" -HI) -l "$logfile"')
+
+	$parsedString = $clean ? "Clean done" : "Build Time"
+	
+	while(-not (rg $parsedString -g $logfile))
+	{
+		Write-Host "Waiting for $count..."
+		Start-Sleep -Milliseconds 500	
+		$count+=1
+	}
+	Get-Content -Tail 10 $logfile
 }
 EmbedEnv
 
