@@ -127,7 +127,10 @@ function global:Restart-Profile($option = "env")
 	}
 }
 Set-Alias -Name repro -Value Restart-Profile
-function cdcb($defaultDir = (Get-Clipboard))
+function cdcb(
+	[Parameter(ValueFromPipeline = $true)]
+	$defaultDir = (Get-Clipboard)
+)
 {
 	$copiedPath = ($defaultDir -replace '"')
 	$property = Get-Item $copiedPath
@@ -200,9 +203,12 @@ function Set-LocationWhere(
 			default 
 			{ 
 				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
+				$fileName = ($files)
 				try
 				{
-					Get-Content "$env:LOCALAPPDATA/shims/$files.ps1" | Extract-Path | Set-LocationWhere
+					Get-Content "$env:LOCALAPPDATA/shims/$fileName.ps1" |`
+							Select-Object -Index 0 |`
+							Get-PathFromFiles | cdcb
 				} catch
 				{
 				 Write-Error "Had tried, still failed on shim."

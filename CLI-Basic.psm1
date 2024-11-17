@@ -147,22 +147,25 @@ function mcat
 #   jjmp.exe $args | cd 
 # }
 
-function Extract-Path()
+function Get-PathFromFiles()
 {
   [CmdletBinding()]
   param (
     [Parameter(ValueFromPipeline = $true)]
     [string[]]$Strings
   )
-  $inputPath = $strings -join ""
-  if ($inputPath -match '"([^"]+)"')
+  $inputPath = $Strings -join ""
+  $isDoubleQuote = $inputPath -match '"' 
+  # HACK: since we have cmd and ps1 with differrent style of wrapping path.
+  $patternOnQuotes = $isDoubleQuote ? '"([^"]+)"' : "'`([^']+`)'"
+  if ($inputPath -match $patternOnQuotes)
   {
     $path = $matches[1]
     return $path
   } else
   {
-    echo $args.PSObject
-    throw "invalid string, not contained any kind of filesystem path."
+    Write-Host "isDoubleQuote is $isDoubleQuote"
+    Write-Host "invalid string, not contained any kind of filesystem path."
   }
 }
 
