@@ -142,9 +142,28 @@ function mcat
 #   zi $args
 # }
 
-function jm
-{ 
-  jjmp.exe $args | cd 
+# function jm
+# { 
+#   jjmp.exe $args | cd 
+# }
+
+function Extract-Path()
+{
+  [CmdletBinding()]
+  param (
+    [Parameter(ValueFromPipeline = $true)]
+    [string[]]$Strings
+  )
+  $inputPath = $strings -join ""
+  if ($inputPath -match '"([^"]+)"')
+  {
+    $path = $matches[1]
+    return $path
+  } else
+  {
+    echo $args.PSObject
+    throw "invalid string, not contained any kind of filesystem path."
+  }
 }
 
 

@@ -200,9 +200,13 @@ function Set-LocationWhere(
 			default 
 			{ 
 				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
-				# echo ($files).PSObject
-				cdcb "$env:LOCALAPPDATA/shims"
-				ls
+				try
+				{
+					Get-Content "$env:LOCALAPPDATA/shims/$files.ps1" | Extract-Path | Set-LocationWhere
+				} catch
+				{
+				 Write-Error "Had tried, still failed on shim."
+				}
 			}  # optional
 		} 
 	}
