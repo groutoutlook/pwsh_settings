@@ -95,7 +95,7 @@ function yy
   Remove-Item -Path $tmp
 }
 
-# Set-Alias -Name dd -Value yy
+Set-Alias -Name ff -Value yy
 Set-Alias -Name zz -Value yy
 #
 # function ycb
