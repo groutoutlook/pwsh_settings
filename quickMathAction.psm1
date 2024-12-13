@@ -15,7 +15,7 @@ function toBin($number)
 }
 
 
-function expressionArray()
+function Format-ArrayFromString()
 {
  $finalArray = @()
  $args -split "," | %{$finalArray += iex $_}
@@ -28,7 +28,6 @@ function Format-ReverseArray()
  $array = $args -split "," 
  [array]::Reverse($array); 
  $returnArray = $array
-
  return $returnArray
 }
 
