@@ -1,4 +1,3 @@
-
 # INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
 # function bc
 # {
@@ -6,7 +5,6 @@
 #   numbat -e "$args"
 # }
 #
-Set-Alias -Name cal -Value Show-Neovide
 
 function omniSearchObsidian
 {
@@ -17,9 +15,9 @@ function omniSearchObsidian
   Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-
-# INFO: `ripgrep`.
-function ripgrepFileName(
+# INFO: `ripgrep`. But with file names and position as output only.
+# NOTE: this is because I need that to edit in helix. 
+function rgF(
 )
 {
   $fileNameWithLineNumber = 
@@ -27,8 +25,6 @@ function ripgrepFileName(
   | % {$_ -replace ":(\d+):.*",':$1'}
     
   return $fileNameWithLineNumber
-
-
 }
 
 # WARN: now new alternative is `ig` since it's in scoop.
@@ -97,24 +93,6 @@ function yy
 
 Set-Alias -Name ff -Value yy
 Set-Alias -Name zz -Value yy
-#
-# function ycb
-# {
-#   try
-#   {
-#     $clipboardExtracted = ((Get-Clipboard) -replace '"',"" )
-#     $processedPath = (Split-path -Path $clipboardExtracted)
-#   } catch [System.Management.Automation.ParameterBindingValidationException]
-#   {
-#     Write-Error "Clipboard is not a system path."
-#     $processedPath = "$pwd"
-#   }
-#   yy $processedPath
-# }
-# Set-Alias -Name dcb -Value ycb
-# Set-Alias -Name zcb -Value ycb
-#
-
 
 # INFO: mousemaster or something related to mouse controlling
 function mousemt
@@ -135,17 +113,6 @@ function mcat
 {
   neko && mousemt
 }
-
-# # INFO: Zoxide quick action.
-# function cdd
-# {
-#   zi $args
-# }
-
-# function jm
-# { 
-#   jjmp.exe $args | cd 
-# }
 
 function Get-PathFromFiles()
 {
@@ -181,26 +148,22 @@ Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
 Set-Alias -Name cat -Value mdcat -Scope Global -Option AllScope
 
+Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
+
 function zsh
 {
   # INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
   wsl $args --cd ~
   # wsl
 }
-
-# INFO: absolute dire need of some program in linux.
-
-# function task
-# {
-#   Invoke-Expression "wsl task $args"
-# }
-
 function zo
 {
   zoxide query "$($args -join " ")"
 }
 
 Set-Alias zq zo
+
+Set-Alias rme remindme
 
 
 # HACK: hook this into scoop.
