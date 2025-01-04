@@ -146,8 +146,6 @@ function lsd
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
-Set-Alias -Name cat -Value mdcat -Scope Global -Option AllScope
-
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 
 function zsh
