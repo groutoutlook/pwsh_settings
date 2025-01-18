@@ -47,7 +47,7 @@ function rgj(
 {
   # HACK: lots of dirty trick.
   # echo "$args"
-  rg ($args -join " ") -g '*Journal.md' (zoxide query obs) -M 400 
+  rg ($args -join " ") -g '*Journal.md' (zoxide query obs) -M 400 -C1
   # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
   if($? -eq $false)
   {
