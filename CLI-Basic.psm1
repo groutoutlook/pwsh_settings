@@ -160,8 +160,17 @@ function zo
 }
 
 Set-Alias zq zo
+Set-Alias -Name r -Value just -Scope Global -Option AllScope
+
+function rb {
+  just build
+}
+function rr {
+  just run
+}
 
 Set-Alias rme remindme
+Set-Alias rgr scooter
 
 
 # HACK: hook this into scoop.

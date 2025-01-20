@@ -666,13 +666,6 @@ function :e
   }
 }
 
-
-# INFO: Justfile runner. 
-# I think its syntax is quite suitable to put it in each of folders. which need tasks to run.
-Set-Alias -Name js -Value just
-
-
-
 # INFO: function to switch between applications.
 # Right now it's based on the Show-Window function.
 function :s
