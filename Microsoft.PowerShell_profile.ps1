@@ -85,7 +85,7 @@ function MoreTerminalModule
 	}
 	foreach($module in $global:extraModuleList)
 	{
-		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
+		Import-Module -Name ("$env:p7settingDir$module") -Scope Global -Force
 		# echo "$module here"
 	}
 }

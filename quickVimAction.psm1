@@ -1,12 +1,7 @@
-
-
-
 function :q
 {
   Stop-Process -id $pid
 }
-Set-Alias -Name qqq -Value :q
-
 
 # Quick way to reload profile and turn back to the default pwsh
 # There's some other effects, so I may need to dig further I think?
@@ -22,12 +17,6 @@ function :t($p7 = 0)
 
   } else
   {
-    # $pushCommand = ""
-    # foreach ($dir in $old_dirs.Path)
-    # {
-    #   $pushCommand += "&& Push-Location $dir "
-    # }
-    # pwsh -Noexit -Command "p7 && p7mod $pushCommand"
     pwsh -Noexit -Command "p7 && p7mod"
     Stop-Process -id $old_pid 
   }
@@ -37,6 +26,9 @@ function :a
 {
   :t 7
 }
+function :m{
+  Restart-ModuleList
+}
 
 function :backup($Verbose = $null)
 {
@@ -45,7 +37,6 @@ function :backup($Verbose = $null)
 }
 
 Set-Alias -Name :bak -Value :backup
-
 
 # NOTE: neovim trigger function.
 function :v

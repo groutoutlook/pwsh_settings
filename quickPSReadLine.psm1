@@ -672,6 +672,21 @@ $ParenthesesAllParameter = @{
 
 }
 
+$GlobalEditorSwitch = @{
+  Key = 'Ctrl+Shift+e,Ctrl+Shift+e'
+  BriefDescription = 'Change $env:nvim_appname to something else'
+  LongDescription = 'I think I need to work on changing $env:EDITOR as well.'
+  ScriptBlock = {
+    param($key, $arg)
+    if ($env:nvim_appname -eq ""){
+      $env:nvim_appname = "nvim_min"
+    }
+    else{
+      $env:nvim_appname = ""
+    }
+  } 
+}
+
 # INFO: switch between windows mode and vi mode. for easier navigation
 $OptionsSwitchParameters = @{
   Key = 'Ctrl+x,Ctrl+x'
@@ -784,6 +799,7 @@ $HandlerParameters = @{
   "iterateForward" = $IterateCommandParameters
   "OptionsSwitch" = $OptionsSwitchParameters
   "openEditor" = $openEditorParameters
+  "GlobalEditorSwitch" = $GlobalEditorSwitch
 }
 
 # INFO: Unique for Vi mode.
