@@ -678,10 +678,17 @@ $GlobalEditorSwitch = @{
   LongDescription = 'I think I need to work on changing $env:EDITOR as well.'
   ScriptBlock = {
     param($key, $arg)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($env:nvim_appname -eq ""){
+      Write-Host "`nNow minimal" -NoNewLine
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
       $env:nvim_appname = "nvim_min"
     }
     else{
+      Write-Host "`nNow complex" -NoNewLine
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
       $env:nvim_appname = ""
     }
   } 
