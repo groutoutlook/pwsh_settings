@@ -45,19 +45,21 @@ function Show-Window
 }
 Set-Alias -Name shw -Value Show-Window
 
-# INFO: Copy previous command in history.
-# Either index? or some initial. Return best match I supposed.
-function cp!(
-  [Parameter(Mandatory=$false)]
-  [System.Int32]
-  [Alias("i")]
-  $index = 1
-)
-{
-  $previousCommand = Get-History -Count $index
-  Write-Host $previousCommand -ForegroundColor Yellow
-  Set-Clipboard $previousCommand
-}
+# # INFO: Copy previous command in history.
+# # Either index? or some initial. Return best match I supposed.
+# function cp!(
+#   [Parameter(Mandatory=$false)]
+#   [System.Int32]
+#   [Alias("i")]
+#   $index = 1
+# )
+# {
+#   $previousCommand = Get-History -Count $index
+#   Write-Host $previousCommand -ForegroundColor Yellow
+#   Set-Clipboard $previousCommand
+# }
+
+
 
 # INFO: quick create hashmap.
 function buildIndex
@@ -134,4 +136,25 @@ function filterURI(
 
 
 
+function Restart-Job {
+    param (
+        [int]$JobId
+    )
+
+    $job = Get-Job -Id $JobId
+
+    if ($job) {
+        # Assuming the job was created with a script block
+        $scriptBlock = [scriptblock]::Create($job.Command)
+
+        # Start a new job with the same script block
+        Start-Job -ScriptBlock $scriptBlock
+        Write-Host "Job $JobId restarted."
+    } else {
+        Write-Host "Job with ID $JobId not found. Get-Job to check now"
+        Get-Job
+    }
+}
+
+Set-Alias -Name rstjb -Value Restart-Job
 
