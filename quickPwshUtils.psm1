@@ -156,5 +156,5 @@ function Restart-Job {
     }
 }
 
-Set-Alias -Name rstjb -Value Restart-Job
+Set-Alias -Name rsjb -Value Restart-Job
 

@@ -126,3 +126,18 @@ function aliim
     Write-Host "should be nothing" -ForegroundColor Yellow
   }
 }
+
+
+# INFO: Restart PowerToys due to KeyboardManager stuck keys or Run issues.
+function ptoy
+{ 
+  Stop-Process -Name "powertoy*"
+  if ($null -eq $args[0])
+  {
+    Start-Sleep -Seconds 2
+    Start-Process "C:\Program Files\PowerToys\PowerToys.exe"
+  } else
+  {
+    Write-Host "should be nothing" -ForegroundColor Yellow
+  }
+}

@@ -1,10 +1,16 @@
 # INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
-# function bc
-# {
-#   Write-Host "Numbat started." -ForegroundColor Red
-#   numbat -e "$args"
-# }
-#
+function bc
+{
+  Write-Host "Numbat started." -ForegroundColor Red
+  if ($args){
+    numbat -e "$args"
+  }
+  else{
+  Write-Host "Start shell instead" -ForegroundColor Yellow
+    numbat 
+  }
+}
+
 
 function omniSearchObsidian
 {
@@ -171,6 +177,10 @@ function rr {
 
 Set-Alias rme remindme
 Set-Alias rgr scooter
+
+
+# INFO: more alias.
+Set-Alias -Name top -Value btm
 
 
 # HACK: hook this into scoop.
