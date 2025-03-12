@@ -684,7 +684,7 @@ $GlobalEditorSwitch = @{
     if ($env:nvim_appname -eq ""){
       Write-Host "`nNow minimal" -NoNewLine
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
-      $env:nvim_appname = "nvim_min"
+      $env:nvim_appname = "viniv"
       $env:EDITOR = "hx"
     }
     else{

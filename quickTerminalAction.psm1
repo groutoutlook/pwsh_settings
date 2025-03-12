@@ -103,7 +103,7 @@ function explr($inputPath = (Get-Location))
 		echo "ahk then?"
 	} else
 	{
-		explorer.exe $inputPath
+		yy $inputPath
 	}
 }
 Set-Alias -Name expl -Value explr -Scope Global
