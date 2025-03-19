@@ -129,9 +129,11 @@ function :vc
 
 # INFO: Quick pwsh_profiles session. Very shorthand.
 # although better checkout [root dir]($env:LOCALAPPDATA\nvim-data\session)
+# Fall back to default symlink on highway if it's not the complex `nvim`
 $sessionMap = @{
-  "pw" = "pwsh_settings"
-  "nv" = "nvim_dotfiles"
+  "pw" = "pwsh"
+  "nv" = "nvim"
+  "vin" = "viniv"
   "nvs" = "nvim-vscode"
   "vsc" = "vscode-config"
   "ob" = "obsidian"
@@ -155,7 +157,12 @@ function :vs
     :v ls "$args"
   } else
   {
-    nvim -c "lua require('resession').load `"$processedString`" "
+    if($null -eq $env:nvim_appname){
+      nvim -c "lua require('resession').load `"$processedString`" "
+    }
+    else{
+      Invoke-Expression "$env:EDITOR ~/hw/$processedString"
+    }
   } 
 }
 

@@ -681,7 +681,7 @@ $GlobalEditorSwitch = @{
     $line = $null
     $cursor = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
-    if ($env:nvim_appname -eq ""){
+    if ($env:nvim_appname -eq $null){
       Write-Host "`nNow minimal" -NoNewLine
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
       $env:nvim_appname = "viniv"
@@ -690,7 +690,7 @@ $GlobalEditorSwitch = @{
     else{
       Write-Host "`nNow complex" -NoNewLine
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
-      $env:nvim_appname = ""
+      $env:nvim_appname = $null
     }
   } 
 }
