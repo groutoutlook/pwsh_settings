@@ -51,9 +51,9 @@ function rgj(
 
 )
 {
-  # HACK: lots of dirty trick.
-  # echo "$args"
-  rg ($args -join " ") -g '*Journal.md' (zoxide query obs) -M 400 -C1
+  $rgArgs = $args -join " "
+  $command = "rg $rgArgs -g '*Journal.md' (zoxide query obs) -M 400 -C1"
+  Invoke-Expression $command
   # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
   if($? -eq $false)
   {
@@ -85,7 +85,11 @@ function vrj(
 )
 {
   # HACK: query the directory in here.
-  ig "$($args -join " ")" -g '*Journal.md' (zoxide query obs)
+ 
+  $rgArgs = $args -join " "
+  $command = "ig $rgArgs -g '*Journal.md' (zoxide query obs)"
+  Invoke-Expression $command
+  # ig "$($args -join " ")" -g '*Journal.md' (zoxide query obs)
   # Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
   # | Sort-object -Unique `
   # | fzf `
