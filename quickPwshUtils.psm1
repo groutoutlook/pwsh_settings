@@ -45,6 +45,47 @@ function Show-Window
 }
 Set-Alias -Name shw -Value Show-Window
 
+# Load the necessary assembly
+Add-Type -AssemblyName System.Windows.Forms
+
+
+# Define the user32.dll functions
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+
+public class User32 {
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+}
+"@
+
+# INFO: Function to send keys to a specific window
+function Send-KeysToWindow {
+    param (
+        [string]$windowTitle,
+        [string]$keys
+    )
+
+    # Find the window handle
+    $hWnd = (Get-Process -ErrorAction Ignore "*$windowTitle*" ).Where({ $_.MainWindowTitle }, 'First').MainWindowHandle
+    # $hWnd = [User32]::FindWindow([NullString]::Value, $windowTitle)
+    if ($hWnd -eq [IntPtr]::Zero) {
+        Write-Host "Window not found!"
+        return
+    }
+
+    # Set the window to the foreground
+    [User32]::SetForegroundWindow($hWnd)
+
+    # Send the keys
+    [System.Windows.Forms.SendKeys]::SendWait($keys)
+}
+
 # # INFO: Copy previous command in history.
 # # Either index? or some initial. Return best match I supposed.
 # function cp!(
