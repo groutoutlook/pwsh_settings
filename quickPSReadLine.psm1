@@ -612,6 +612,35 @@ $ExtraKillWord1Parameters = @{
 
 
 
+$MathExpressionParameter = @{
+  Key = 'Alt+m'
+  BriefDescription = 'parentheses the selection'
+  LongDescription = 'As brief.'
+  ScriptBlock = {
+    param($key, $arg)
+
+    $selectionStart = $null
+    $selectionLength = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($selectionStart -ne -1)
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, 'bc "' + $line.SubString($selectionStart, $selectionLength) + '"')
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
+    } else
+    {
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, 'bc "' + $line + '"')
+      [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+    }
+  
+  }
+
+}
+
+
 
 $ParenthesesParameter = @{
   Key = 'Alt+0'
@@ -636,11 +665,8 @@ $ParenthesesParameter = @{
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, '(' + $line + ')')
       [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
     }
-  
   }
-
 }
-
 
 
 $ParenthesesAllParameter = @{
@@ -808,6 +834,7 @@ $HandlerParameters = @{
   "OptionsSwitch" = $OptionsSwitchParameters
   "openEditor" = $openEditorParameters
   "GlobalEditorSwitch" = $GlobalEditorSwitch
+  "MathExpression" = $MathExpressionParameter
 }
 
 # INFO: Unique for Vi mode.
