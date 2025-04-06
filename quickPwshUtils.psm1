@@ -161,6 +161,10 @@ function filterURI(
       # echo $processedLink
       return $null
     }
+    if ($processedLink -match 'end=999'){
+      Write-Host "Dont really want to watch $processedLink"
+      return $null
+    }
     return  $markdownName +"`n" + $processedLink
   } elseif ($link -match '^http')
   {
