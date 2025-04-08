@@ -103,7 +103,7 @@ function explr($inputPath = (Get-Location))
 		echo "ahk then?"
 	} else
 	{
-		yy $inputPath
+		fpilot $inputPath
 	}
 }
 Set-Alias -Name expl -Value explr -Scope Global

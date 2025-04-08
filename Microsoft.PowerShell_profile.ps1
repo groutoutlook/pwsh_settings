@@ -42,6 +42,7 @@ function P7()
 	# oh-my-posh init pwsh | Invoke-Expression
 	Invoke-Expression (& { (zoxide init powershell | Out-String) })
 	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
+	Set-Alias -Name cdi -Value zi -Scope Global -Option AllScope 
 	AppendPrompt
 }
 
