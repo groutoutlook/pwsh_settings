@@ -138,6 +138,7 @@ $sessionMap = @{
   "ob" = "obsidian"
   "vk" = "vulkan-samples"
   "wts" = "wt_shader"
+  "es" = "espanso"
 }
 function :vs
 {
