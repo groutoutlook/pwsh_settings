@@ -181,6 +181,17 @@ function zo
 Set-Alias zq zo
 Set-Alias -Name r -Value just -Scope Global -Option AllScope
 
+# INFO: vscode quick open, with line/column number
+function ccb{
+  $clipboardContent = Get-Clipboard
+  $lineNumber=":"+($args -join ":")
+  echo $lineNumber
+  $isPath = Test-Path $clipboardContent
+  if($isPath){
+    code --goto "$clipboardContent$lineNumber"
+  }
+}
+
 function rb {
   just build
 }
