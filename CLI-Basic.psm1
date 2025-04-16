@@ -185,12 +185,28 @@ Set-Alias -Name r -Value just -Scope Global -Option AllScope
 function ccb{
   $clipboardContent = Get-Clipboard
   $lineNumber=":"+($args -join ":")
-  echo $lineNumber
   $isPath = Test-Path $clipboardContent
   if($isPath){
     code --goto "$clipboardContent$lineNumber"
   }
+  else{
+    Write-Error "Not Path, check again."
+  }
 }
+
+# INFO: same for helix.
+function xcb{
+  $clipboardContent = Get-Clipboard
+  $lineNumber=":"+($args -join ":")
+  $isPath = Test-Path $clipboardContent
+  if($isPath){
+    hx "$clipboardContent$lineNumber"
+  }
+  else{
+    Write-Error "Not Path, check again."
+  }
+}
+
 
 function rb {
   just build
