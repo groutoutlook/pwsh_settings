@@ -197,7 +197,8 @@ function ccb{
 # INFO: same for helix.
 function xcb{
   $clipboardContent = Get-Clipboard
-  $lineNumber=":"+($args -join ":")
+  if($args -ne $null) {$lineNumber=":"+($args -join ":")}
+  else{ $lineNumber=":1" }
   $isPath = Test-Path $clipboardContent
   if($isPath){
     hx "$clipboardContent$lineNumber"
