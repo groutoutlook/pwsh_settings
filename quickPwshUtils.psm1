@@ -65,7 +65,7 @@ public class User32 {
 "@
 
 # INFO: Function to send keys to a specific window
-function Send-KeysToWindow {
+function Send-Key {
     param (
         [string]$windowTitle,
         [string]$keys
