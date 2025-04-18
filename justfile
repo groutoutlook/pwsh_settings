@@ -32,3 +32,6 @@ run args=default_args:
 
 alias b := build
 build: placeholder
+
+format: 
+    # could be something as `biome format --write`
