@@ -161,7 +161,7 @@ function Set-LocationWhere(
 			"Application"
 			{
 				# INFO: We need something to detect executable here. Mostly exe files but there could also be other type as well.
-				if ($commandInfo.Extension -match "exe")
+				if (($commandInfo.Extension -match "exe|cmd"))
 				{
 					# $listBinaries = (where.exe $files)
 					$listBinaries = (Resolve-Path (scoop w $files)).ToString()
@@ -175,7 +175,7 @@ function Set-LocationWhere(
 						Write-Host "From local dir not path." -ForegroundColor Blue
 					}
 					# echo ($fileType).psobject
-					if ($fileType -match "Array" -or $fileType -match "Object\[\]")
+					if (($fileType -match "Array") || ($fileType -match "Object\[\]"))
 					{
 						Write-Host "Multiple Locations!`n" -ForegroundColor Yellow
 						$finalBinariesPath = $listBinaries | fzf
