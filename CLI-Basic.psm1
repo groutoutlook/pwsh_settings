@@ -173,12 +173,23 @@ function zsh
   wsl $args --cd ~
   # wsl
 }
-function zo
+
+# INFO: since some of the cli utils take quote as exact match, have to invoke
+# like this.
+function zq
 {
-  zoxide query "$($args -join " ")"
+  Invoke-Expression "zoxide query $($args -join " ")" 
 }
 
-Set-Alias zq zo
+Set-Alias zo zq
+
+function zqi
+{
+  Invoke-Expression  "zoxide query -i $($args -join " ")"
+}
+
+Set-Alias zoi zqi
+
 Set-Alias -Name r -Value just -Scope Global -Option AllScope
 
 # INFO: vscode quick open, with line/column number
