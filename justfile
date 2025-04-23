@@ -2,10 +2,10 @@ shebang := if os() == 'windows' { 'pwsh.exe' } else { '/usr/bin/env pwsh' }
 set shell := ["pwsh", "-c"]
 set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
 set dotenv-load := true
+
+# INFO: really dont want to meddle with the .env, direnv is also related to this.
 # set dotenv-filename	:= ".env"
 # set dotenv-required := true
-# INFO: if you want to edit the justfile use js -e.
-
 help:
     @just --list -f "{{home_directory()}}/justfile"
 

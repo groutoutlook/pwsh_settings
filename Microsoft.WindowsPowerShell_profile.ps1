@@ -4,8 +4,10 @@ Set-Alias -Name :q -Value exit -Scope Global -Option AllScope
 function rr{
     r r
 }
-
 function rb{
-    r build
+    r build 
+}
+function re{
+    r -e
 }
 

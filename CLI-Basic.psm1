@@ -226,14 +226,15 @@ function rb {
 function rr {
   just run
 }
-
-Set-Alias rme remindme
+function re {
+  just -e
+}
 Set-Alias rgr scooter
 
 
 # INFO: more alias.
 Set-Alias -Name top -Value btm
-
+Set-Alias -Name du -Value dust
 
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
