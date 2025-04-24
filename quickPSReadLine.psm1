@@ -1,9 +1,7 @@
 using namespace System.Console
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
-
-# Shorten the PSConsoleReadLine type reference
-$RLModule = [Microsoft.PowerShell.PSConsoleReadLine]
+# $RLModule = [Microsoft.PowerShell.PSConsoleReadLine]
 $ggSearchParameters = @{
   Key              = 'Ctrl+s'
   BriefDescription = 'Web Search Mode'
@@ -14,7 +12,7 @@ $ggSearchParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = "Search-DuckDuckGo" 
     $SearchWithQuery = ""
@@ -32,7 +30,7 @@ $ggSearchParameters = @{
     else {
       $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
     }
-    $RLModule::AddToHistory($line)
+    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
     Invoke-Expression $SearchWithQuery
       
   }
@@ -50,7 +48,7 @@ $IterateCommandParameters = @{
     $tokens = $null
     $errors = $null
     $cursor = $null
-    $RLModule::GetBufferState(
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
       [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
     )
     # INFO: filtering with FindAll API.
@@ -66,8 +64,8 @@ $IterateCommandParameters = @{
   
     if ($asts.Count -eq 0) {
       $lastCommand = (Get-History -Count 1).CommandLine
-      $RLModule::Replace(0, $ast.Extent.Text.Length, $lastCommand)
-      $RLModule::Ding()
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $ast.Extent.Text.Length, $lastCommand)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
       return
     }
     
@@ -99,9 +97,9 @@ $IterateCommandParameters = @{
     }
 
     # INFO: jump to next symbols
-    $RLModule::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
-    $RLModule::SetMark($null, $null)
-    $RLModule::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
   }
 }
 
@@ -116,7 +114,7 @@ $IterateCommandBackwardParameters = @{
     $tokens = $null
     $errors = $null
     $cursor = $null
-    $RLModule::GetBufferState(
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
       [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
     )
   
@@ -126,7 +124,7 @@ $IterateCommandBackwardParameters = @{
       }, $true)
   
     if ($asts.Count -eq 0) {
-      $RLModule::Ding()
+      [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
       return
     }
     
@@ -160,9 +158,9 @@ $IterateCommandBackwardParameters = @{
     }
 
     # INFO: jump to next symbols
-    $RLModule::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
-    $RLModule::SetMark($null, $null)
-    $RLModule::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
   }
 }
 
@@ -177,7 +175,7 @@ $omniSearchParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = ":obsidian" # omniSearchObsidian
     if ($line -match "[a-z]") {
@@ -188,8 +186,8 @@ $omniSearchParameters = @{
     }
  
     #Store to history for future use.
-    $RLModule::AddToHistory($line)
-    $RLModule::CancelLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
+    [Microsoft.PowerShell.PSConsoleReadLine]::CancelLine()
     Invoke-Expression $SearchWithQuery
     # Can InvertLine() here to return empty line.
       
@@ -208,10 +206,10 @@ $omniSearchParameters = @{
 #     #   $tokens = $null
 #     #   $errors = $null
 #     #   $cursor = $null
-#     #   $RLModule::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+#     #   [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
 #     $line = $null
 #     $cursor = $null
-#     $RLModule::GetBufferState([ref]$line,
+#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
 #       [ref]$cursor)
 #     # New-Variable -Name consoleKey -type [System.ConsoleKeyInfo]
 #     # $consoleKey = "a" -as [System.ConsoleKeyInfo]
@@ -222,15 +220,15 @@ $omniSearchParameters = @{
 #       $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
 #       $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
 #           $line[$cursor], $conkey,$false,$false,$false))
-#       $RLModule::SetCursorPosition($cursor)
-#       $RLModule::CharacterSearch($consoleKey ,1)
+#       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
+#       [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey ,1)
 #     } else
 #     {
 #
 #       $conkey = [System.ConsoleKey]::Parse(($line[$cursor]).ToString())
 #       $consoleKey = (New-Object -TypeName System.ConsoleKeyInfo -ArgumentList (
 #           $line[$cursor], $conkey,$false,$false,$false))
-#       $RLModule::CharacterSearch($consoleKey,1)
+#       [Microsoft.PowerShell.PSConsoleReadLine]::CharacterSearch($consoleKey,1)
 #     }
 #
 #   }
@@ -257,7 +255,7 @@ $JrnlParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $defaultValue = 4
     $editPattern = '\d+e$'
@@ -270,14 +268,14 @@ $JrnlParameters = @{
         | Select-String -Pattern  $editPattern `
         | ForEach-Object { $_.Matches }
         if ($startPosition.Index -ne 0) {
-          $RLModule::Replace($startPosition.Index, $startPosition.Count, "6e")
+          [Microsoft.PowerShell.PSConsoleReadLine]::Replace($startPosition.Index, $startPosition.Count, "6e")
         }
         else {
-          $RLModule::Insert(" $($defaultValue)e ")
+          [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e ")
         }
       }
       else {
-        $RLModule::Insert(" $($defaultValue)e")
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
       }
     }
     elseif ($line -eq "j") {
@@ -287,7 +285,7 @@ $JrnlParameters = @{
       | Where-Object { $_ -match '^j +' }
       $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''
       
-      $RLModule::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
     }
     else {
 
@@ -308,10 +306,10 @@ $JrnlParameters = @{
     | fzf --query '^j '`
     | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e" }
 
-      $RLModule::RevertLine()
-      $RLModule::Insert("$finalOptions")
+      [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
     }
-    $RLModule::AcceptLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
   }
 }
 
@@ -327,7 +325,7 @@ $HistorySearchGlobalParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $finalOptions = $null
     $defaultValue = 8
@@ -338,9 +336,9 @@ $HistorySearchGlobalParameters = @{
     | fzf --query '^j ' `
     | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e" }
 
-    $RLModule::Insert("$finalOptions")
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$finalOptions")
     
-    $RLModule::AcceptLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
   }
 }
 
@@ -352,7 +350,7 @@ $openEditorParameters = @{
   LongDescription  = 'Invoke cdwhere with the current directory in the command line'
   ScriptBlock      = {
     param($key, $arg)
-    $RLModule::ViEditVisually()
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViEditVisually()
   }
 }
 
@@ -366,20 +364,20 @@ $openEditorParameters = @{
 #     # GetBufferState gives us the command line (with the cursor position)
 #     $line = $null
 #     $cursor = $null
-#     $RLModule::GetBufferState([ref]$line,
+#     [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
 #       [ref]$cursor)
 #     $invokeFunction = "Set-LocationWhere"
 #     $Query = "$invokeFunction `'$line`'"
 #     #Store to history for future use.
 #
-#     $RLModule::BeginningOfLine()
-#     $RLModule::Insert("$invokeFunction `'")
-#     $RLModule::EndOfLine()
-#     $RLModule::Insert("`'")
-#     # $RLModule::AddToHistory($Query)
+#     [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+#     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeFunction `'")
+#     [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
+#     [Microsoft.PowerShell.PSConsoleReadLine]::Insert("`'")
+#     # [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($Query)
 #     #Store to history for future use.
 #     # Can InvertLine() here to return empty line.
-#     $RLModule::AcceptLine()
+#     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 #       
 #   }
 # }
@@ -397,12 +395,12 @@ $rgToNvimParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     if ($line -match '^rg') {
       # INFO: Replace could actually increase the length of original strings.
       # So I could be longer than the start.
-      $RLModule::Replace(0, 2, "vr")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
     }
     else {
       # INFO: check history for the latest match commands
@@ -411,10 +409,10 @@ $rgToNvimParameters = @{
       | Where-Object { $_.CommandLine -match "^rg" }
       | select-object -Index 0 `
 
-      $RLModule::Insert($SearchWithQuery)
-      $RLModule::Replace(0, 2, "vr")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
     }
-    $RLModule::AcceptLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
   }
 }
@@ -430,12 +428,12 @@ $rgToRggParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     if ($line -match '^rg ') {
       # INFO: Replace could actually increase the length of original strings.
       # So I could be longer than the start.
-      $RLModule::Replace(0, 2, "rgr")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
     }
     else {
       # INFO: check history for the latest match commands
@@ -444,10 +442,10 @@ $rgToRggParameters = @{
       | Where-Object { $_.CommandLine -match "^rg " }
       | select-object -Index 0 `
 
-      $RLModule::Insert($SearchWithQuery)
-      $RLModule::Replace(0, 2, "rgr")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
     }
-    $RLModule::AcceptLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
   }
 }
@@ -466,11 +464,11 @@ $quickEscParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     #Store to history for future use.
     # Can InvertLine() here to return empty line.
-    $RLModule::RevertLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
       
   }
 }
@@ -489,7 +487,7 @@ $sudoRunParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
     $invokeFunction = "Invoke-SudoPwsh"
     if ($line -match "[a-z]") {
@@ -503,10 +501,10 @@ $sudoRunParameters = @{
     
     # HACK: Just revert the line and brute force printing the line again in console.
     # Ugly way but worked.
-    $RLModule::RevertLine()
-    $RLModule::BeginningOfLine()
-    $RLModule::Insert("$invokeCommand")
-    $RLModule::AcceptLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$invokeCommand")
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
   }
 }
@@ -523,15 +521,15 @@ $smartKillWordParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
      
     #Info 
     if ($cursor -eq 0) {
-      $RLModule::KillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
     }
     else {
-      $RLModule::BackwardKillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
     }
   }
 }
@@ -548,15 +546,15 @@ $ExtraKillWordParameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
      
     #Info 
     if ($cursor -eq 0) {
-      $RLModule::KillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
     }
     else {
-      $RLModule::BackwardKillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
     }
   }
 }
@@ -572,15 +570,15 @@ $ExtraKillWord1Parameters = @{
     # GetBufferState gives us the command line (with the cursor position)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line,
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
       [ref]$cursor)
      
     #Info 
     if ($cursor -ge ($line.length - 2)) {
-      $RLModule::BackwardKillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::BackwardKillWord()
     }
     else {
-      $RLModule::KillWord()
+      [Microsoft.PowerShell.PSConsoleReadLine]::KillWord()
     }
   }
 }
@@ -596,18 +594,18 @@ $MathExpressionParameter = @{
 
     $selectionStart = $null
     $selectionLength = $null
-    $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
 
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($selectionStart -ne -1) {
-      $RLModule::Replace($selectionStart, $selectionLength, 'bc "' + $line.SubString($selectionStart, $selectionLength) + '"')
-      $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, 'bc "' + $line.SubString($selectionStart, $selectionLength) + '"')
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
     }
     else {
-      $RLModule::Replace(0, $line.Length, 'bc "' + $line + '"')
-      $RLModule::EndOfLine()
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, 'bc "' + $line + '"')
+      [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
     }
   
   }
@@ -625,19 +623,19 @@ $ParenthesesParameter = @{
 
     $selectionStart = $null
     $selectionLength = $null
-    $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
     if ($selectionStart -ne -1) {
       # Wrap selected text in parentheses
       $selectedText = $line.SubString($selectionStart, $selectionLength)
-      $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
-      $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, "($selectedText)")
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
     }
     else {
       $ast = $null
       $tokens = $null
       $errors = $null
       $cursor = $null
-      $RLModule::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
       $line = if ($ast.Extent) { $ast.Extent.Text } else { '' }
       $nearestToken = $tokens | Where-Object {
         $_.Extent.StartOffset -le $cursor -and $_.Extent.EndOffset -ge $cursor
@@ -657,13 +655,13 @@ $ParenthesesParameter = @{
         $start = $nearestToken.Extent.StartOffset
         $length = $nearestToken.Extent.EndOffset - $start
         $text = $nearestToken.Extent.Text
-        $RLModule::Replace($start, $length, "($text)")
-        $RLModule::SetCursorPosition($start + $length + 1)
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace($start, $length, "($text)")
+        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($start + $length + 1)
       }
       else {
         # Fallback: insert () at cursor
-        $RLModule::Insert('()')
-        $RLModule::SetCursorPosition($cursor + 1)
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert('()')
+        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 1)
       }
     }
   }
@@ -680,19 +678,19 @@ $ParenthesesAllParameter = @{
 
     $selectionStart = $null
     $selectionLength = $null
-    $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
 
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($selectionStart -ne -1) {
       $selectedText = $line.SubString($selectionStart, $selectionLength)
-      $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
-      $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, "($selectedText)")
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
     }
     else {
-      $RLModule::Replace(0, $line.Length, "($line)")
-      $RLModule::EndOfLine()
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "($line)")
+      [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()
     }
   }
 }
@@ -706,21 +704,21 @@ $WrapPipeParameter = @{
 
     $selectionStart = $null
     $selectionLength = $null
-    $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
 
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($selectionStart -ne -1) {
       # Wrap selected text in |%{}
       $selectedText = $line.SubString($selectionStart, $selectionLength)
-      $RLModule::Replace($selectionStart, $selectionLength, "|%{$selectedText `$_}")
-      $RLModule::SetCursorPosition($selectionStart + $selectionLength + 4)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, "|%{$selectedText `$_}")
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 4)
     }
     else {
       # Append |%{} at the end and place cursor between braces
-      $RLModule::Replace($line.Length, 0, "|%{ `$_}")
-      $RLModule::SetCursorPosition($line.Length + 3)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace($line.Length, 0, "|%{ `$_}")
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($line.Length + 3)
     }
   }
 }
@@ -733,16 +731,16 @@ $GlobalEditorSwitch = @{
     param($key, $arg)
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($env:nvim_appname -eq $null) {
       Write-Host "`nNow minimal" -NoNewLine
-      $RLModule::SetCursorPosition($cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
       $env:nvim_appname = "viniv"
       $env:EDITOR = "hx"
     }
     else {
       Write-Host "`nNow complex" -NoNewLine
-      $RLModule::SetCursorPosition($cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor)
       $env:nvim_appname = $null
     }
   } 
@@ -788,15 +786,15 @@ $twoKeyEscape_k_Parameters = @{
   ScriptBlock      = {
     param($key, $arg)   
     if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500) {
-      $RLModule::Insert("k")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("k")
     }
     else {
-      $RLModule::ViCommandMode()
+      [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
       $line = $null
       $cursor = $null
-      $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-      $RLModule::Delete($cursor, 1)
-      $RLModule::SetCursorPosition($cursor - 1)
+      [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+      [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor, 1)
+      [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor - 1)
     }
 
   }
@@ -811,19 +809,19 @@ $twoKeyEscape_j_Parameters = @{
   ScriptBlock      = {
     param($key, $arg)   
     if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500) {
-      $RLModule::Insert("j")
+      [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
       $j_timer.Restart()
       return # HACK: return right before anything got executed below.
     }
     
-    $RLModule::Insert("j")
-    $RLModule::ViCommandMode()
+    [Microsoft.PowerShell.PSConsoleReadLine]::Insert("j")
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
 
     $line = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    $RLModule::Delete($cursor - 1, 2)
-    $RLModule::SetCursorPosition($cursor - 2)
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::Delete($cursor - 1, 2)
+    [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor - 2)
     
   }
 }
@@ -836,7 +834,7 @@ $ctrlBracket_Parameters = @{
   ViMode           = "Insert"
   ScriptBlock      = {
     param($key, $arg)   
-    $RLModule::ViCommandMode()
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
   }
 }
 
@@ -919,7 +917,7 @@ function OptionsSwitch() {
   $currentMode = (Get-PSReadLineOption).EditMode 
   if ($currentMode -eq "Windows") {
     Set-PSReadLineOption @PSReadLineOptions_Vi
-    $RLModule::ViCommandMode()
+    [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
   }
   else {
     Set-PSReadLineOption @PSReadLineOptions_Windows
