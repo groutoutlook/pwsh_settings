@@ -645,8 +645,8 @@ $MathExpressionParameter = @{
 
 $ParenthesesParameter = @{
   Key = 'Alt+0'
-  BriefDescription = 'parentheses the selection'
-  LongDescription = 'As brief.'
+  BriefDescription = 'parentheses the selection or nearest token'
+  LongDescription = 'Wraps selected text in parentheses; if no selection, wraps the token nearest to the cursor. Cursor is placed after the closing parenthesis.'
   ScriptBlock = {
     param($key, $arg)
 
@@ -654,28 +654,72 @@ $ParenthesesParameter = @{
     $selectionLength = $null
     $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
 
-    $line = $null
+    $ast = $null
+    $tokens = $null
+    $errors = $null
     $cursor = $null
-    $RLModule::GetBufferState([ref]$line, [ref]$cursor)
+    $RLModule::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+
+    # Extract the line text from the AST
+    $line = if ($ast.Extent) { $ast.Extent.Text } else { '' }
+
     if ($selectionStart -ne -1)
     {
-      $RLModule::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
+      # Wrap selected text in parentheses
+      $selectedText = $line.SubString($selectionStart, $selectionLength)
+      $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
-    } else
+    }
+    else
     {
-      $RLModule::Replace(0, $line.Length, '(' + $line + ')')
-      $RLModule::EndOfLine()
+      # Find the token nearest to the cursor
+      $nearestToken = $tokens | Where-Object {
+        $_.Extent.StartOffset -le $cursor -and $_.Extent.EndOffset -ge $cursor
+      } | Select-Object -First 1
+
+      if (-not $nearestToken)
+      {
+        # If no token is under the cursor, find the closest token
+        $nearestToken = $tokens | Sort-Object {
+          [Math]::Abs($_.Extent.StartOffset - $cursor)
+        } | Select-Object -First 1
+      }
+
+      if ($nearestToken -and $nearestToken.Extent.StartOffset -ge 0 -and $nearestToken.Extent.StartOffset -le $line.Length)
+      {
+        $start = $nearestToken.Extent.StartOffset
+        $length = $nearestToken.Extent.EndOffset - $start
+        # Ensure length doesn't extend beyond buffer
+        if ($start + $length -le $line.Length)
+        {
+          $text = $nearestToken.Extent.Text
+          $RLModule::Replace($start, $length, "($text)")
+          $RLModule::SetCursorPosition($start + $length + 1)
+        }
+        else
+        {
+          # Fallback: insert () at cursor
+          $RLModule::Insert('()')
+          $RLModule::SetCursorPosition($cursor + 1)
+        }
+      }
+      else
+      {
+        # Fallback if no valid tokens are found (e.g., empty line)
+        $RLModule::Insert('()')
+        $RLModule::SetCursorPosition($cursor + 1)
+      }
     }
   }
 }
 
 
+
 $ParenthesesAllParameter = @{
   Key = 'Alt+9'
   BriefDescription = 'parentheses all or the selection'
-  LongDescription = 'As brief.'
+  LongDescription = 'Wraps the selected text or the entire line in parentheses.'
   ScriptBlock = {
-
     param($key, $arg)
 
     $selectionStart = $null
@@ -687,16 +731,16 @@ $ParenthesesAllParameter = @{
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
     if ($selectionStart -ne -1)
     {
-      $RLModule::Replace($selectionStart, $selectionLength, '(' + $line.SubString($selectionStart, $selectionLength) + ')')
+      $selectedText = $line.SubString($selectionStart, $selectionLength)
+      $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
-    } else
+    }
+    else
     {
-      $RLModule::Replace(0, $line.Length, '(' + $line + ')')
+      $RLModule::Replace(0, $line.Length, "($line)")
       $RLModule::EndOfLine()
     }
-
   }
-
 }
 
 $WrapPipeParameter = @{
