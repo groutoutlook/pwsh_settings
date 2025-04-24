@@ -69,6 +69,8 @@ $IterateCommandParameters = @{
   
     if ($asts.Count -eq 0)
     {
+      $lastCommand = (Get-History -Count 1).CommandLine
+      [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $ast.Extent.Text.Length, $lastCommand)
       [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
       return
     }
