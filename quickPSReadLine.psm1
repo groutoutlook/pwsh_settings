@@ -5,10 +5,10 @@ using namespace System.Management.Automation.Language
 # Shorten the PSConsoleReadLine type reference
 $RLModule = [Microsoft.PowerShell.PSConsoleReadLine]
 $ggSearchParameters = @{
-  Key = 'Ctrl+s'
+  Key              = 'Ctrl+s'
   BriefDescription = 'Web Search Mode'
-  LongDescription = 'Maybe other search function, but who knows.'
-  ScriptBlock = {
+  LongDescription  = 'Maybe other search function, but who knows.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -18,20 +18,18 @@ $ggSearchParameters = @{
       [ref]$cursor)
     $searchFunction = "Search-DuckDuckGo" 
     $SearchWithQuery = ""
-    if ($line -match "[a-z]")
-    {
-      if($line -match "^scoop")
-      {
+    if ($line -match "[a-z]") {
+      if ($line -match "^scoop") {
                 
         $SearchWithQuery = "$searchFunction $line; $line"
-      } else
-      {
+      }
+      else {
 
         $SearchWithQuery = "$searchFunction $line"
       }
 
-    } else
-    {
+    }
+    else {
       $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
     }
     $RLModule::AddToHistory($line)
@@ -42,10 +40,10 @@ $ggSearchParameters = @{
 
 # Setup for (!s) 
 $IterateCommandParameters = @{
-  Key = 'Alt+s'
+  Key              = 'Alt+s'
   BriefDescription = 'iterate commands in the current line.'
-  LongDescription = 'want to be like alt a'
-  ScriptBlock = {
+  LongDescription  = 'want to be like alt a'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     $ast = $null
@@ -66,8 +64,7 @@ $IterateCommandParameters = @{
         # -and $args[0].Extent.StartOffset -ne $args[0].Parent.Extent.StartOffset
       }, $true)
   
-    if ($asts.Count -eq 0)
-    {
+    if ($asts.Count -eq 0) {
       $lastCommand = (Get-History -Count 1).CommandLine
       $RLModule::Replace(0, $ast.Extent.Text.Length, $lastCommand)
       $RLModule::Ding()
@@ -76,22 +73,18 @@ $IterateCommandParameters = @{
     
     $nextAst = $null
 
-    if ($null -ne $arg)
-    {
+    if ($null -ne $arg) {
       $nextAst = $asts[$arg - 1]
-    } else
-    {
-      foreach ($ast in $asts)
-      {
-        if ($ast.Extent.StartOffset -ge $cursor)
-        {
+    }
+    else {
+      foreach ($ast in $asts) {
+        if ($ast.Extent.StartOffset -ge $cursor) {
           $nextAst = $ast
           break
         }
       } 
         
-      if ($null -eq $nextAst)
-      {
+      if ($null -eq $nextAst) {
         $nextAst = $asts[0]
       }
     }
@@ -100,8 +93,7 @@ $IterateCommandParameters = @{
     $endOffsetAdjustment = 0
 
     if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
-      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
-    {
+      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord) {
       $startOffsetAdjustment = 1
       $endOffsetAdjustment = 2
     }
@@ -114,10 +106,10 @@ $IterateCommandParameters = @{
 }
 
 $IterateCommandBackwardParameters = @{
-  Key = 'Ctrl+Shift+s'
+  Key              = 'Ctrl+Shift+s'
   BriefDescription = 'iterate commands in the current line.'
-  LongDescription = 'want to be like alt a'
-  ScriptBlock = {
+  LongDescription  = 'want to be like alt a'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     $ast = $null
@@ -133,8 +125,7 @@ $IterateCommandBackwardParameters = @{
           -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 
       }, $true)
   
-    if ($asts.Count -eq 0)
-    {
+    if ($asts.Count -eq 0) {
       $RLModule::Ding()
       return
     }
@@ -142,23 +133,19 @@ $IterateCommandBackwardParameters = @{
     
     $nextAst = $null
 
-    if ($null -ne $arg)
-    {
+    if ($null -ne $arg) {
       $nextAst = $asts[$arg - 1]
-    } else
-    {
+    }
+    else {
       # HACK: reverse the ast?
-      foreach ($ast in $asts)
-      {
-        if ($ast.Extent.StartOffset -ge $cursor)
-        {
+      foreach ($ast in $asts) {
+        if ($ast.Extent.StartOffset -ge $cursor) {
           $nextAst = $ast
           break
         }
       } 
         
-      if ($null -eq $nextAst)
-      {
+      if ($null -eq $nextAst) {
         $nextAst = $asts[-1]
       }
     }
@@ -167,8 +154,7 @@ $IterateCommandBackwardParameters = @{
     $endOffsetAdjustment = 0
 
     if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and 
-      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord)
-    {
+      $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord) {
       $startOffsetAdjustment = 1
       $endOffsetAdjustment = 2
     }
@@ -182,10 +168,10 @@ $IterateCommandBackwardParameters = @{
 
 # Setup for (^O) 
 $omniSearchParameters = @{
-  Key = 'Ctrl+o'
+  Key              = 'Ctrl+o'
   BriefDescription = 'Obsidian Mode'
-  LongDescription = 'Search Obsidian.'
-  ScriptBlock = {
+  LongDescription  = 'Search Obsidian.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -194,11 +180,10 @@ $omniSearchParameters = @{
     $RLModule::GetBufferState([ref]$line,
       [ref]$cursor)
     $searchFunction = ":obsidian" # omniSearchObsidian
-    if ($line -match "[a-z]")
-    {
+    if ($line -match "[a-z]") {
       $SearchWithQuery = "$searchFunction $line"
-    } else
-    {
+    }
+    else {
       $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
     }
  
@@ -253,10 +238,10 @@ $omniSearchParameters = @{
 
 
 $JrnlParameters = @{
-  Key = 'Ctrl+j'
+  Key              = 'Ctrl+j'
   BriefDescription = 'Jrnl edit back?'
-  LongDescription = 'draft.'
-  ScriptBlock = {
+  LongDescription  = 'draft.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
     <#
     .SYNOPSIS
@@ -275,57 +260,53 @@ $JrnlParameters = @{
     $RLModule::GetBufferState([ref]$line,
       [ref]$cursor)
     $defaultValue = 4
-    $editPattern =  '\d+e$'
-    if($line -match "^j +")
-    {
-      if ($line -match $editPattern)
-      {
+    $editPattern = '\d+e$'
+    if ($line -match "^j +") {
+      if ($line -match $editPattern) {
         # INFO: if there are 
         $defaultValue = 8
         
         $startPosition = $line `
         | Select-String -Pattern  $editPattern `
-        | ForEach-Object {$_.Matches}
-        if ($startPosition.Index -ne 0)
-        {
-          $RLModule::Replace($startPosition.Index,$startPosition.Count,"6e")
-        } else
-        {
+        | ForEach-Object { $_.Matches }
+        if ($startPosition.Index -ne 0) {
+          $RLModule::Replace($startPosition.Index, $startPosition.Count, "6e")
+        }
+        else {
           $RLModule::Insert(" $($defaultValue)e ")
         }
-      } else
-      {
+      }
+      else {
         $RLModule::Insert(" $($defaultValue)e")
       }
-    } elseif ($line -eq "j")
-    {
+    }
+    elseif ($line -eq "j") {
       # INFO: most recent jrnl 
       $defaultValue = 6
       $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadlineOption).HistorySavePath `
-      | Where-Object {$_ -match '^j +'}
-      $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern,''
+      | Where-Object { $_ -match '^j +' }
+      $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''
       
       $RLModule::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
-    } else
-    {
+    }
+    else {
 
       $finalOptions = $null
       $checkHistory = (Get-History `
       | Sort-Object -Property CommandLine -Unique `
       | Select-Object -ExpandProperty CommandLine `
       | Select-String -Pattern '^j +' )
-      if(($checkHistory).Length -lt 2)
-      {
+      if (($checkHistory).Length -lt 2) {
         $historySource = (Get-Content -tail 200 (Get-PSReadlineOption).HistorySavePath `
         | Select-String -Pattern '^j +' )
-      } else
-      {
+      }
+      else {
         $historySource = $checkHistory
       }
       
       $historySource `
     | fzf --query '^j '`
-    | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e"}
+    | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e" }
 
       $RLModule::RevertLine()
       $RLModule::Insert("$finalOptions")
@@ -337,10 +318,10 @@ $JrnlParameters = @{
 
 
 $HistorySearchGlobalParameters = @{
-  Key = 'Ctrl+Shift+j'
+  Key              = 'Ctrl+Shift+j'
   BriefDescription = 'Jrnl edit back?'
-  LongDescription = 'draft.'
-  ScriptBlock = {
+  LongDescription  = 'draft.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -366,10 +347,10 @@ $HistorySearchGlobalParameters = @{
 
 # Custom implementation of the ViEditVisually PSReadLine function.
 $openEditorParameters = @{
-  Key = 'ctrl+x,ctrl+e' 
+  Key              = 'ctrl+x,ctrl+e' 
   BriefDescription = 'Set-LocationWhere the paste directory.'
-  LongDescription = 'Invoke cdwhere with the current directory in the command line'
-  ScriptBlock = {
+  LongDescription  = 'Invoke cdwhere with the current directory in the command line'
+  ScriptBlock      = {
     param($key, $arg)
     $RLModule::ViEditVisually()
   }
@@ -407,10 +388,10 @@ $openEditorParameters = @{
 
 
 $rgToNvimParameters = @{
-  Key = 'Alt+v'
+  Key              = 'Alt+v'
   BriefDescription = 'open `ig`'
-  LongDescription = 'Invoke vr in place of rg.'
-  ScriptBlock = {
+  LongDescription  = 'Invoke vr in place of rg.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -418,17 +399,16 @@ $rgToNvimParameters = @{
     $cursor = $null
     $RLModule::GetBufferState([ref]$line,
       [ref]$cursor)
-    if($line -match '^rg')
-    {
+    if ($line -match '^rg') {
       # INFO: Replace could actually increase the length of original strings.
       # So I could be longer than the start.
       $RLModule::Replace(0, 2, "vr")
-    } else
-    {
+    }
+    else {
       # INFO: check history for the latest match commands
       $SearchWithQuery = Get-History -Count 40 `
       | Sort-Object -Property Id -Descending `
-      | Where-Object {$_.CommandLine -match "^rg"}
+      | Where-Object { $_.CommandLine -match "^rg" }
       | select-object -Index 0 `
 
       $RLModule::Insert($SearchWithQuery)
@@ -441,10 +421,10 @@ $rgToNvimParameters = @{
 
 
 $rgToRggParameters = @{
-  Key = 'Ctrl+h'
+  Key              = 'Ctrl+h'
   BriefDescription = 'replace in `rgr`'
-  LongDescription = 'Invoke rgr in place of rg.'
-  ScriptBlock = {
+  LongDescription  = 'Invoke rgr in place of rg.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -452,17 +432,16 @@ $rgToRggParameters = @{
     $cursor = $null
     $RLModule::GetBufferState([ref]$line,
       [ref]$cursor)
-    if($line -match '^rg ')
-    {
+    if ($line -match '^rg ') {
       # INFO: Replace could actually increase the length of original strings.
       # So I could be longer than the start.
       $RLModule::Replace(0, 2, "rgr")
-    } else
-    {
+    }
+    else {
       # INFO: check history for the latest match commands
       $SearchWithQuery = Get-History -Count 40 `
       | Sort-Object -Property Id -Descending `
-      | Where-Object {$_.CommandLine -match "^rg "}
+      | Where-Object { $_.CommandLine -match "^rg " }
       | select-object -Index 0 `
 
       $RLModule::Insert($SearchWithQuery)
@@ -478,10 +457,10 @@ $rgToRggParameters = @{
 
 
 $quickEscParameters = @{
-  Key = 'Ctrl+k'
+  Key              = 'Ctrl+k'
   BriefDescription = 'Open Kicad'
-  LongDescription = 'Reserved key combo. Havent thought of any useful function to use with its'
-  ScriptBlock = {
+  LongDescription  = 'Reserved key combo. Havent thought of any useful function to use with its'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -496,15 +475,14 @@ $quickEscParameters = @{
   }
 }
 
-function Invoke-SudoPwsh
-{
+function Invoke-SudoPwsh {
   sudo pwsh -Command "$args"
 }
 $sudoRunParameters = @{
-  Key = 'Ctrl+shift+x'
+  Key              = 'Ctrl+shift+x'
   BriefDescription = 'Execute as sudo (in pwsh).'
-  LongDescription = 'Call sudo on current command or latest command in history.'
-  ScriptBlock =
+  LongDescription  = 'Call sudo on current command or latest command in history.'
+  ScriptBlock      =
   {
     param($key, $arg)   # The arguments are ignored in this example
 
@@ -514,11 +492,10 @@ $sudoRunParameters = @{
     $RLModule::GetBufferState([ref]$line,
       [ref]$cursor)
     $invokeFunction = "Invoke-SudoPwsh"
-    if ($line -match "[a-z]")
-    {
+    if ($line -match "[a-z]") {
       $invokeCommand = "$invokeFunction `"$line`""
-    } else
-    {
+    }
+    else {
       $invokeCommand = "$invokeFunction `"$(Get-History -Count 1)`""
     }
 
@@ -537,10 +514,10 @@ $sudoRunParameters = @{
 
 # HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
 $smartKillWordParameters = @{
-  Key = 'Ctrl+w'
+  Key              = 'Ctrl+w'
   BriefDescription = 'Smarter kill word '
-  LongDescription = 'Call sudo on current command or latest command in history.'
-  ScriptBlock = {
+  LongDescription  = 'Call sudo on current command or latest command in history.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -550,11 +527,10 @@ $smartKillWordParameters = @{
       [ref]$cursor)
      
     #Info 
-    if($cursor -eq 0)
-    {
+    if ($cursor -eq 0) {
       $RLModule::KillWord()
-    } else
-    {
+    }
+    else {
       $RLModule::BackwardKillWord()
     }
   }
@@ -563,10 +539,10 @@ $smartKillWordParameters = @{
 
 ## HACK: combine both Bakwardkillword and forwardkillword(alt+D) 
 $ExtraKillWordParameters = @{
-  Key = 'Ctrl+Backspace'
+  Key              = 'Ctrl+Backspace'
   BriefDescription = 'Smarter kill word '
-  LongDescription = 'Call sudo on current command or latest command in history.'
-  ScriptBlock = {
+  LongDescription  = 'Call sudo on current command or latest command in history.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -576,11 +552,10 @@ $ExtraKillWordParameters = @{
       [ref]$cursor)
      
     #Info 
-    if($cursor -eq 0)
-    {
+    if ($cursor -eq 0) {
       $RLModule::KillWord()
-    } else
-    {
+    }
+    else {
       $RLModule::BackwardKillWord()
     }
   }
@@ -588,10 +563,10 @@ $ExtraKillWordParameters = @{
 
 
 $ExtraKillWord1Parameters = @{
-  Key = 'Alt+w'
+  Key              = 'Alt+w'
   BriefDescription = 'Smarter kill word '
-  LongDescription = 'Kill Forward, but hit ceiling then kill backward.'
-  ScriptBlock = {
+  LongDescription  = 'Kill Forward, but hit ceiling then kill backward.'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
 
     # GetBufferState gives us the command line (with the cursor position)
@@ -601,11 +576,10 @@ $ExtraKillWord1Parameters = @{
       [ref]$cursor)
      
     #Info 
-    if($cursor -ge ($line.length - 2))
-    {
+    if ($cursor -ge ($line.length - 2)) {
       $RLModule::BackwardKillWord()
-    } else
-    {
+    }
+    else {
       $RLModule::KillWord()
     }
   }
@@ -614,10 +588,10 @@ $ExtraKillWord1Parameters = @{
 
 
 $MathExpressionParameter = @{
-  Key = 'Alt+m'
+  Key              = 'Alt+m'
   BriefDescription = 'parentheses the selection'
-  LongDescription = 'As brief.'
-  ScriptBlock = {
+  LongDescription  = 'As brief.'
+  ScriptBlock      = {
     param($key, $arg)
 
     $selectionStart = $null
@@ -627,12 +601,11 @@ $MathExpressionParameter = @{
     $line = $null
     $cursor = $null
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    if ($selectionStart -ne -1)
-    {
+    if ($selectionStart -ne -1) {
       $RLModule::Replace($selectionStart, $selectionLength, 'bc "' + $line.SubString($selectionStart, $selectionLength) + '"')
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
-    } else
-    {
+    }
+    else {
       $RLModule::Replace(0, $line.Length, 'bc "' + $line + '"')
       $RLModule::EndOfLine()
     }
@@ -644,68 +617,51 @@ $MathExpressionParameter = @{
 
 
 $ParenthesesParameter = @{
-  Key = 'Alt+0'
+  Key              = 'Alt+0'
   BriefDescription = 'parentheses the selection or nearest token'
-  LongDescription = 'Wraps selected text in parentheses; if no selection, wraps the token nearest to the cursor. Cursor is placed after the closing parenthesis.'
-  ScriptBlock = {
+  LongDescription  = 'Wraps selected text in parentheses; if no selection, wraps the token nearest to the cursor. Cursor is placed after the closing parenthesis.'
+  ScriptBlock      = {
     param($key, $arg)
 
     $selectionStart = $null
     $selectionLength = $null
     $RLModule::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
-
-    $ast = $null
-    $tokens = $null
-    $errors = $null
-    $cursor = $null
-    $RLModule::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
-
-    # Extract the line text from the AST
-    $line = if ($ast.Extent) { $ast.Extent.Text } else { '' }
-
-    if ($selectionStart -ne -1)
-    {
+    if ($selectionStart -ne -1) {
       # Wrap selected text in parentheses
       $selectedText = $line.SubString($selectionStart, $selectionLength)
       $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
     }
-    else
-    {
-      # Find the token nearest to the cursor
+    else {
+      $ast = $null
+      $tokens = $null
+      $errors = $null
+      $cursor = $null
+      $RLModule::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+      $line = if ($ast.Extent) { $ast.Extent.Text } else { '' }
       $nearestToken = $tokens | Where-Object {
         $_.Extent.StartOffset -le $cursor -and $_.Extent.EndOffset -ge $cursor
       } | Select-Object -First 1
 
-      if (-not $nearestToken)
-      {
+      if (-not $nearestToken) {
         # If no token is under the cursor, find the closest token
         $nearestToken = $tokens | Sort-Object {
           [Math]::Abs($_.Extent.StartOffset - $cursor)
         } | Select-Object -First 1
       }
 
-      if ($nearestToken -and $nearestToken.Extent.StartOffset -ge 0 -and $nearestToken.Extent.StartOffset -le $line.Length)
-      {
+      if ($nearestToken -and 
+        $nearestToken.Extent.StartOffset -ge 0 -and 
+        $nearestToken.Extent.StartOffset -le $line.Length -and 
+        $nearestToken.Extent.EndOffset -le $line.Length) {
         $start = $nearestToken.Extent.StartOffset
         $length = $nearestToken.Extent.EndOffset - $start
-        # Ensure length doesn't extend beyond buffer
-        if ($start + $length -le $line.Length)
-        {
-          $text = $nearestToken.Extent.Text
-          $RLModule::Replace($start, $length, "($text)")
-          $RLModule::SetCursorPosition($start + $length + 1)
-        }
-        else
-        {
-          # Fallback: insert () at cursor
-          $RLModule::Insert('()')
-          $RLModule::SetCursorPosition($cursor + 1)
-        }
+        $text = $nearestToken.Extent.Text
+        $RLModule::Replace($start, $length, "($text)")
+        $RLModule::SetCursorPosition($start + $length + 1)
       }
-      else
-      {
-        # Fallback if no valid tokens are found (e.g., empty line)
+      else {
+        # Fallback: insert () at cursor
         $RLModule::Insert('()')
         $RLModule::SetCursorPosition($cursor + 1)
       }
@@ -716,10 +672,10 @@ $ParenthesesParameter = @{
 
 
 $ParenthesesAllParameter = @{
-  Key = 'Alt+9'
+  Key              = 'Alt+9'
   BriefDescription = 'parentheses all or the selection'
-  LongDescription = 'Wraps the selected text or the entire line in parentheses.'
-  ScriptBlock = {
+  LongDescription  = 'Wraps the selected text or the entire line in parentheses.'
+  ScriptBlock      = {
     param($key, $arg)
 
     $selectionStart = $null
@@ -729,14 +685,12 @@ $ParenthesesAllParameter = @{
     $line = $null
     $cursor = $null
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    if ($selectionStart -ne -1)
-    {
+    if ($selectionStart -ne -1) {
       $selectedText = $line.SubString($selectionStart, $selectionLength)
       $RLModule::Replace($selectionStart, $selectionLength, "($selectedText)")
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 2)
     }
-    else
-    {
+    else {
       $RLModule::Replace(0, $line.Length, "($line)")
       $RLModule::EndOfLine()
     }
@@ -744,10 +698,10 @@ $ParenthesesAllParameter = @{
 }
 
 $WrapPipeParameter = @{
-  Key = 'Alt+\'
+  Key              = 'Alt+\'
   BriefDescription = 'wrap in pipe (|%{<selected one> $_})'
-  LongDescription = 'As brief.'
-  ScriptBlock = {
+  LongDescription  = 'As brief.'
+  ScriptBlock      = {
     param($key, $arg)
 
     $selectionStart = $null
@@ -757,15 +711,13 @@ $WrapPipeParameter = @{
     $line = $null
     $cursor = $null
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    if ($selectionStart -ne -1)
-    {
+    if ($selectionStart -ne -1) {
       # Wrap selected text in |%{}
       $selectedText = $line.SubString($selectionStart, $selectionLength)
       $RLModule::Replace($selectionStart, $selectionLength, "|%{$selectedText `$_}")
       $RLModule::SetCursorPosition($selectionStart + $selectionLength + 4)
     }
-    else
-    {
+    else {
       # Append |%{} at the end and place cursor between braces
       $RLModule::Replace($line.Length, 0, "|%{ `$_}")
       $RLModule::SetCursorPosition($line.Length + 3)
@@ -774,21 +726,21 @@ $WrapPipeParameter = @{
 }
 
 $GlobalEditorSwitch = @{
-  Key = 'Ctrl+Shift+e,Ctrl+Shift+e'
+  Key              = 'Ctrl+Shift+e,Ctrl+Shift+e'
   BriefDescription = 'Change $env:nvim_appname to something else'
-  LongDescription = 'I think I need to work on changing $env:EDITOR as well.'
-  ScriptBlock = {
+  LongDescription  = 'I think I need to work on changing $env:EDITOR as well.'
+  ScriptBlock      = {
     param($key, $arg)
     $line = $null
     $cursor = $null
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    if ($env:nvim_appname -eq $null){
+    if ($env:nvim_appname -eq $null) {
       Write-Host "`nNow minimal" -NoNewLine
       $RLModule::SetCursorPosition($cursor)
       $env:nvim_appname = "viniv"
       $env:EDITOR = "hx"
     }
-    else{
+    else {
       Write-Host "`nNow complex" -NoNewLine
       $RLModule::SetCursorPosition($cursor)
       $env:nvim_appname = $null
@@ -798,10 +750,10 @@ $GlobalEditorSwitch = @{
 
 # INFO: switch between windows mode and vi mode. for easier navigation
 $OptionsSwitchParameters = @{
-  Key = 'Ctrl+x,Ctrl+x'
+  Key              = 'Ctrl+x,Ctrl+x'
   BriefDescription = 'toggle vi navigation'
-  LongDescription = 'as I mimic the behaviour in zsh'
-  ScriptBlock = {
+  LongDescription  = 'as I mimic the behaviour in zsh'
+  ScriptBlock      = {
     param($key, $arg)   # The arguments are ignored in this example
     OptionsSwitch 
     setAllHandler
@@ -813,11 +765,11 @@ $OptionsSwitchParameters = @{
 
 # INFO: Start Command Mode commands.
 $OptionsSwitch_Command_Parameters = @{
-  Key = 'Ctrl+x,Ctrl+x'
+  Key              = 'Ctrl+x,Ctrl+x'
   BriefDescription = 'toggle vi navigation in command(normal) mode'
-  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
-  ViMode  = "Command"
-  ScriptBlock = {
+  LongDescription  = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode           = "Command"
+  ScriptBlock      = {
     param($key, $arg)  
     OptionsSwitch 
     setAllHandler
@@ -829,23 +781,22 @@ $OptionsSwitch_Command_Parameters = @{
 $j_timer = New-Object System.Diagnostics.Stopwatch
 
 $twoKeyEscape_k_Parameters = @{
-  Key = 'k'
+  Key              = 'k'
   BriefDescription = 'jk escape'
-  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
-  ViMode  = "Insert"
-  ScriptBlock = {
+  LongDescription  = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode           = "Insert"
+  ScriptBlock      = {
     param($key, $arg)   
-    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500)
-    {
+    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500) {
       $RLModule::Insert("k")
-    } else
-    {
+    }
+    else {
       $RLModule::ViCommandMode()
       $line = $null
       $cursor = $null
       $RLModule::GetBufferState([ref]$line, [ref]$cursor)
       $RLModule::Delete($cursor, 1)
-      $RLModule::SetCursorPosition($cursor-1)
+      $RLModule::SetCursorPosition($cursor - 1)
     }
 
   }
@@ -853,14 +804,13 @@ $twoKeyEscape_k_Parameters = @{
 
 
 $twoKeyEscape_j_Parameters = @{
-  Key = 'j'
+  Key              = 'j'
   BriefDescription = 'jk/jj escape'
-  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
-  ViMode  = "Insert"
-  ScriptBlock = {
+  LongDescription  = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode           = "Insert"
+  ScriptBlock      = {
     param($key, $arg)   
-    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500)
-    {
+    if (!$j_timer.IsRunning -or $j_timer.ElapsedMilliseconds -gt 500) {
       $RLModule::Insert("j")
       $j_timer.Restart()
       return # HACK: return right before anything got executed below.
@@ -872,19 +822,19 @@ $twoKeyEscape_j_Parameters = @{
     $line = $null
     $cursor = $null
     $RLModule::GetBufferState([ref]$line, [ref]$cursor)
-    $RLModule::Delete($cursor-1, 2)
-    $RLModule::SetCursorPosition($cursor-2)
+    $RLModule::Delete($cursor - 1, 2)
+    $RLModule::SetCursorPosition($cursor - 2)
     
   }
 }
 
 $ctrlBracket_Parameters = @{
   # HACK: on the key code, using [System.Console]::ReadKey() -> `[` as Oem4.
-  Key = 'ctrl+Oem4'
+  Key              = 'ctrl+Oem4'
   BriefDescription = 'ctrl+['
-  LongDescription = 'This is only included when in ViMode,in command(normal) mode'
-  ViMode  = "Insert"
-  ScriptBlock = {
+  LongDescription  = 'This is only included when in ViMode,in command(normal) mode'
+  ViMode           = "Insert"
+  ScriptBlock      = {
     param($key, $arg)   
     $RLModule::ViCommandMode()
   }
@@ -892,32 +842,32 @@ $ctrlBracket_Parameters = @{
 
 # INFO: Common Windows/Vi Mode Key handlers
 $HandlerParameters = @{
-  "ggHandler"   = $ggSearchParameters
-  "obsHandler"  = $omniSearchParameters
-  "jrnlHandler" = $JrnlParameters 
+  "ggHandler"          = $ggSearchParameters
+  "obsHandler"         = $omniSearchParameters
+  "jrnlHandler"        = $JrnlParameters 
   "histJSearchHandler" = $HistorySearchGlobalParameters
-  "sudoHandler"  = $sudoRunParameters
-  "killword" = $smartKillWordParameters
-  "extrakillword" = $ExtraKillWordParameters
-  "extrakillword1" = $ExtraKillWord1Parameters
-  "parentSel" = $ParenthesesParameter
-  "parentAll" = $ParenthesesAllParameter
-  "wrapPipeSel" = $wrappipeparameter
-  "rtnHandler" = $rgToNvimParameters
-  "rggHandler" = $rgToRggParameters
-  "iterateBackward" = $IterateCommandBackwardParameters
-  "iterateForward" = $IterateCommandParameters
-  "OptionsSwitch" = $OptionsSwitchParameters
-  "openEditor" = $openEditorParameters
+  "sudoHandler"        = $sudoRunParameters
+  "killword"           = $smartKillWordParameters
+  "extrakillword"      = $ExtraKillWordParameters
+  "extrakillword1"     = $ExtraKillWord1Parameters
+  "parentSel"          = $ParenthesesParameter
+  "parentAll"          = $ParenthesesAllParameter
+  "wrapPipeSel"        = $wrappipeparameter
+  "rtnHandler"         = $rgToNvimParameters
+  "rggHandler"         = $rgToRggParameters
+  "iterateBackward"    = $IterateCommandBackwardParameters
+  "iterateForward"     = $IterateCommandParameters
+  "OptionsSwitch"      = $OptionsSwitchParameters
+  "openEditor"         = $openEditorParameters
   "GlobalEditorSwitch" = $GlobalEditorSwitch
-  "MathExpression" = $MathExpressionParameter
+  "MathExpression"     = $MathExpressionParameter
 }
 
 # INFO: Unique for Vi mode.
 $ViHandlerParameters = @{
   "OptionsSwitch_c" = $OptionsSwitch_Command_Parameters
-  "two-kj" = $twoKeyEscape_k_Parameters 
-  "two-jk" = $twoKeyEscape_j_Parameters 
+  "two-kj"          = $twoKeyEscape_k_Parameters 
+  "two-jk"          = $twoKeyEscape_j_Parameters 
   "esc-ctrlbracket" = $ctrlBracket_Parameters
 }
 
@@ -926,42 +876,38 @@ $ViHandlerParameters = @{
 
 #INFO: Default of Windows PSReadLineOptions
 $PSReadLineOptions_Windows = @{
-  EditMode = "Windows"
-  HistoryNoDuplicates = $true
+  EditMode                      = "Windows"
+  HistoryNoDuplicates           = $true
   HistorySearchCursorMovesToEnd = $true
-  PredictionViewStyle = "ListView"
+  PredictionViewStyle           = "ListView"
 
-  Colors = @{
+  Colors                        = @{
     "Command" = "#f9f1a5"
   }
 }
 
 $PSReadLineOptions_Vi = @{
-  EditMode = "Vi"
-  HistoryNoDuplicates = $true
+  EditMode                      = "Vi"
+  HistoryNoDuplicates           = $true
   HistorySearchCursorMovesToEnd = $true
-  PredictionViewStyle = "ListView"
-  Colors = @{
+  PredictionViewStyle           = "ListView"
+  Colors                        = @{
     "Command" = "#8181f7"
   }
 }
 
-function setAllHandler()
-{
+function setAllHandler() {
   # Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
   # INFO: custom default keyhandler.
-  ForEach($handler in $HandlerParameters.Keys)
-  {
+  ForEach ($handler in $HandlerParameters.Keys) {
     $parameters = $HandlerParameters[$handler]
     Set-PSReadLineKeyHandler @parameters
   }
 
   # INFO: Add Vi Handler.
   $currentMode = (Get-PSReadLineOption).EditMode 
-  if ($currentMode -eq "Vi")
-  {
-    ForEach($handler in $ViHandlerParameters.Keys)
-    {
+  if ($currentMode -eq "Vi") {
+    ForEach ($handler in $ViHandlerParameters.Keys) {
       $parameters = $ViHandlerParameters[$handler]
       Set-PSReadLineKeyHandler @parameters
     }
@@ -969,15 +915,13 @@ function setAllHandler()
 
 }
 
-function OptionsSwitch()
-{
+function OptionsSwitch() {
   $currentMode = (Get-PSReadLineOption).EditMode 
-  if ($currentMode -eq "Windows")
-  {
+  if ($currentMode -eq "Windows") {
     Set-PSReadLineOption @PSReadLineOptions_Vi
     $RLModule::ViCommandMode()
-  } else
-  {
+  }
+  else {
     Set-PSReadLineOption @PSReadLineOptions_Windows
   }
 
