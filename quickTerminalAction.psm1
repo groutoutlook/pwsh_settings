@@ -78,7 +78,7 @@ function tapscr($emulator = $global:adbDevices, $index = 0) {
     }
 }
 
-function explr($inputPath = (Get-Location)) {
+function Start-Explorer($inputPath = (Get-Location)) {
     if ($inputPath -match "This PC") {
         explorer.exe 
         Start-Sleep 0.5
@@ -89,11 +89,17 @@ function explr($inputPath = (Get-Location)) {
         echo "ahk then?"
     }
     else {
-        fpilot $inputPath
+        $isPath = Test-Path $inputPath 
+        if ($isPath) {
+            fpilot $inputPath
+        }
+        else {
+            fpilot "$(zoi $inputPath)"
+        }
     }
 }
-Set-Alias -Name expl -Value explr -Scope Global
-
+Set-Alias -Name expl -Value Start-Explorer -Scope Global
+Set-Alias -Name exp -Value Start-Explorer -Scope Global
 
 # INFO: A function to switch font, on CLI.
 $global:defaultWTProfile = 3
@@ -149,6 +155,9 @@ function copyWtShader($fileName = "orig") {
 
     Copy-Item $TestShaderPath $FinalShaderPath
 }
+
+
+
 
 
 
