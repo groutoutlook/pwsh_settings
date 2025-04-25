@@ -21,35 +21,12 @@ function omniSearchObsidian
   Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-# INFO: `ripgrep`. But with file names and position as output only.
-# NOTE: this is because I need that to edit in helix. 
-function rgF(
-)
+function vr()
 {
-  $fileNameWithLineNumber = 
-  Invoke-Expression("rg $args -o -n") `
-  | % {$_ -replace ":(\d+):.*",':$1'}
-    
-  return $fileNameWithLineNumber
+  ig "$args"
 }
 
-# WARN: now new alternative is `ig` since it's in scoop.
-function vr(
-  
-)
-{
-  ig "$args" 
-  # Invoke-Expression("ripgrepFileName $args") `
-  # | Sort-object -Unique `
-  # | fzf `
-  # | ForEach-Object{
-  #   :v $_
-  # }
-}
-
-function rgj(
-
-)
+function rgj()
 {
   $rgArgs = $args -join " "
   $command = "rg $rgArgs -g '*Journal.md' (zoxide query obs) -M 400 -C1"
@@ -72,30 +49,18 @@ function rgj(
 
 # HACK: rg in vault's other files.
 function rgo()
-{
-  # HACK: lots of dirty trick.
-  # echo "$args"
-  rg ($args -join " ") -g !'*Journal.md' (zoxide query obs) -M 400 -C1
-  # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
+{ 
+  $rgArgs = $args -join " "
+  $command = "rg $rgArgs -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
+  Invoke-Expression $command
 }
 
 
-function vrj(
-
-)
+function vrj()
 {
-  # HACK: query the directory in here.
- 
   $rgArgs = $args -join " "
   $command = "ig $rgArgs -g '*Journal.md' (zoxide query obs)"
   Invoke-Expression $command
-  # ig "$($args -join " ")" -g '*Journal.md' (zoxide query obs)
-  # Invoke-Expression("ripgrepFileName $args -g '*Journal.md' (zoxide query obs)") `
-  # | Sort-object -Unique `
-  # | fzf `
-  # | ForEach-Object{
-  #   :v $_
-  # }
 }
 
 # INFO: yazi quick call.
@@ -158,14 +123,12 @@ function Get-PathFromFiles()
 
 
 # HACK: `lsd` and `ls` to `exa`
-# There could be more function at this point though.
 function lsd
 {
   exa --hyperlink --icons=always $args 
 }
 
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
-Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 
 function zsh
 {

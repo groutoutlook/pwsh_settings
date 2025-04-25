@@ -1,7 +1,6 @@
 # INFO: it's better to keep stdout/console output.
 function clearScrn
 {
-  [Microsoft.PowerShell.PSConsoleReadLine]::RevertLine()
   [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
 }
 Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
@@ -44,7 +43,6 @@ function Show-Window
   $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
 Set-Alias -Name shw -Value Show-Window
-
 # Load the necessary assembly
 Add-Type -AssemblyName System.Windows.Forms
 
@@ -78,29 +76,10 @@ function Send-Key {
         Write-Host "Window not found!"
         return
     }
-
-    # Set the window to the foreground
+    # Set the window to the foreground, it's somehow the must.
     [User32]::SetForegroundWindow($hWnd)
-
-    # Send the keys
     [System.Windows.Forms.SendKeys]::SendWait($keys)
 }
-
-# # INFO: Copy previous command in history.
-# # Either index? or some initial. Return best match I supposed.
-# function cp!(
-#   [Parameter(Mandatory=$false)]
-#   [System.Int32]
-#   [Alias("i")]
-#   $index = 1
-# )
-# {
-#   $previousCommand = Get-History -Count $index
-#   Write-Host $previousCommand -ForegroundColor Yellow
-#   Set-Clipboard $previousCommand
-# }
-
-
 
 # INFO: quick create hashmap.
 function buildIndex
@@ -131,10 +110,6 @@ function buildIndex
   $index
 }
 
-# HACK: alias `Measure-Command`
-Set-Alias -Name mcm -Value Measure-Command
-Set-Alias -Name time -Value Measure-Command
-
 # INFO: URI maniulation
 function filterURI(
   [Parameter(
@@ -146,7 +121,6 @@ function filterURI(
   $strings = (Get-Clipboard)
 )
 {
-  
   $link = $strings
   if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}'))
   {
@@ -172,26 +146,17 @@ function filterURI(
     return $link  
   } else
   {
-    # Write-Host "What?" -ForegroundColor Red 
     return $null
   }
-  
-
 }
-
-
-
 function Restart-Job {
     param (
         [int]$JobId
     )
-
     $job = Get-Job -Id $JobId
-
     if ($job) {
         # Assuming the job was created with a script block
         $scriptBlock = [scriptblock]::Create($job.Command)
-
         # Start a new job with the same script block
         Start-Job -ScriptBlock $scriptBlock
         Write-Host "Job $JobId restarted."
@@ -202,4 +167,9 @@ function Restart-Job {
 }
 
 Set-Alias -Name rsjb -Value Restart-Job
+Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
+# HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
+Set-Alias -Name mcm -Value Measure-Command
+Set-Alias -Name time -Value Measure-Command
+
 
