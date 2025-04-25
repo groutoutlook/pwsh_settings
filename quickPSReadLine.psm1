@@ -624,8 +624,11 @@ $ParenthesesParameter = @{
     $selectionStart = $null
     $selectionLength = $null
     [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
     if ($selectionStart -ne -1) {
-      # Wrap selected text in parentheses
       $selectedText = $line.SubString($selectionStart, $selectionLength)
       [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, "($selectedText)")
       [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 2)
