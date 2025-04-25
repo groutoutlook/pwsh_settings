@@ -1,46 +1,42 @@
 # INFO: it's better to keep stdout/console output.
-function clearScrn
-{
-  [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
+function clearScrn {
+    [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
 }
 Set-Alias -Name cls -Value clearScrn -Scope Global -Option AllScope
 Set-Alias -Name clear -Value clearScrn -Scope Global -Option AllScope
 
 # INFO: All basic function about other external apps better reside here.
-function Restart-ForceApp($fileDir)
-{
-  $fileName = (Split-Path $fileDir -Leaf) -replace "\.exe$"
-  $currentSearchingProcess = (Get-Process -Name $fileName -ErrorAction Ignore)
-  if($currentSearchingProcess.Id -eq $null)
-  {
-    Write-Host "Haven't started the $fileName yet." -ForegroundColor Red
-    Start-Process $fileDir
-  } else
-  {
-    Stop-Process -Id $currentSearchingProcess.Id && `
-      Start-Sleep -Milliseconds 500 && `
-      Start-Process $fileDir
-  }
+function Restart-ForceApp($fileDir) {
+    $fileName = (Split-Path $fileDir -Leaf) -replace "\.exe$"
+    $currentSearchingProcess = (Get-Process -Name $fileName -ErrorAction Ignore)
+    if ($currentSearchingProcess.Id -eq $null) {
+        Write-Host "Haven't started the $fileName yet." -ForegroundColor Red
+        Start-Process $fileDir
+    }
+    else {
+        Stop-Process -Id $currentSearchingProcess.Id && `
+            Start-Sleep -Milliseconds 500 && `
+            Start-Process $fileDir
+    }
 }
 
 # INFO: Show Window based on title.
-function Show-Window
-{
-  param(
-    [Parameter(Mandatory)]
-    [string] $ProcessName
-  )
-  $ProcessName = $ProcessName -replace '\.exe$'
-  # WARN: This method return the latest windows which have title. many have titles but cant show.
-  # IF you want to switch between them, must use different method like powertoys run.
-  $procId = (Get-Process -ErrorAction Ignore "*$ProcessName*"
-  ).Where({ $_.MainWindowTitle }, 'First').Id
+function Show-Window {
+    param(
+        [Parameter(Mandatory)]
+        [string] $ProcessName
+    )
+    $ProcessName = $ProcessName -replace '\.exe$'
+    # WARN: This method return the latest windows which have title. many have titles but cant show.
+    # IF you want to switch between them, must use different method like powertoys run.
+    $procId = (Get-Process -ErrorAction Ignore "*$ProcessName*"
+    ).Where({ $_.MainWindowTitle }, 'First').Id
 
-  if (-not $procId)
-  { Throw "No $ProcessName process with a non-empty window title found." 
-    return 1
-  }
-  $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
+    if (-not $procId) {
+        Throw "No $ProcessName process with a non-empty window title found." 
+        return 1
+    }
+    $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
 Set-Alias -Name shw -Value Show-Window
 # Load the necessary assembly
@@ -82,72 +78,65 @@ function Send-Key {
 }
 
 # INFO: quick create hashmap.
-function buildIndex
-{
-  Param( [Object[]]$inputArray, [string]$keyName) 
+function buildIndex {
+    Param( [Object[]]$inputArray, [string]$keyName) 
 
-  $index = @{};
-  foreach($row in $inputArray)
-  {
-    $key = $row.($keyName);
-    if($null -eq $key -or $key.Equals([DBNull]::Value) -or $key.Length -eq 0)
-    {
-      $key = "<empty>"
+    $index = @{};
+    foreach ($row in $inputArray) {
+        $key = $row.($keyName);
+        if ($null -eq $key -or $key.Equals([DBNull]::Value) -or $key.Length -eq 0) {
+            $key = "<empty>"
+        }
+        $data = $index[$key];
+        if ($data -is [System.Collections.Generic.List[PSObject]]) {
+            $data.Add($row)
+        }
+        elseif ($data) {
+            $index[$key] = New-Object -TypeName System.Collections.Generic.List[PSObject]
+            $index[$key].Add($data, $row)
+        }
+        else {
+            $index[$key] = $row
+        }
     }
-    $data = $index[$key];
-    if ($data -is [System.Collections.Generic.List[PSObject]])
-    {
-      $data.Add($row)
-    } elseif ($data)
-    {
-      $index[$key] = New-Object -TypeName System.Collections.Generic.List[PSObject]
-      $index[$key].Add($data, $row)
-    } else
-    {
-      $index[$key] = $row
-    }
-  }
-  $index
+    $index
 }
 
 # INFO: URI maniulation
 function filterURI(
-  [Parameter(
-    # Mandatory = $true,
-    ValueFromPipeline = $true
-  )]
-  [System.String[]]
-  [Alias("s")]
-  $strings = (Get-Clipboard)
-)
-{
-  $link = $strings
-  if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}'))
-  {
-    # Write-Host "Markdown Link" -ForegroundColor Green 
-    $processedLink = ($link | Select-String "-.*").Matches.Value 
-    $markdownName = ($processedLink | Select-String '^.*\[(.*)\]').Matches.Value
-    # echo $markdownName
-    $processedLink = ($processedLink | Select-String 'http.*').Matches.Value -replace '\)$',""
-    if ($processedLink -notmatch '^http')
-    {
-      Write-Host 'Somehow Invalid' -ForegroundColor Red  
-      # echo $processedLink
-      return $null
+    [Parameter(
+        # Mandatory = $true,
+        ValueFromPipeline = $true
+    )]
+    [System.String[]]
+    [Alias("s")]
+    $strings = (Get-Clipboard)
+) {
+    $link = $strings
+    if (($link -match ' *^\[\p{L}') -or ($link -match '^.*-.*\[\p{L}')) {
+        # Write-Host "Markdown Link" -ForegroundColor Green 
+        $processedLink = ($link | Select-String "-.*").Matches.Value 
+        $markdownName = ($processedLink | Select-String '^.*\[(.*)\]').Matches.Value
+        # echo $markdownName
+        $processedLink = ($processedLink | Select-String 'http.*').Matches.Value -replace '\)$', ""
+        if ($processedLink -notmatch '^http') {
+            Write-Host 'Somehow Invalid' -ForegroundColor Red  
+            # echo $processedLink
+            return $null
+        }
+        if ($processedLink -match 'end=999') {
+            Write-Host "Dont really want to watch $processedLink"
+            return $null
+        }
+        return  $markdownName + "`n" + $processedLink
     }
-    if ($processedLink -match 'end=999'){
-      Write-Host "Dont really want to watch $processedLink"
-      return $null
+    elseif ($link -match '^http') {
+        Write-Host "Plain link" -ForegroundColor Yellow 
+        return $link  
     }
-    return  $markdownName +"`n" + $processedLink
-  } elseif ($link -match '^http')
-  {
-    Write-Host "Plain link" -ForegroundColor Yellow 
-    return $link  
-  } else
-  {
-    return $null
-  }
+    else {
+        return $null
+    }
 }
 function Restart-Job {
     param (
@@ -160,7 +149,8 @@ function Restart-Job {
         # Start a new job with the same script block
         Start-Job -ScriptBlock $scriptBlock
         Write-Host "Job $JobId restarted."
-    } else {
+    }
+    else {
         Write-Host "Job with ID $JobId not found. Get-Job to check now"
         Get-Job
     }
@@ -171,5 +161,13 @@ Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
+
+
+
+
+
+
+
+
 
 

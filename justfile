@@ -32,10 +32,9 @@ run args=default_args:
 
 build: (placeholder "from build") 
 
-
+alias fmt := format
 format args="nothing":
-    @echo {{ if args == "nothing" {"default_arg"} else { args } }}
-    # could be something as `biome format --write`
+    Import-Module ./Formatter.psm1 -Force && gci *.psm1 | % { Format-PowerShellFile $_ }
 
 var_test := "test format"
 alias t := test
