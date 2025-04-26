@@ -760,6 +760,8 @@ $OptionsSwitchParameters = @{
         setAllHandler
         # HACK: set the ctrl+r and ctrl+t
         MoreTerminalModule
+        # INFO: this ensure some color is re-rendered so I can specify the mode.
+        [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
     }
 }
 
@@ -775,6 +777,7 @@ $OptionsSwitch_Command_Parameters = @{
         OptionsSwitch 
         setAllHandler
         MoreTerminalModule
+        [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
     }
 }
 
@@ -840,48 +843,41 @@ $ctrlBracket_Parameters = @{
         [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
     }
 }
-
 # INFO: Common Windows/Vi Mode Key handlers
-$HandlerParameters = @{
-    "ggHandler"          = $ggSearchParameters
-    "obsHandler"         = $omniSearchParameters
-    "jrnlHandler"        = $JrnlParameters 
-    "histJSearchHandler" = $HistorySearchGlobalParameters
-    "sudoHandler"        = $sudoRunParameters
-    "killword"           = $smartKillWordParameters
-    "extrakillword"      = $ExtraKillWordParameters
-    "extrakillword1"     = $ExtraKillWord1Parameters
-    "parentSel"          = $ParenthesesParameter
-    "parentAll"          = $ParenthesesAllParameter
-    "wrapPipeSel"        = $wrappipeparameter
-    "rtnHandler"         = $rgToNvimParameters
-    "rggHandler"         = $rgToRggParameters
-    "iterateBackward"    = $IterateCommandBackwardParameters
-    "iterateForward"     = $IterateCommandParameters
-    "OptionsSwitch"      = $OptionsSwitchParameters
-    "openEditor"         = $openEditorParameters
-    "GlobalEditorSwitch" = $GlobalEditorSwitch
-    "MathExpression"     = $MathExpressionParameter
-}
-
+$HandlerParameters = @(
+    $ggSearchParameters
+    , $omniSearchParameters
+    , $JrnlParameters 
+    , $HistorySearchGlobalParameters
+    , $sudoRunParameters
+    , $smartKillWordParameters
+    , $ExtraKillWordParameters
+    , $ExtraKillWord1Parameters
+    , $ParenthesesParameter
+    , $ParenthesesAllParameter
+    , $wrappipeparameter
+    , $rgToNvimParameters
+    , $rgToRggParameters
+    , $IterateCommandBackwardParameters
+    , $IterateCommandParameters
+    , $OptionsSwitchParameters
+    , $openEditorParameters
+    , $GlobalEditorSwitch
+    , $MathExpressionParameter
+)
 # INFO: Unique for Vi mode.
-$ViHandlerParameters = @{
-    "OptionsSwitch_c" = $OptionsSwitch_Command_Parameters
-    "two-kj"          = $twoKeyEscape_k_Parameters 
-    "two-jk"          = $twoKeyEscape_j_Parameters 
-    "esc-ctrlbracket" = $ctrlBracket_Parameters
-}
-
-# INFO: IF you want to go real freaky
-# Consider Unique for Emacs mode.
-
-#INFO: Default of Windows PSReadLineOptions
+$ViHandlerParameters = @(
+    $OptionsSwitch_Command_Parameters
+    , $twoKeyEscape_k_Parameters 
+    , $twoKeyEscape_j_Parameters 
+    , $ctrlBracket_Parameters
+)
+# INFO: Default of Windows PSReadLineOptions
 $PSReadLineOptions_Windows = @{
     EditMode                      = "Windows"
     HistoryNoDuplicates           = $true
     HistorySearchCursorMovesToEnd = $true
     PredictionViewStyle           = "ListView"
-
     Colors                        = @{
         "Command" = "#f9f1a5"
     }
@@ -896,46 +892,58 @@ $PSReadLineOptions_Vi = @{
         "Command" = "#8181f7"
     }
 }
+# Define parameters for disabling v, j, k in Vi normal mode
+$v_Parameters = @{
+    Chord  = 'v'
+    ViMode = 'Command'
+}
+
+$j_Parameters = @{
+    Chord  = 'j'
+    ViMode = 'Command'
+}
+
+$k_Parameters = @{
+    Chord  = 'k'
+    ViMode = 'Command'
+}
+
+# INFO: Unique for Vi mode.
+$ViHandlerRemoveParameters = @(
+    $v_Parameters
+    , $j_Parameters
+    , $k_Parameters
+)
 
 function setAllHandler() {
-    # Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
     # INFO: custom default keyhandler.
-    ForEach ($handler in $HandlerParameters.Keys) {
-        $parameters = $HandlerParameters[$handler]
-        Set-PSReadLineKeyHandler @parameters
+    ForEach ($handler in $HandlerParameters) {
+        Set-PSReadLineKeyHandler @handler
     }
-
     # INFO: Add Vi Handler.
     $currentMode = (Get-PSReadLineOption).EditMode 
     if ($currentMode -eq "Vi") {
-        ForEach ($handler in $ViHandlerParameters.Keys) {
-            $parameters = $ViHandlerParameters[$handler]
-            Set-PSReadLineKeyHandler @parameters
+        ForEach ($handler in $ViHandlerParameters) {
+            Set-PSReadLineKeyHandler @handler
         }
     }
-
 }
 
 function OptionsSwitch() {
     $currentMode = (Get-PSReadLineOption).EditMode 
     if ($currentMode -eq "Windows") {
-        Set-PSReadLineOption @PSReadLineOptions_Vi
+        # Apply the key handler removals
+        Set-PSReadLineOption @PSReadLineOptions_Vi        
         [Microsoft.PowerShell.PSConsoleReadLine]::ViCommandMode()
+        foreach ($param in $ViHandlerRemoveParameters) {
+            Remove-PSReadLineKeyHandler @param
+        }
     }
     else {
         Set-PSReadLineOption @PSReadLineOptions_Windows
     }
-
 }
 
 # HACK: preset of the initial settings.
 Set-PSReadLineOption @PSReadLineOptions_Windows
 setAllHandler
-
-
-
-
-
-
-
-
