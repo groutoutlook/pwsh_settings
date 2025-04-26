@@ -128,12 +128,12 @@ function ptoy {
     }
 }
 
-
-
-
-
-
-
-
-
-
+function rds {
+    $joinedTerm = $args -join " "
+    $command = "rustup doc --std"
+    Invoke-Expression $command
+    if($null -ne $args){    
+        Sleep -Milliseconds 350 
+        Send-Key "msedge" "/$joinedTerm"
+    }
+}
