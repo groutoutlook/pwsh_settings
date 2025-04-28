@@ -20,12 +20,14 @@ function omniSearchObsidian {
 }
 
 function vr() {
-    ig "$args"
+    $rgArgs = $args -join " "
+    $command = "ig `"$rgArgs`""
+    Invoke-Expression $command
 }
 
 function rgj() {
     $rgArgs = $args -join " "
-    $command = "rg $rgArgs -g '*Journal.md' (zoxide query obs) -M 400 -C1"
+    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1"
     Invoke-Expression $command
     # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
     if ($? -eq $false) {
@@ -44,14 +46,14 @@ function rgj() {
 # HACK: rg in vault's other files.
 function rgo() { 
     $rgArgs = $args -join " "
-    $command = "rg $rgArgs -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
+    $command = "rg `"$rgArgs`" -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
     Invoke-Expression $command
 }
 
 
 function vrj() {
     $rgArgs = $args -join " "
-    $command = "ig $rgArgs -g '*Journal.md' (zoxide query obs)"
+    $command = "ig `"$rgArgs`" -g '*Journal.md' (zoxide query obs)"
     Invoke-Expression $command
 }
 
@@ -76,15 +78,6 @@ function mousemt {
 }
 
 Set-Alias -Name msmt -Value mousemt
-
-# INFO: neko, for the fun of it.
-function neko {
-  (neko-windows-amd64 -scale "1.2" -speed "8" -mousepassthrough "true" -quiet "true" &)
-}
-
-function mcat {
-    neko && mousemt
-}
 
 function Get-PathFromFiles() {
     [CmdletBinding()]
@@ -120,21 +113,16 @@ function zsh {
     # wsl
 }
 
-# INFO: since some of the cli utils take quote as exact match, have to invoke
-# like this.
+# INFO: since some of the cli utils take quote as exact match, have to invoke  like this.
 function zq {
     Invoke-Expression "zoxide query $($args -join " ")" 
 }
-
-Set-Alias zo zq
-
 function zqi {
     Invoke-Expression  "zoxide query -i $($args -join " ")"
 }
-
+Set-Alias zo zq
 Set-Alias zoi zqi
-
-Set-Alias -Name r -Value just -Scope Global -Option AllScope
+Set-Alias rgr scooter
 
 # INFO: vscode quick open, with line/column number
 function ccb {
@@ -173,8 +161,7 @@ function rr {
 function re {
     just -e
 }
-Set-Alias rgr scooter
-
+Set-Alias -Name r -Value just -Scope Global -Option AllScope
 
 # INFO: more alias.
 Set-Alias -Name top -Value btm
@@ -182,11 +169,4 @@ Set-Alias -Name du -Value dust
 
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
-
-
-
-
-
-
-
 
