@@ -157,7 +157,7 @@ function Restart-Job {
 }
 
 function Remove-FullForce($path ){
-    [Alias("rmrf")]
+    # [Alias("rmrf")]
     $isPath = Test-Path $path
     if ($isPath){
         Remove-Item $path -Recurse -Force
@@ -172,6 +172,6 @@ Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
-
+Set-Alias -Name rmrf -Value Remove-FullForce
 # Export-ModuleMember -Function * -Alias *
 
