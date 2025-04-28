@@ -319,6 +319,7 @@ Set-Alias -Name obs -Value :obsidian
 function :jrnl {
     $argument = $args
     $specialArgumentList = @{
+        "^\d+" = 1
         "^last" = 2
         "^lt"   = 2
         "^tg"   = 3
@@ -337,6 +338,11 @@ function :jrnl {
         }
   
         switch ($flagRaise) {
+            1{
+                $match = (Select-String -InputObject $argLast -Pattern "^\d*")
+                $matchValue = $match.Matches.Value
+                $argument[-1] = " -$matchValue"
+            }
             2 {
                 # regex way to match
                 $day = (Select-String -InputObject $argLast -Pattern "\d*$").Matches.Value ?? 2
