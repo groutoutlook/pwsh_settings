@@ -319,7 +319,7 @@ Set-Alias -Name obs -Value :obsidian
 function :jrnl {
     $argument = $args
     $specialArgumentList = @{
-        "^\d+" = 1
+        "^\d+$" = 1
         "^last" = 2
         "^lt"   = 2
         "^tg"   = 3

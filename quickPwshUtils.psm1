@@ -156,18 +156,22 @@ function Restart-Job {
     }
 }
 
+function Remove-FullForce($path ){
+    [Alias("rmrf")]
+    $isPath = Test-Path $path
+    if ($isPath){
+        Remove-Item $path -Recurse -Force
+    }
+    else{
+        Write-Error "$path not a local path" 
+    }
+}
+
 Set-Alias -Name rsjb -Value Restart-Job
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
 
-
-
-
-
-
-
-
-
+# Export-ModuleMember -Function * -Alias *
 

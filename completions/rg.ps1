@@ -192,7 +192,7 @@ Register-ArgumentCompleter -Native -CommandName 'rg' -ScriptBlock {
       [CompletionResult]::new('-u', 'u', [CompletionResultType]::ParameterName, 'Reduce the level of "smart" filtering.')
       [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Print ripgrep''s version.')
       [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Print ripgrep''s version.')
-      [CompletionResult]::new('--vimgrep', 'vimgrep', [CompletionResultType]::ParameterName, 'Print results im a vim compatible format.')
+      [CompletionResult]::new('--vimgrep', 'vimgrep', [CompletionResultType]::ParameterName, 'Print results in a vim compatible format.')
       [CompletionResult]::new('--with-filename', 'with-filename', [CompletionResultType]::ParameterName, 'Print the file path with each matching line.')
       [CompletionResult]::new('-H', 'H', [CompletionResultType]::ParameterName, 'Print the file path with each matching line.')
       [CompletionResult]::new('--no-filename', 'no-filename', [CompletionResultType]::ParameterName, 'Never print the path with each matching line.')

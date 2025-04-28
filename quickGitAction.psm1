@@ -1,14 +1,11 @@
 # Git quick action Powershell Modules.
-Import-Module posh-git
+# Import-Module posh-git
 # Add-PoshGitToProfile -AllHosts
 
-
-function quickInitGit {
-    Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
-    Copy-Cliff `
-        && Copy-Just `
-        && git init && git add * && git commit 
-
+function quickInitGit($remote = "gh") {
+    # Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
+    gh repo create --source=. --remote=origin --push
+    Copy-Just  && git init && git add * && git cif 
 }
 
 function openWebRemote {
