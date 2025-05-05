@@ -67,40 +67,8 @@ function Search-DuckDuckGo {
 
 Set-Alias -Name ddg -Value Search-DuckDuckGo
 Set-Alias -Name dg -Value Search-DuckDuckGo
-
-# function Search-Google
-# {
-#   if ($args[0] -match "^(?:cb|gcb)")
-#   {
-#     $args[0] = (Get-Clipboard)
-#   } elseif ($args[0] -match "^ok$")
-#   {
-#     $args[0] = "PlaceholderQuery"
-#   }
-#
-#   $args[-1] = hashmapMatch($args[-1])
-#   $global:oldQuery = $args
-# 		
-#   $query = 'https://www.google.com/search?q='
-#   $args | ForEach-Object { $query = $query + "$_+" }
-#   
-#   $url = $query.Substring(0, $query.Length - 1)
-#   Invoke-Expression "$global:defaultBrowser $url"
-# }
-
 Set-Alias -Name gos -Value Search-DuckDuckGo
 Set-Alias -Name gg -Value Search-DuckDuckGo
-
-
-$global:ggmode = $true
-
-if ($global:ggmode -eq $true) {
-
-}
-
-
-
-
 
 function compSearch {
     $query = 'https://componentsearchengine.com/search?term='
@@ -110,8 +78,6 @@ function compSearch {
 
 }
 Set-Alias -Name comps -Value compSearch
-
-
 
 Add-Type -AssemblyName System.Windows.Forms
 function pwshOcr {
@@ -172,11 +138,6 @@ function Get-CodeStats($webui = 0) {
 } 
 
 Set-Alias -Name cst -Value Get-CodeStats 
-
-function awatch {
-    Start-Process http://localhost:5600/#/settings
-}
-
 # INFO: Streaming services quick-access
 # Twitch and Youtube.
 $dictStreamPage = @{
@@ -244,11 +205,4 @@ function Test-Stream(
     }
 }
 Set-Alias ckstream Test-Stream
-
-
-
-
-
-
-
 
