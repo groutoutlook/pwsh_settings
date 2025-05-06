@@ -20,14 +20,12 @@ function :t($p7 = 0) {
         Stop-Process -Id $old_pid 
     }
 }
-
 function :a {
     :t 7
 }
 function :m {
     Restart-ModuleList
 }
-
 function :backup($Verbose = $null) {
     Import-Module -Name $env:dotfilesRepo\BackupModule.psm1
     Backup-Environment $Verbose && Backup-Extensive $Verbose
@@ -136,8 +134,8 @@ function :vs {
 
 # TODO: one day I will try to make them parse the yaml text instead of this clunky hash table.
 # HACK: As today I could `Get-UniqueEntryJrnl table | Set-Clipboard`
-# NOTE: vaultPath is absolute. 
-$vaultPath = "D://ProgramDataD//Notes//Obsidian//Vault_2401" 
+$global:vaultName = "MainVault"
+$global:vaultPath = "D://ProgramDataD//Notes//Obsidian//$vaultName"
 $JrnlTable = @{
     "graph"    = "$vaultPath//note_algo_lang//journal//GraphicUIJournal.md"
     "gui"      = "$vaultPath//note_algo_lang//journal//GraphicUIJournal.md"
@@ -308,19 +306,18 @@ $workspaceNameTable = @{
     "on" = "Obs-Nvim"
 }
 function :ow {
-    $vaultName = "Vault_2401"
     $defaultWorkspace = "Obs-Nvim"
 
     # Prepare arguments  
     $argument = $args -join " "
     $workspaceName = $workspaceNameTable[$argument] ?? "$defaultWorkspace"
   
-    $originalURI = "obsidian://advanced-uri?vault=$vaultName&workspace=$workspaceName" 	
+    $originalURI = "obsidian://advanced-uri?vault=$global:vaultName&workspace=$workspaceName" 	
   (Start-Process "$originalURI" &) | Out-Null
 }
 
 Set-Alias -Name :o -Value :obsidian
-Set-Alias -Name obs -Value :obsidian
+Set-Alias -Name :oo -Value obsidian-cli
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :jrnl {
     $argument = $args
@@ -473,9 +470,7 @@ function :e {
         Invoke-Expression "espansod $argument"
     }
 }
-
-# INFO: function to switch between applications.
-# Right now it's based on the Show-Window function.
+# INFO: function to switch between applications. Right now it's based on the Show-Window function.
 function :s {
     Show-Window "$args"
 }

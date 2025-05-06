@@ -1,12 +1,10 @@
 # powershell-5.1
 Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-
 function Dirs
 {
 	Get-Location -Stack
 }
 
-$global:localPathNvim = "$env:p7settingDir\Microsoft.PowerShell_profile.ps1"
 function Format-LimitLength($String,$limitString = 50)
 {
 	if($String.Length -gt $limitString)
@@ -17,11 +15,10 @@ function Format-LimitLength($String,$limitString = 50)
 }
 function global:Backup-Environment($Verbose = $null)
 {
-	Copy-Item $global:localPathNvim $($PROFILE.CurrentUserCurrentHost) -Force
+	Copy-Item "$env:p7settingDir\Microsoft.PowerShell_profile.ps1" $($PROFILE.CurrentUserCurrentHost) -Force
 	Write-Host "[$(Get-Date)] Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
 Set-Alias -Name p7Backup -Value Backup-Environment
-
 
 function AppendPrompt
 {
@@ -46,8 +43,6 @@ function P7()
 	AppendPrompt
 }
 
-
-
 $global:initialModuleList=@(
 	"quickWebAction",
 	"quickVimAction",
@@ -66,39 +61,22 @@ $global:extraModuleList = @(
 $global:personalModuleList = $global:initialModuleList + $global:extraModuleList
 function MoreTerminalModule
 {
-	#External pwsh module
 	# Import-Module -Name F7History -Scope Global 
 	Import-Module -Name PSFzf -Scope Global 
 	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
-	
-	# $Env:sourceTreePath = "$env:LOCALAPPDATA\SourceTree\"
-	$Env:SMergePath = "C:\Program Files\Sublime Merge\"
-	$diradd = @(
-		$Env:SMergePath
-		# $Env:sourceTreePath,
-	)
-	foreach($d in $diradd)
-	{
-		$Env:Path += ";"+$d;
-	}
 	foreach($module in $global:extraModuleList)
 	{
-		Import-Module -Name ("$env:p7settingDir$module") -Scope Global -Force
-		# echo "$module here"
+		Import-Module -Name (Join-Path $env:p7settingDir $module) -Scope Global
 	}
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
-
 function initShellApp()
 {
-	# echo $initialModuleList
-	foreach($module in $global:initialModuleList)
- {
-		# echo "$module here."
-		Import-Module -Name ("$env:p7settingDir$module") -Scope Global 
+	foreach($module in $global:initialModuleList) {
+		Import-Module -Name (Join-Path $env:p7settingDir $module) -Scope Global 
 	}
 }
 function Restart-ModuleList()
@@ -109,8 +87,8 @@ function Restart-ModuleList()
 	)
 	foreach($ModuleName in $ModuleList)
 	{
-		Remove-Module -Name "$ModulePath$ModuleName" -ErrorAction SilentlyContinue
-		Import-Module -Name "$ModulePath$ModuleName" -Force 
+		Remove-Module -Name (Join-Path $ModulePath $ModuleName) -ErrorAction SilentlyContinue
+		Import-Module -Name (Join-Path $ModulePath $ModuleName) -Force 
 		Write-Output "$ModuleName reimported"
 	}
 }
@@ -280,18 +258,15 @@ function global:initProfileEnv
 	$Env:ProgramFilesD = "D:\Program Files"
 	$Env:ProgramDataD = "D:\ProgramDataD"
 	$Env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
-	$Env:ChromeDir="$env:ProgramFiles\Google\Chrome\Application"
-	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings\"
 
+	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings"
+	
 	$Env:pipxLocalDir = "~\.local\bin"
-
-	$Env:obsVault = "$Env:ProgramDataD\Notes\Obsidian\Vault_2401\"
 	$Env:usrbinD="D:\usr\bin"
 	$Env:edgeDir = "${env:PROGRAMFILES(X86)}\Microsoft\Edge\Application\"
 	$diradd = @(
 		$Env:usrbinD
 		,$Env:PhotoshopDir
-		,$Env:ChromeDir
 		,$Env:pipxLocalDir
 		,$Env:edgeDir
 	)
@@ -344,26 +319,11 @@ function cd..($rep = 1)
 	}
 	Set-Location $furtherParent
 }
-
-function ...($rep = 1)
-{
-	cd.. $rep
-}
-
-
-function ....($rep = 1)
-{
-	cd.. ($rep+1)
-}
-
-
 # INFO: Rescue explorer function.
 function Restart-Explorer
 {
 	Stop-Process -Name explorer 
 }
-Set-Alias -Name resexp -Value Restart-Explorer
 
 initProfileEnv
 initShellApp
-# Import-Module PSCompletions
