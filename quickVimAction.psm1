@@ -10,7 +10,8 @@ function :t($p7 = 0) {
 
     }
     else {
-        pwsh -Noexit -Command "p7 && p7mod"
+        # INFO: since I always cd too many times to this place.
+        pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
         Stop-Process -Id $old_pid 
     }
 }
@@ -473,11 +474,3 @@ function :e {
 function :s {
     Show-Window "$args"
 }
-
-
-
-
-
-
-
-
