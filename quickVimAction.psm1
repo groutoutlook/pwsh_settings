@@ -2,7 +2,7 @@ function :q {
     Stop-Process -Id $pid
 }
 function :t($p7 = 0) {
-    # $old_dirs = dirs
+    $old_dirs = Get-Location
     $old_pid = $pid
     if ($p7 -eq 0) {
         pwsh
@@ -11,7 +11,12 @@ function :t($p7 = 0) {
     }
     else {
         # INFO: since I always cd too many times to this place.
-        pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
+        if ($old_dirs.Path -ne $HOME){
+            pwsh -Noexit -wd "$old_dirs" -Command "p7 && p7mod" 
+        }
+        else{
+            pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
+        }
         Stop-Process -Id $old_pid 
     }
 }
