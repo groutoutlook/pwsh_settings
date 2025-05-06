@@ -5,7 +5,7 @@
 function quickInitGit($repo_name = "$(Split-Path $pwd -Leaf)",$remote_branch_name = "origin",$remote = "gh",$default_user = "groutoutlook") {
     # Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
     Copy-Just && git init && git add * && git commit -m "feat: genesis"
-    gh repo create $repo_name -d "$repo_name description" -watch-source=. --remote "$remote_branch_name" --push --private
+    gh repo create $repo_name -d "$repo_name description" --source=. --remote "$remote_branch_name" --push --private
 }
 
 function quickDeInitGit($repo_name = "$(Split-Path $pwd -Leaf)",$remote = "gh",$default_user = "groutoutlook") {
