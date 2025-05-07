@@ -11,9 +11,10 @@ function EmbedEnv() {
 function keilLoad($uv4project = "$pwd", $project_dir = "$uv4project\*.uvprojx") {
     cd $uv4project
     if(fd -HI "uvprojx"){
+        $project_metabuild_path = rvpa $project_dir 
         while ($true) {
-            uv4 $project_dir -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
-                && tail .\flash_log.txt && sleep 1
+            uv4 $project_metabuild_path -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
+                && Get-Content -Tail 10 .\flash_log.txt && sleep 1
         }
     }
 }
