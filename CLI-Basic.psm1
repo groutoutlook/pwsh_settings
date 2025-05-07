@@ -20,14 +20,16 @@ function omniSearchObsidian {
 }
 
 function vr() {
-    $rgArgs = $args -join " "
-    $command = "ig `"$rgArgs`""
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "ig $dashArgs `"$rgArgs`""
     Invoke-Expression $command
 }
 
 function rgj() {
-    $rgArgs = $args -join " "
-    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1"
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "rg $dashArgs `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1"
     Invoke-Expression $command
     # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
     if ($? -eq $false) {
@@ -45,15 +47,17 @@ function rgj() {
 
 # HACK: rg in vault's other files.
 function rgo() { 
-    $rgArgs = $args -join " "
-    $command = "rg `"$rgArgs`" -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "rg $dashArgs `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
     Invoke-Expression $command
 }
 
 
 function vrj() {
-    $rgArgs = $args -join " "
-    $command = "ig `"$rgArgs`" -g '*Journal.md' (zoxide query obs)"
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "ig $dashArgs `"$rgArgs`"  -g '*Journal.md' (zoxide query obs)"
     Invoke-Expression $command
 }
 
