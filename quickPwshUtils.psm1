@@ -192,3 +192,8 @@ Set-Alias -Name time -Value Measure-Command
 Set-Alias -Name rmrf -Value Remove-FullForce 
 # Export-ModuleMember -Function * -Alias *
 
+# INFO: for OSC 8
+function Format-Hyperlink($text, $url) {
+    $esc = [char]27
+    return "$esc]8;;$url$esc\$text$esc]8;;$esc\"
+}

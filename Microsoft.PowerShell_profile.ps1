@@ -175,18 +175,23 @@ function Set-LocationWhere(
 			"Function"
 			{
 				$definition = ($commandInfo).Source
-				Write-Host "function from $($commandInfo.Source) module." -ForegroundColor Yellow -BackgroundColor DarkBlue
 				$ModuleInfo = Get-Module $commandInfo.Source
-				Set-Location (Split-Path $ModuleInfo.Path -Parent)
+				$ModulePath = $ModuleInfo.Path
+				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
+				Write-Host "function from $linkInfo module." -ForegroundColor Yellow -BackgroundColor DarkBlue
+				Set-Location (Split-Path $ModulePath -Parent)	
 			}
 
 			"Alias"
 			{
 				$definition = ($commandInfo).Definition
-				Write-Host "alias of $definition , source: $($commandInfo.Source)" -ForegroundColor Yellow -BackgroundColor Black
+				$ModuleInfo = Get-Module $commandInfo.Source
+				$ModulePath = $ModuleInfo.Path
+				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
+
+				Write-Host "alias of $definition , source: $linkInfo" -ForegroundColor Yellow -BackgroundColor Black
 				$definitionInfo = Get-Command $definition
 				Set-LocationWhere $definitionInfo.Name
-				Write-Host "End of recursion." -ForegroundColor Red
 			}
 
 			default 

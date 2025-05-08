@@ -38,9 +38,11 @@ function Format-PowerShellFile {
         if ($SettingsPath) { $params['SettingsPath'] = $SettingsPath }
         $formatted = Invoke-Formatter @params
 
-        # Save formatted content
-        $formatted | Set-Content -Path $FilePath
-        Write-Output "Formatted: $FilePath"
+        # Remove any trailing newlines (CR, LF) or white space
+        $trimmedContent = $formatted.TrimEnd("`r", "`n", " ")
+
+        # Save the trimmed, formatted content
+        $trimmedContent | Set-Content -Path $FilePath
     }
     catch {
         Write-Error "Failed to format $FilePath : $_"

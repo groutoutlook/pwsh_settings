@@ -28,7 +28,7 @@ function vr() {
 function rgj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg $dashArgs `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1"
+    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1 $dashArgs"
     Invoke-Expression $command
     # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
     if ($? -eq $false) {
@@ -48,14 +48,14 @@ function rgj() {
 function rgo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg $dashArgs `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C1"
+    $command = "rg `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C1 $dashArgs"
     Invoke-Expression $command
 }
 
 function vrj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig $dashArgs `"$rgArgs`"  -g '*Journal.md' (zoxide query obs)"
+    $command = "ig `"$rgArgs`"  -g '*Journal.md' (zoxide query obs) $dashArgs"
     Invoke-Expression $command
 }
 

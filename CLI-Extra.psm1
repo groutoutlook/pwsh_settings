@@ -183,7 +183,7 @@ function ss {
     }
     else{
         # HACK: fallback to alt+esc.
-        [System.Windows.Forms.SendKeys]::SendWait("%{ESC}")
+        [System.Windows.Forms.SendKeys]::SendWait("%{TAB}")
     }
 }
 
