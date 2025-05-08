@@ -137,6 +137,7 @@ function rds {
         Send-Key "msedge" "/$joinedTerm"
     }
 }
+
 Add-Type @"
 using System;
 using System.Runtime.InteropServices;
@@ -162,25 +163,28 @@ public class WindowControl {
 "@
 
 function ss {
-    # HACK: it worked because I had imported them prior to this.
-    # if want to use them alone, best reimport windows.forms again.
-    # Get the handle of the current console window
-
     # Hide the current terminal window
     $currentProcess = [System.Diagnostics.Process]::GetCurrentProcess()
     $windowHandle = $currentProcess.MainWindowHandle
     if ($windowHandle -ne [IntPtr]::Zero -and [WindowControl]::IsWindow($windowHandle)) {
+        echo "Correct for now."
         [WindowControl]::ShowWindow($windowHandle, [WindowControl]::SW_HIDE)
     }
-
-    screencapture --language:en
-    # Switch to the next window
-    $currentWindow = [WindowControl]::GetForegroundWindow()
-    $nextWindow = [WindowControl]::GetWindow($currentWindow, [WindowControl]::GW_HWNDNEXT)
-    if ($nextWindow -ne [IntPtr]::Zero) {
-        [WindowControl]::SetForegroundWindow($nextWindow)
+    else{
+        # HACK: fallback to alt+tab
+        [System.Windows.Forms.SendKeys]::SendWait("%{TAB}")
     }
 
+    Start-Process -FilePath screencapture -ArgumentList "--lang:en" -Wait
+    # Restore the window
+    if ($windowHandle -ne [IntPtr]::Zero -and [WindowControl]::IsWindow($windowHandle)) {
+        echo "wait...?"
+        [WindowControl]::ShowWindow($windowHandle)
+    }
+    else{
+        # HACK: fallback to alt+esc.
+        [System.Windows.Forms.SendKeys]::SendWait("%{ESC}")
+    }
 }
 
 function androidDevEnv {

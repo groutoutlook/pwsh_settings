@@ -10,7 +10,6 @@ function bc {
     }
 }
 
-
 function omniSearchObsidian {
     $query = ""
     $args | % {
@@ -53,7 +52,6 @@ function rgo() {
     Invoke-Expression $command
 }
 
-
 function vrj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
@@ -76,12 +74,11 @@ Set-Alias -Name ff -Value yy
 Set-Alias -Name zz -Value yy
 
 # INFO: mousemaster or something related to mouse controlling
-function mousemt {
+function Invoke-KeyMouse {
     Stop-Process -Name mousemaster*
   ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
 }
-
-Set-Alias -Name msmt -Value mousemt
+Set-Alias -Name msmt -Value Invoke-KeyMouse
 
 function Get-PathFromFiles() {
     [CmdletBinding()]

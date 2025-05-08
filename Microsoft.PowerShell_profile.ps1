@@ -55,7 +55,7 @@ $global:extraModuleList = @(
 	"CLI-Extra",
 	"quickMathAction",
 	"quickGitAction",
-	# "quickTerminalAction",
+	"quickTerminalAction",
 	"quickFilePathAction"
 )
 $global:personalModuleList = $global:initialModuleList + $global:extraModuleList
