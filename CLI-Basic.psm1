@@ -170,6 +170,7 @@ Set-Alias -Name r -Value just -Scope Global -Option AllScope
 # INFO: more alias.
 Set-Alias -Name top -Value btm
 Set-Alias -Name du -Value dust
+Set-Alias -Name less -Value tspin
 
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)

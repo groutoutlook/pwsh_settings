@@ -130,21 +130,20 @@ function Set-LocationWhere(
 	$files = (Get-Clipboard)
 )
 {
+	$whichBackend = "scoop w" # INFO: default is `which` that windows provide. but this return a list.
 	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
 	# echo ($commandInfo).psobject
 	if ($null -ne $commandInfo)
 	{
 		switch -Exact ($commandInfo.CommandType)
 		{
+
 			"Application"
 			{
 				# INFO: We need something to detect executable here. Mostly exe files but there could also be other type as well.
 				if (($commandInfo.Extension -match "exe|cmd"))
 				{
-					# $listBinaries = (where.exe $files)
-					$listBinaries = (Resolve-Path (scoop w $files)).ToString()
-					# echo ($listBinaries).psobject
-					
+					$listBinaries = Invoke-Expression "(Resolve-Path ($whichBackend $files)).ToString()"
 					# TypeNames           : {System.Object[], System.Array, System.Object}
 					try
 					{ $fileType = (${listBinaries}?.PsObject.TypeNames[0]) 
@@ -152,7 +151,6 @@ function Set-LocationWhere(
 					{
 						Write-Host "From local dir not path." -ForegroundColor Blue
 					}
-					# echo ($fileType).psobject
 					if (($fileType -match "Array") || ($fileType -match "Object\[\]"))
 					{
 						Write-Host "Multiple Locations!`n" -ForegroundColor Yellow
@@ -164,21 +162,31 @@ function Set-LocationWhere(
 					{
 						$finalBinariesPath = $files
 					}
-					# echo $finalBinariesPath.psobject
 					Set-Location (Split-Path ($finalBinariesPath) -Parent)
 				} else
 				{
-					echo "cdcb"
+					echo "cdcb now."
 					# other extensions 
 					cdcb $files
 				}
 				; break; 
 			}
+
 			"Alias"
 			{
-				Set-Location (split-path (($commandInfo).Definition) -Parent)
-				; break;
+				$definition = ($commandInfo).Definition
+				Write-Host "this is alias of $definition" -ForegroundColor Yellow -BackgroundColor Black
+				$definitionInfo = (Get-Command $definition).CommandType
+				if($definitionInfo -eq "Application"){
+					$finalBinariesPath = Invoke-Expression "(Split-Path ($whichBackend $definition) -Parent)"
+					Set-Location $finalBinariesPath
+				}
+				else{
+					echo "cmdlets...?"
+					Set-Location (Split-Path ($definition) -Parent)
+				}
 			}
+
 			default 
 			{ 
 				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
@@ -206,7 +214,7 @@ function Set-LocationWhere(
 		if ($fileType -match "Array" -or $fileType -match "Object\[\]")
 		{
 			$finalBinariesPath = $files | fzf
-			Set-Location (split-path ($finalBinariesPath) -Parent)
+			Set-Location (Split-Path ($finalBinariesPath) -Parent)
 			# return $null;
 		} else
 		{
