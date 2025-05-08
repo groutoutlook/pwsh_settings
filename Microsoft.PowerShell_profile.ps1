@@ -162,7 +162,7 @@ function Set-LocationWhere(
 					{
 						$finalBinariesPath = $files
 					}
-					Set-Location (Split-Path ($finalBinariesPath) -Parent)
+					Set-Location (Split-Path $finalBinariesPath -Parent)
 				} else
 				{
 					echo "cdcb now."
@@ -172,19 +172,21 @@ function Set-LocationWhere(
 				; break; 
 			}
 
+			"Function"
+			{
+				$definition = ($commandInfo).Source
+				Write-Host "function from $($commandInfo.Source) module." -ForegroundColor Yellow -BackgroundColor DarkBlue
+				$ModuleInfo = Get-Module $commandInfo.Source
+				Set-Location (Split-Path $ModuleInfo.Path -Parent)
+			}
+
 			"Alias"
 			{
 				$definition = ($commandInfo).Definition
-				Write-Host "this is alias of $definition" -ForegroundColor Yellow -BackgroundColor Black
-				$definitionInfo = (Get-Command $definition).CommandType
-				if($definitionInfo -eq "Application"){
-					$finalBinariesPath = Invoke-Expression "(Split-Path ($whichBackend $definition) -Parent)"
-					Set-Location $finalBinariesPath
-				}
-				else{
-					echo "cmdlets...?"
-					Set-Location (Split-Path ($definition) -Parent)
-				}
+				Write-Host "alias of $definition , source: $($commandInfo.Source)" -ForegroundColor Yellow -BackgroundColor Black
+				$definitionInfo = Get-Command $definition
+				Set-LocationWhere $definitionInfo.Name
+				Write-Host "End of recursion." -ForegroundColor Red
 			}
 
 			default 
