@@ -46,10 +46,3 @@ function Format-PowerShellFile {
         Write-Error "Failed to format $FilePath : $_"
     }
 }
-
-
-
-
-
-
-

@@ -2,13 +2,13 @@
 # Import-Module posh-git
 # Add-PoshGitToProfile -AllHosts
 
-function quickInitGit($repo_name = "$(Split-Path $pwd -Leaf)",$remote_branch_name = "origin",$remote = "gh",$default_user = "groutoutlook") {
+function quickInitGit($repo_name = "$(Split-Path $pwd -Leaf)", $remote_branch_name = "origin", $remote = "gh", $default_user = "groutoutlook") {
     # Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
     Copy-Just && git init && git add * && git commit -m "feat: genesis"
     gh repo create $repo_name -d "$repo_name description" --source=. --remote "$remote_branch_name" --push --private
 }
 
-function quickDeInitGit($repo_name = "$(Split-Path $pwd -Leaf)",$remote = "gh",$default_user = "groutoutlook") {
+function quickDeInitGit($repo_name = "$(Split-Path $pwd -Leaf)", $remote = "gh", $default_user = "groutoutlook") {
     Remove-FullForce .git
     Set-Clipboard "$default_user/$repo_name"
     gh repo delete $repo_name
@@ -69,11 +69,3 @@ function copyFilesFromOnlineRepos($URI = "", $gitDoc = "" , $OutFile = "") {
     Invoke-WebRequest -Uri $processedURI -OutFile ./$destinationFile && bat ./$destinationFile
 }
 Set-Alias -Name cpGit -Value copyFilesFromOnlineRepos -Scope Global
-
-
-
-
-
-
-
-

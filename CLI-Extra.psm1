@@ -132,8 +132,8 @@ function rds {
     $joinedTerm = $args -join " "
     $command = "rustup doc --std"
     Invoke-Expression $command
-    if($null -ne $args){    
-        Sleep -Milliseconds 350 
+    if ($null -ne $args) {    
+        sleep -Milliseconds 350 
         Send-Key "msedge" "/$joinedTerm"
     }
 }
@@ -161,25 +161,43 @@ public class WindowControl {
 }
 "@
 
-function ss{
+function ss {
     # HACK: it worked because I had imported them prior to this.
     # if want to use them alone, best reimport windows.forms again.
     # Get the handle of the current console window
 
-# Hide the current terminal window
-$currentProcess = [System.Diagnostics.Process]::GetCurrentProcess()
-$windowHandle = $currentProcess.MainWindowHandle
-if ($windowHandle -ne [IntPtr]::Zero -and [WindowControl]::IsWindow($windowHandle)) {
-    [WindowControl]::ShowWindow($windowHandle, [WindowControl]::SW_HIDE)
+    # Hide the current terminal window
+    $currentProcess = [System.Diagnostics.Process]::GetCurrentProcess()
+    $windowHandle = $currentProcess.MainWindowHandle
+    if ($windowHandle -ne [IntPtr]::Zero -and [WindowControl]::IsWindow($windowHandle)) {
+        [WindowControl]::ShowWindow($windowHandle, [WindowControl]::SW_HIDE)
+    }
+
+    screencapture --language:en
+    # Switch to the next window
+    $currentWindow = [WindowControl]::GetForegroundWindow()
+    $nextWindow = [WindowControl]::GetWindow($currentWindow, [WindowControl]::GW_HWNDNEXT)
+    if ($nextWindow -ne [IntPtr]::Zero) {
+        [WindowControl]::SetForegroundWindow($nextWindow)
+    }
+
 }
 
-screencapture --language:en
-# Switch to the next window
-$currentWindow = [WindowControl]::GetForegroundWindow()
-$nextWindow = [WindowControl]::GetWindow($currentWindow, [WindowControl]::GW_HWNDNEXT)
-if ($nextWindow -ne [IntPtr]::Zero) {
-    [WindowControl]::SetForegroundWindow($nextWindow)
+function androidDevEnv {
+    $Env:P7AndroidDir = (Join-Path -Path $env:p7settingDir -ChildPath "adb_p7")
+    Import-Module -Name (Join-Path -Path $Env:P7AndroidDir -ChildPath "ADB_BasicModule.psm1") -Scope Global 
+    checkadb bat
 }
+Set-Alias -Name andDev -Value androidDevEnv
 
+function Start-Explorer($inputPath = (Get-Location)) {
+    $isPath = Test-Path $inputPath 
+    if ($isPath) {
+        fpilot $inputPath
+    }
+    else {
+        fpilot "$(zoi $inputPath)"
+    }
 }
-
+Set-Alias -Name expl -Value Start-Explorer -Scope Global
+Set-Alias -Name exp -Value Start-Explorer -Scope Global

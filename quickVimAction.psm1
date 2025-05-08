@@ -11,10 +11,10 @@ function :t($p7 = 0) {
     }
     else {
         # INFO: since I always cd too many times to this place.
-        if ($old_dirs.Path -ne $HOME){
+        if ($old_dirs.Path -ne $HOME) {
             pwsh -Noexit -wd "$old_dirs" -Command "p7 && p7mod" 
         }
-        else{
+        else {
             pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
         }
         Stop-Process -Id $old_pid 
@@ -341,7 +341,7 @@ function :jrnl {
         }
   
         switch ($flagRaise) {
-            1{
+            1 {
                 $match = (Select-String -InputObject $argLast -Pattern "^\d*")
                 $matchValue = $match.Matches.Value
                 $argument[-1] = " -$matchValue"

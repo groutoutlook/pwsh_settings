@@ -1,6 +1,5 @@
 function EmbedEnv() {
-    # $Env:cubeCLIdir = "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
-    # $env:linuxEnvdir = "D:\ProgramDataD\Linux\proj\linux_env"
+    $Env:cubeCLIdir = "C:\Program Files\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin"
     $diradd = @(
         $Env:cubeCLIdir
     )
@@ -10,7 +9,7 @@ function EmbedEnv() {
 }
 function keilLoad($uv4project = "$pwd", $project_dir = "$uv4project\*.uvprojx") {
     cd $uv4project
-    if(fd -HI "uvprojx"){
+    if (fd -HI "uvprojx") {
         $project_metabuild_path = rvpa $project_dir 
         while ($true) {
             uv4 $project_metabuild_path -f -j0 -l "$uv4project\flash_log.txt" && sleep 3 `
@@ -18,7 +17,7 @@ function keilLoad($uv4project = "$pwd", $project_dir = "$uv4project\*.uvprojx") 
         }
     }
 }
-function Invoke-BatchFlash() {
+function Invoke-FlashChip() {
     $count = 0
     $logfile = "flash_log.txt"
     uv4 (fd '.uvprojx' -HI) -f -j0 -l $logfile
@@ -37,7 +36,6 @@ function Invoke-BatchFlash() {
     } 
     [console]::beep(500, 400)
     Get-Content -Tail 10 $logfile
-    # rm ./flash_log.txt 
 }
 function Build-FromKeil($clean = $null) {
     $count = 0

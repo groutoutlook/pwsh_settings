@@ -1,9 +1,4 @@
 # Import-Module -Name Prelude
-
-
-
-
-
 function toHex($number) {
     Write-Host('{0:X}' -f $number)
 }
@@ -27,8 +22,6 @@ function Format-ReverseArray() {
     return $returnArray
 }
 
-
-
 function reverse { 
     param([String[]] $inputArr)
     $arr = @($inputArr)
@@ -36,11 +29,4 @@ function reverse {
     [string]$resarr = $arr -join ","
     echo $resarr
 }
-
-
-
-
-
-
-
 

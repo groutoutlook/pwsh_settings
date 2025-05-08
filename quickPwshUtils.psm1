@@ -156,22 +156,39 @@ function Restart-Job {
     }
 }
 
-function Remove-FullForce($path ){
+function Remove-FullForce($path ) {
     # [Alias("rmrf")]
     $isPath = Test-Path $path
-    if ($isPath){
+    if ($isPath) {
         Remove-Item $path -Recurse -Force
     }
-    else{
+    else {
         Write-Error "$path not a local path" 
     }
 }
 
+function isLink($currentPath = (Get-Location)) {
+    $pathProperty = Get-Item $currentPath
+    if ($pathProperty.LinkType -eq "SymbolicLink") {
+        Write-Host "`$PWD is SymLink"
+        Write-Host $pathProperty.Target
+    }
+    return  $pathProperty.Target
+}
+
+function cdSymLink($currentPath = (Get-Location)) {
+    $currentPath = Resolve-Path $currentPath
+    if (($targetDir = isLink($currentPath)) -ne $null) {
+        Set-Location $targetDir
+    }
+}
+
+Set-Alias -Name cdsl -Value cdSymLink	
 Set-Alias -Name rsjb -Value Restart-Job
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
-Set-Alias -Name rmrf -Value Remove-FullForce
+Set-Alias -Name rmrf -Value Remove-FullForce 
 # Export-ModuleMember -Function * -Alias *
 
