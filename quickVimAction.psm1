@@ -1,27 +1,20 @@
 function :q {
     Stop-Process -Id $pid
 }
-function :t($p7 = 0) {
+function :a{
     $old_dirs = Get-Location
     $old_pid = $pid
-    if ($p7 -eq 0) {
-        pwsh
-        Stop-Process -Id $old_pid
-
+    if($null -ne $args) {
+        $tempdir = zq "$($args -join " ")" 
+    }
+    if ($old_dirs.Path -ne $HOME) {
+        $final_path = $tempdir ?? $old_dirs
+        pwsh -Noexit -wd "$final_path" -Command "p7 && p7mod" 
     }
     else {
-        # INFO: since I always cd too many times to this place.
-        if ($old_dirs.Path -ne $HOME) {
-            pwsh -Noexit -wd "$old_dirs" -Command "p7 && p7mod" 
-        }
-        else {
-            pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
-        }
-        Stop-Process -Id $old_pid 
+        pwsh -Noexit -wd "$HOME/hw/obs" -Command "p7 && p7mod" 
     }
-}
-function :a {
-    :t 7
+    Stop-Process -Id $old_pid 
 }
 function :m {
     Restart-ModuleList
