@@ -48,7 +48,13 @@ function hvdic(
 # 
 function Search-DuckDuckGo {
     # TODO: Should make a list of abbrev about what to saerch here.
-    # For example, $args[0] -eq ok --> $args[0] = placeholder
+    $exclamationArray = @()
+    foreach ($arg in $args) {
+        if ($arg -like "!*") {
+            $exclamationArray += $arg
+        }
+    }
+
     if ($args[0] -match "^(?:cb|gcb)") {
         $args[0] = (Get-Clipboard)
     }
@@ -59,10 +65,18 @@ function Search-DuckDuckGo {
     $args[-1] = hashmapMatch($args[-1])
     $global:oldQuery = $args
 			
-    $query = 'https://www.duckduckgo.com/?q='
-    $args | % { $query = $query + "$_+" }
-    $url = $query.Substring(0, $query.Length - 1)
-    Invoke-Expression "$global:defaultBrowser $url"
+    $filteredArgs = $args | Where-Object { $_ -notin $exclamationArray }
+    $filteredArgsString = $filteredArgs -join "+"
+    if ($exclamationArray.count -eq 0) {
+        $exQuery = 'https://www.duckduckgo.com/?q=' + $filteredArgsString 
+        Invoke-Expression "$global:defaultBrowser $exQuery"
+    }
+    else{
+    foreach ($exArg in $exclamationArray) {
+        $exQuery = 'https://www.duckduckgo.com/?q=' + $filteredArgsString + "+" + $exArg
+        Invoke-Expression "$global:defaultBrowser $exQuery"
+    }
+    }
 }
 
 Set-Alias -Name ddg -Value Search-DuckDuckGo

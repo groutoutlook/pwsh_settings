@@ -7,9 +7,7 @@ $ggSearchParameters = @{
     BriefDescription = 'Web Search Mode'
     LongDescription  = 'Maybe other search function, but who knows.'
     ScriptBlock      = {
-        param($key, $arg)   # The arguments are ignored in this example
-
-        # GetBufferState gives us the command line (with the cursor position)
+        param($key, $arg)
         $line = $null
         $cursor = $null
         [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
@@ -17,24 +15,39 @@ $ggSearchParameters = @{
         $searchFunction = "Search-DuckDuckGo" 
         $SearchWithQuery = ""
         if ($line -match "[a-z]") {
-            if ($line -match "^scoop") {
-                
-                $SearchWithQuery = "$searchFunction $line; $line"
-            }
-            else {
-
-                $SearchWithQuery = "$searchFunction $line"
-            }
-
+            $SearchWithQuery = "$searchFunction $line"
         }
         else {
             $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
         }
         [Microsoft.PowerShell.PSConsoleReadLine]::AddToHistory($line)
         Invoke-Expression $SearchWithQuery
-      
     }
 }
+$VaultSearchParameters = @{
+    Key              = 'Ctrl+shift+s'
+    BriefDescription = 'Vault Search Mode'
+    LongDescription  = 'Maybe other search function, but who knows.'
+    ScriptBlock      = {
+        param($key, $arg)
+        $line = $null
+        $cursor = $null
+        [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+            [ref]$cursor)
+        $searchFunction = "rgj" 
+        $SearchWithQuery = ""
+        # if ($line -match "[a-z]") {
+        #     $SearchWithQuery = "$searchFunction $line"
+        # }
+        # else {
+        #     $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+        # }
+        [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$searchFunction ")
+        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+    }
+}
+
 
 # Setup for (!s) 
 $IterateCommandParameters = @{
@@ -91,67 +104,6 @@ $IterateCommandParameters = @{
         $endOffsetAdjustment = 0
 
         if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and
-            $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord) {
-            $startOffsetAdjustment = 1
-            $endOffsetAdjustment = 2
-        }
-
-        # INFO: jump to next symbols
-        [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($nextAst.Extent.StartOffset + $startOffsetAdjustment)
-        [Microsoft.PowerShell.PSConsoleReadLine]::SetMark($null, $null)
-        [Microsoft.PowerShell.PSConsoleReadLine]::SelectForwardChar($null, ($nextAst.Extent.EndOffset - $nextAst.Extent.StartOffset) - $endOffsetAdjustment)
-    }
-}
-
-$IterateCommandBackwardParameters = @{
-    Key              = 'Ctrl+Shift+s'
-    BriefDescription = 'iterate commands in the current line.'
-    LongDescription  = 'want to be like alt a'
-    ScriptBlock      = {
-        param($key, $arg)   # The arguments are ignored in this example
-
-        $ast = $null
-        $tokens = $null
-        $errors = $null
-        $cursor = $null
-        [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState(
-            [ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor
-        )
-  
-        $asts = $ast.FindAll( {
-                $args[0] -is [System.Management.Automation.Language.ExpressionAst] `
-                    -and $args[0].Parent -is [System.Management.Automation.Language.CommandAst] 
-            }, $true)
-  
-        if ($asts.Count -eq 0) {
-            [Microsoft.PowerShell.PSConsoleReadLine]::Ding()
-            return
-        }
-    
-    
-        $nextAst = $null
-
-        if ($null -ne $arg) {
-            $nextAst = $asts[$arg - 1]
-        }
-        else {
-            # HACK: reverse the ast?
-            foreach ($ast in $asts) {
-                if ($ast.Extent.StartOffset -ge $cursor) {
-                    $nextAst = $ast
-                    break
-                }
-            } 
-        
-            if ($null -eq $nextAst) {
-                $nextAst = $asts[-1]
-            }
-        }
-
-        $startOffsetAdjustment = 0
-        $endOffsetAdjustment = 0
-
-        if ($nextAst -is [System.Management.Automation.Language.StringConstantExpressionAst] -and 
             $nextAst.StringConstantType -ne [System.Management.Automation.Language.StringConstantType]::BareWord) {
             $startOffsetAdjustment = 1
             $endOffsetAdjustment = 2
@@ -846,6 +798,7 @@ $ctrlBracket_Parameters = @{
 # INFO: Common Windows/Vi Mode Key handlers
 $HandlerParameters = @(
     $ggSearchParameters
+    , $VaultSearchParameters
     , $omniSearchParameters
     , $JrnlParameters 
     , $HistorySearchGlobalParameters
@@ -858,7 +811,6 @@ $HandlerParameters = @(
     , $wrappipeparameter
     , $rgToNvimParameters
     , $rgToRggParameters
-    , $IterateCommandBackwardParameters
     , $IterateCommandParameters
     , $OptionsSwitchParameters
     , $openEditorParameters
