@@ -36,12 +36,7 @@ $VaultSearchParameters = @{
             [ref]$cursor)
         $searchFunction = "rgj" 
         $SearchWithQuery = ""
-        # if ($line -match "[a-z]") {
-        #     $SearchWithQuery = "$searchFunction $line"
-        # }
-        # else {
-        #     $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
-        # }
+        
         [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
         [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$searchFunction ")
         [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()

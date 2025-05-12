@@ -5,7 +5,7 @@
 function quickInitGit($repo_name = "$(Split-Path $pwd -Leaf)", $remote_branch_name = "origin", $remote = "gh", $default_user = "groutoutlook") {
     # Copy-Item "$(zoxide query pwsh)/.github" $pwd -Recurse
     Copy-Just && git init && git add * && git commit -m "feat: genesis"
-    gh repo create $repo_name -d "$repo_name description" --source=. --remote "$remote_branch_name" --push --private
+    gh repo create $repo_name -d "$repo_name description" --source=. --remote "$remote_branch_name" --push --private 
 }
 
 function quickDeInitGit($repo_name = "$(Split-Path $pwd -Leaf)", $remote = "gh", $default_user = "groutoutlook") {
@@ -25,18 +25,20 @@ function gitCloneClipboard(
     $link = (Get-Clipboard)
     # HACK: Real hack is extracting links from the Markdown links.
     if ($link -match '^\[') {
-        $processedLink = $link -replace '^\[(.*)\]\(', "" -replace '\)$', ""
+        $processedLink = $link -replace '^\[(.*)\]\(', "" -replace '\)$', "" 
     }
     else {
-        $processedLink = $link
+        $processedLink = $link 
+    }
+    $processedLink = $processedLink -replace "#.*", ""
+    if ($processedLink -match "([^/]+)$") {
+        $matchedPart = $matches[1]
     }
 
-    # INFO: match http at start.
-    # HACK: in my vimium settings it's pressing `Y`
     if ($processedLink -match "^https") {
         # INFO: here we trim the `?.*` queries part of the URL.
         $trimmedQueryURI = $processedLink -replace "\?.*", "" -replace "/tree/.*", ""
-        git clone  "--recursive" ($trimmedQueryURI) $finalDir
+        git clone  "--recursive" ($trimmedQueryURI) $finalDir && cd $matchedPart
     }
     else {
         echo ($link).psobject

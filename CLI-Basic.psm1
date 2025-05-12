@@ -122,7 +122,7 @@ function zqi {
     Invoke-Expression  "zoxide query -i $($args -join " ")"
 }
 function ze{
-    Invoke-Expression "zoxide editc$($args -join " ")" 
+    Invoke-Expression "zoxide edit $($args -join " ")" 
 }
 Set-Alias zo zq
 Set-Alias zoi zqi

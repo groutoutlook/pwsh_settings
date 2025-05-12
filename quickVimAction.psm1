@@ -5,7 +5,8 @@ function :a{
     $old_dirs = Get-Location
     $old_pid = $pid
     if($null -ne $args) {
-        $tempdir = Invoke-Expression "zoxide query $($args -join " ")"
+        $tempdir = zq "$($args -join " ")"
+        if($tempdir -eq "$HOME\hw\obs") {$tempdir = $null}
     }
     if ($old_dirs.Path -ne $HOME) {
         $final_path = $tempdir ?? $old_dirs
