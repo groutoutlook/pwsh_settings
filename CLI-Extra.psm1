@@ -16,7 +16,6 @@ function Import-Completion {
 }
 Set-Alias -Name :cp -Value Import-Completion 
 
-
 function Get-Playlistmpv(
     [Parameter(Mandatory = $false)]
     [System.String[]]
@@ -52,8 +51,6 @@ function Get-Playlistmpv(
 }
 
 Set-Alias jmpv Get-Playlistmpv
-
-
 
 # HACK: launch in different pwsh process.
 function mpvc(

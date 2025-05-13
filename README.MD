@@ -1,6 +1,5 @@
-# My config for Windows Environment
+# PowerShell Settings
 ---
-This includes `pwsh` settings.
 
 ## PowerShell
 - Multiple modules as seen.
