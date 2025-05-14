@@ -130,10 +130,11 @@ function Set-LocationWhere(
 	$files = (Get-Clipboard)
 )
 {
-	$whichBackend = "scoop which" # INFO: default is `which` that windows provide. but this return a list.
-	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
-	# echo ($commandInfo).psobject
-	if ($null -ne $commandInfo)
+	$whichBackend = "scoop w" # INFO: default is `which` that windows provide. but this return a list.
+	$commandInfo = Get-Command (Invoke-Expression "$whichBackend $files")
+	# echo ($commandInfo).PSObject.TypeNames
+	# echo ($commandInfo).CommandType
+	if ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
 	{
 		switch -Exact ($commandInfo.CommandType)
 		{
@@ -144,18 +145,15 @@ function Set-LocationWhere(
 				if (($commandInfo.Extension -match "exe|cmd"))
 				{
 					$listBinaries = Invoke-Expression "(Resolve-Path ($whichBackend $files)).ToString()"
-					# TypeNames           : {System.Object[], System.Array, System.Object}
+					
 					try
 					{ $fileType = (${listBinaries}?.PsObject.TypeNames[0]) 
 					} catch
 					{
 						Write-Host "From local dir not path." -ForegroundColor Blue
 					}
-					if (($fileType -match "Array") || ($fileType -match "Object\[\]"))
-					{
-						Write-Host "Multiple Locations!`n" -ForegroundColor Yellow
-						$finalBinariesPath = $listBinaries | fzf
-					} elseif ($fileType -match "String")
+
+					if ($fileType -match "String")
 					{
 						$finalBinariesPath = $listBinaries
 					} else
@@ -210,23 +208,10 @@ function Set-LocationWhere(
 			}  # optional
 		} 
 	}
-	# INFO: deal with directory.
-	elseif(($info = Get-Item $files -ErrorAction SilentlyContinue).LinkType -eq "SymbolicLink")
+	else
 	{
-		Set-Location $info.Target
-	} else
-	{
-		$fileType = (($files).PsObject.TypeNames)[0]
-		# echo $files
-		if ($fileType -match "Array" -or $fileType -match "Object\[\]")
-		{
-			$finalBinariesPath = $files | fzf
-			Set-Location (Split-Path ($finalBinariesPath) -Parent)
-			# return $null;
-		} else
-		{
-			cdcb $files
-		}
+		$finalBinariesPath = $commandInfo | %{ $_.Source }|fzf
+		Set-Location (Split-Path ($finalBinariesPath) -Parent)
 	}
 }
 
