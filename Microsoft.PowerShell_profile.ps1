@@ -130,7 +130,7 @@ function Set-LocationWhere(
 	$files = (Get-Clipboard)
 )
 {
-	$whichBackend = "scoop w" # INFO: default is `which` that windows provide. but this return a list.
+	$whichBackend = "scoop which" # INFO: default is `which` that windows provide. but this return a list.
 	$commandInfo = (get-Command $files -ErrorAction SilentlyContinue)
 	# echo ($commandInfo).psobject
 	if ($null -ne $commandInfo)

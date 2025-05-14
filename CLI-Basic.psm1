@@ -48,7 +48,15 @@ function rgj() {
 function rgo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C1 $dashArgs"
+    $command = "rg `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C0 $dashArgs"
+    Invoke-Expression $command
+}
+
+# HACK: rg in vault's other files.
+function vro() { 
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "ig `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) $dashArgs"
     Invoke-Expression $command
 }
 
@@ -69,8 +77,6 @@ function yy {
     }
     Remove-Item -Path $tmp
 }
-
-Set-Alias -Name ff -Value yy
 Set-Alias -Name zz -Value yy
 
 # INFO: mousemaster or something related to mouse controlling
@@ -99,14 +105,6 @@ function Get-PathFromFiles() {
         Write-Host "invalid string, not contained any kind of filesystem path."
     }
 }
-
-
-# HACK: `lsd` and `ls` to `exa`
-function lsd {
-    exa --hyperlink --icons=always $args 
-}
-
-Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
 function zsh {
     # INFO: Since I set an experimental flag in powershell which evaluate the ~ symbol. No need to cd to ~ anymore.
@@ -155,7 +153,6 @@ function xcb {
     }
 }
 
-
 function rb {
     just build
 }
@@ -172,6 +169,24 @@ Set-Alias -Name top -Value btm
 Set-Alias -Name du -Value dust
 Set-Alias -Name less -Value tspin
 
+# HACK: `f` for quicker `find`
+function f(){
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "fd $rgArgs --hyperlink $dashArgs"
+    Invoke-Expression $command
+}
+
+# HACK: `lsd` and `ls` to `exa`
+function lsd {
+    exa --hyperlink --icons=always $args 
+}
+Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
+
+function tree(){
+    exa --hyperlink -T $args 
+}
+
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
-
+Set-Alias -Name pacman -Value pacaptr
