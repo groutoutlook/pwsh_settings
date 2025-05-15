@@ -130,11 +130,15 @@ function Set-LocationWhere(
 	$files = (Get-Clipboard)
 )
 {
-	$whichBackend = "scoop w" # INFO: default is `which` that windows provide. but this return a list.
+	$whichBackend = "scoop which" # INFO: default is `which` that windows provide. but this return a list.
 	$commandInfo = Get-Command (Invoke-Expression "$whichBackend $files")
+	if($commandInfo -eq $null){
+		Write-Error "nothing worked"
+		return
+	}
 	# echo ($commandInfo).PSObject.TypeNames
 	# echo ($commandInfo).CommandType
-	if ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
+	elseif ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
 	{
 		switch -Exact ($commandInfo.CommandType)
 		{

@@ -186,6 +186,7 @@ Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 function tree(){
     exa --hyperlink -T $args 
 }
+Set-Alias -Name b -Value bat
 
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
