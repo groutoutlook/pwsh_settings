@@ -36,10 +36,16 @@ $VaultSearchParameters = @{
             [ref]$cursor)
         $searchFunction = "rgj" 
         $SearchWithQuery = ""
-        
-        [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
-        [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$searchFunction ")
+        if ($line -match "[a-z]") {
+            $SearchWithQuery = "$searchFunction $line"
+        }
+        else {
+            $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+        }       
+        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery")
         [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+        # [Microsoft.PowerShell.PSConsoleReadLine]::BeginningOfLine()
+        # [Microsoft.PowerShell.PSConsoleReadLine]::Insert("$searchFunction ")
     }
 }
 
@@ -204,7 +210,7 @@ $JrnlParameters = @{
         $cursor = $null
         [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
             [ref]$cursor)
-        $defaultValue = 4
+        $defaultValue = 2
         $editPattern = '\d+e$'
         if ($line -match "^j +") {
             if ($line -match $editPattern) {
@@ -227,7 +233,7 @@ $JrnlParameters = @{
         }
         elseif ($line -eq "j") {
             # INFO: most recent jrnl 
-            $defaultValue = 6
+            $defaultValue = 8
             $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadLineOption).HistorySavePath `
             | Where-Object { $_ -match '^j +' }
             $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''

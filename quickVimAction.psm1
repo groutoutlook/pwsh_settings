@@ -29,14 +29,15 @@ Set-Alias -Name :bak -Value :backup
 function :v {
     if ($args[$args.Length - 1] -match "^g") {
         # "^gui")
-        $codeEditor = "neovide --frame none --"
-        $args = $args[0..($args.Length - 2)]
+        $codeEditor = "neovide --frame none -- "
+        $parsedArgs = $args[0..($args.Length - 2)]
     }
     else {
         $codeEditor = "nvim"
+        $parsedArgs = $args
     }
   
-    $parsedArgs = @($args | ForEach-Object { 
+    $parsedArgs = @($parsedArgs | ForEach-Object { 
             $_ -split ":", "" -split " ", "" 
         })
     # echo ($parsedArgs).Psobject
@@ -64,7 +65,7 @@ function :v {
         # echo ($processedArgs).Psobject
     }
     else {
-        $processedArgs = $args[0]
+        $processedArgs = $parsedArgs[0]
     }
 
     if ($null -eq $processedArgs ) {
@@ -85,10 +86,6 @@ function :v {
 }
 function :vl {
     :v last "$args"
-}
-
-function :vc {
-    :v "`"$(Get-Clipboard)`"" $args
 }
 
 # INFO: Quick pwsh_profiles session. better checkout [root dir]($env:LOCALAPPDATA\nvim-data\session)
