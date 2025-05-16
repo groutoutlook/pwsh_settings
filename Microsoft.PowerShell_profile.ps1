@@ -131,14 +131,18 @@ function Set-LocationWhere(
 )
 {
 	$whichBackend = "scoop which" # INFO: default is `which` that windows provide. but this return a list.
-	$commandInfo = Get-Command (Invoke-Expression "$whichBackend $files")
-	if($commandInfo -eq $null){
-		Write-Error "nothing worked"
-		return
+	# $whichBackend = "where.exe" 
+	try{
+		$tryWhichCommand = Invoke-Expression "$whichBackend $files" -ErrorAction SilentlyContinue
+		$commandInfo = Get-Command $tryWhichCommand 
 	}
+	catch {
+		$commandInfo = Get-Command $files
+	}
+
 	# echo ($commandInfo).PSObject.TypeNames
 	# echo ($commandInfo).CommandType
-	elseif ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
+	if ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
 	{
 		switch -Exact ($commandInfo.CommandType)
 		{
@@ -288,16 +292,6 @@ function cd-($rep = 1)
 		Set-Location -
 	}
 }
-function cd--($rep = 1)
-{
-	foreach($i in (1..$rep+1))
- {
-		Set-Location -
-	}
-
-}
-
-
 function cd+($rep = 1)
 {
 	foreach($i in (1..$rep))
@@ -305,16 +299,7 @@ function cd+($rep = 1)
 		Set-Location +
 	}
 }
-
-function cd++($rep = 1)
-{
-	foreach($i in (1..$rep+1))
- {
-		Set-Location +
-	}
-}
-
-function cd..($rep = 1)
+function ..($rep = 1)
 {
 	$furtherParent = $pwd
 	foreach($i in (1..$rep))
@@ -323,6 +308,8 @@ function cd..($rep = 1)
 	}
 	Set-Location $furtherParent
 }
+Set-Alias -Name cd.. -Value .. -Scope Global -Option AllScope 
+
 # INFO: Rescue explorer function.
 function Restart-Explorer
 {
