@@ -159,6 +159,7 @@ public class WindowControl {
 }
 "@
 
+# INFO: if there were any need for passing $args, wrap it in double quotes.
 function ss {
     # Hide the current terminal window
     $currentProcess = [System.Diagnostics.Process]::GetCurrentProcess()
@@ -172,7 +173,7 @@ function ss {
         [System.Windows.Forms.SendKeys]::SendWait("%{TAB}")
     }
 
-    Start-Process -FilePath screencapture -ArgumentList "--lang:en" -Wait
+    Start-Process -FilePath screencapture -ArgumentList "--lang:en $($args -join `" `")" -Wait
     # Restore the window
     if ($windowHandle -ne [IntPtr]::Zero -and [WindowControl]::IsWindow($windowHandle)) {
         echo "wait...?"
