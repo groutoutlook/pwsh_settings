@@ -37,7 +37,13 @@ $VaultSearchParameters = @{
         $searchFunction = "rgj" 
         $SearchWithQuery = ""
         if ($line -match "[a-z]") {
-            $SearchWithQuery = "$searchFunction $line"
+            if($line -match "^$searchFunction"){
+                # TODO: further enhanced by adding different flag at this point.
+                $SearchWithQuery = "$line -w"
+            }
+            else{
+                $SearchWithQuery = "$searchFunction $line"
+            }
         }
         else {
             $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
