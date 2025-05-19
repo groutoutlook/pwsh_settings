@@ -38,7 +38,7 @@ function Get-Playlistmpv(
     if ($Mode -match "^n") {
         $playlist_file = fd --hyperlink musicj --base-directory="$(zoxide query obs)" 
         $playlist_file = Join-Path -Path "$(zoxide query obs)" -ChildPath $playlist_file
-    (Get-Content -Tail $last $playlist_file) + (Get-Content -Head $first $playlist_file) |
+        (Get-Content -Tail $last $playlist_file) + (Get-Content -Head $first $playlist_file) |
             ForEach-Object { filterURI $_ >> $global:playlistTemp }
         mpv --playlist="$global:playlistTemp"  --ytdl-format=bestvideo[height<=?1080]+bestaudio/best --loop-playlist=1 --vid=$videoOption --ytdl-raw-options="cookies-from-browser=firefox"
     }
@@ -74,7 +74,7 @@ function mpvc(
 
         Get-Playlistmpv ($strings)
         # INFO: supress output from start-job.
-    (pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &) | Out-Null
+        (pwsh -Command "mpv --playlist=`"$global:playlistTemp`"" &) | Out-Null
     }
     else {
         Get-Playlistmpv (Get-Clipboard)
@@ -168,7 +168,7 @@ function ss {
         echo "Correct for now."
         [WindowControl]::ShowWindow($windowHandle, [WindowControl]::SW_HIDE)
     }
-    else{
+    else {
         # HACK: fallback to alt+tab
         [System.Windows.Forms.SendKeys]::SendWait("%{TAB}")
     }
@@ -179,7 +179,7 @@ function ss {
         echo "wait...?"
         [WindowControl]::ShowWindow($windowHandle)
     }
-    else{
+    else {
         # HACK: fallback to alt+esc.
         [System.Windows.Forms.SendKeys]::SendWait("%{TAB}")
     }

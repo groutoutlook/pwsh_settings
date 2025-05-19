@@ -82,7 +82,7 @@ Set-Alias -Name zz -Value yy
 # INFO: mousemaster or something related to mouse controlling
 function Invoke-KeyMouse {
     Stop-Process -Name mousemaster*
-  ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
+    ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
 }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
 
@@ -119,7 +119,7 @@ function zq {
 function zqi {
     Invoke-Expression  "zoxide query -i $($args -join " ")"
 }
-function ze{
+function ze {
     Invoke-Expression "zoxide edit $($args -join " ")" 
 }
 Set-Alias zo zq
@@ -171,7 +171,7 @@ Set-Alias -Name du -Value dust
 Set-Alias -Name less -Value tspin
 
 # HACK: `f` for quicker `find`
-function f(){
+function f() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
     $command = "fd $rgArgs --hyperlink $dashArgs"
@@ -184,7 +184,7 @@ function lsd {
 }
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
-function tree(){
+function tree() {
     exa --hyperlink -T $args 
 }
 # Set-Alias -Name pacman -Value pacaptr

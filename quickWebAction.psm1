@@ -71,11 +71,11 @@ function Search-DuckDuckGo {
         $exQuery = 'https://www.duckduckgo.com/?q=' + $filteredArgsString 
         Invoke-Expression "$global:defaultBrowser $exQuery"
     }
-    else{
-    foreach ($exArg in $exclamationArray) {
-        $exQuery = 'https://www.duckduckgo.com/?q=' + $filteredArgsString + "+" + $exArg
-        Invoke-Expression "$global:defaultBrowser $exQuery"
-    }
+    else {
+        foreach ($exArg in $exclamationArray) {
+            $exQuery = 'https://www.duckduckgo.com/?q=' + $filteredArgsString + "+" + $exArg
+            Invoke-Expression "$global:defaultBrowser $exQuery"
+        }
     }
 }
 
@@ -116,7 +116,7 @@ function tra {
             $translateFragment = "sl=zh-CN&tl=en"
         }
         $uri = "https://translate.google.com/?$translateFragment&text="
-    (Get-Clipboard).ToCharArray() | % { $uri += $_ }
+        (Get-Clipboard).ToCharArray() | % { $uri += $_ }
         $finalUri = $uri + '&op=translate'
         Start-Process $finalUri
     }
@@ -169,7 +169,7 @@ function Start-Streaming($defaultPages = "tw") {
     # INFO: Basically wrapping around the `obs-cmd` executable.
     # Or just simply invoke the shortcut.
     try {
-    (Get-Process -Name obs64 -ErrorAction Stop) `
+        (Get-Process -Name obs64 -ErrorAction Stop) `
             && obs-cmd streaming start && obs-cmd replay start
 
     }

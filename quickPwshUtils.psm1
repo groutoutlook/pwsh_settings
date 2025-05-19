@@ -33,7 +33,7 @@ function Show-Window {
     ).Where({ $_.MainWindowTitle }, 'First').Id
 
     if (-not $procId) {
-        Throw "No $ProcessName process with a non-empty window title found." 
+        throw "No $ProcessName process with a non-empty window title found." 
         return 1
     }
     $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
@@ -79,7 +79,7 @@ function Send-Key {
 
 # INFO: quick create hashmap.
 function buildIndex {
-    Param( [Object[]]$inputArray, [string]$keyName) 
+    param( [Object[]]$inputArray, [string]$keyName) 
 
     $index = @{};
     foreach ($row in $inputArray) {
@@ -191,7 +191,7 @@ function Remove-FullForce($path ) {
 }
 
 
-function Copy-FullForce($path = "$((gcb) -replace '"','')",$destination = "$pwd") {
+function Copy-FullForce($path = "$((gcb) -replace '"','')", $destination = "$pwd") {
     # [Alias("cprf")]
     $stripPath = Resolve-Path $path
     $isPathHere = (gci (Split-Path $stripPath -Leaf) -ErrorAction SilentlyContinue) ?? $false
@@ -204,11 +204,11 @@ function Copy-FullForce($path = "$((gcb) -replace '"','')",$destination = "$pwd"
         Copy-Item $stripPath $destination -Recurse -Force
     }
 }
-function quickSymLink($path =(Get-Clipboard)){
-    if(Test-Path $path){
-        New-Item (Split-Path $path -leaf) -ItemType SymbolicLink -Value $path -Force 
+function quickSymLink($path = (Get-Clipboard)) {
+    if (Test-Path $path) {
+        New-Item (Split-Path $path -Leaf) -ItemType SymbolicLink -Value $path -Force 
     }
-    else{
+    else {
         Write-Error "$path not a valid path."
     }
 }

@@ -40,11 +40,11 @@ $VaultSearchParameters = @{
         # WARN: First time I used ScriptBlock 
         $process_string = {
             param($line)
-            if($line -match "^$searchFunction"){
+            if ($line -match "^$searchFunction") {
                 # TODO: further enhanced by adding different flag at this point.
                 $SearchWithQuery = "$line -w"
             }
-            else{
+            else {
                 $SearchWithQuery = "$searchFunction $line"
             } 
             return $SearchWithQuery
@@ -940,13 +940,13 @@ $ViHandlerRemoveParameters = @(
 
 function setAllHandler() {
     # INFO: custom default keyhandler.
-    ForEach ($handler in $HandlerParameters) {
+    foreach ($handler in $HandlerParameters) {
         Set-PSReadLineKeyHandler @handler
     }
     # INFO: Add Vi Handler.
     $currentMode = (Get-PSReadLineOption).EditMode 
     if ($currentMode -eq "Vi") {
-        ForEach ($handler in $ViHandlerParameters) {
+        foreach ($handler in $ViHandlerParameters) {
             Set-PSReadLineKeyHandler @handler
         }
     }
