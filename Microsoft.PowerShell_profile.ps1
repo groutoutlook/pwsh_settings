@@ -61,11 +61,10 @@ $global:extraModuleList = @(
 $global:personalModuleList = $global:initialModuleList + $global:extraModuleList
 function MoreTerminalModule
 {
-	# Import-Module -Name F7History -Scope Global 
 	Import-Module -Name PSFzf -Scope Global 
-	# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	foreach($module in $global:extraModuleList)
 	{
@@ -203,16 +202,26 @@ function Set-LocationWhere(
 			"ExternalScript"
 			{
 				$definition = ($commandInfo).Source
-				$ModuleInfo = Get-Module $commandInfo.Source
-				$ModulePath = $ModuleInfo.Path
-				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
-				Write-Host "Script from $linkInfo module." -ForegroundColor Yellow -BackgroundColor DarkBlue
-				Set-Location (Split-Path $ModulePath -Parent)	
+				$scriptName = $commandInfo.Name
+				$linkInfo = Format-Hyperlink $scriptName $commandInfo.Source
+				Write-Host "Script from $linkInfo." -ForegroundColor Yellow -BackgroundColor DarkBlue
+
+				$fileName = ($files)
+				try
+				{
+					Get-Content "$env:LOCALAPPDATA/shims/$fileName.ps1" |`
+							Select-Object -Index 0 |`
+							Get-PathFromFiles | cdcb
+				} catch
+				{
+				 	Write-Error "Had tried, still failed on shim."
+					Set-Location (Split-Path $ModulePath -Parent)	
+				}
 			}
 
 			default 
 			{ 
-				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
+				Write-Host "what... files?" -ForegroundColor Red -BackgroundColor Yellow
 				$fileName = ($files)
 				try
 				{

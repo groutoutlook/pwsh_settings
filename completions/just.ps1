@@ -1,12 +1,13 @@
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
-
-Register-ArgumentCompleter -Native -CommandName 'just' -ScriptBlock {
+# HACK: just command name
+$justCommandName = "r"
+Register-ArgumentCompleter -Native -CommandName '$justCommandName' -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
 
     $commandElements = $commandAst.CommandElements
     $command = @(
-        'just'
+        '$justCommandName'
         for ($i = 1; $i -lt $commandElements.Count; $i++) {
             $element = $commandElements[$i]
             if ($element -isnot [StringConstantExpressionAst] -or
@@ -19,7 +20,7 @@ Register-ArgumentCompleter -Native -CommandName 'just' -ScriptBlock {
     }) -join ';'
 
     $completions = @(switch ($command) {
-        'just' {
+        '$justCommandName' {
             [CompletionResult]::new('--alias-style', '--alias-style', [CompletionResultType]::ParameterName, 'Set list command alias display style')
             [CompletionResult]::new('--chooser', '--chooser', [CompletionResultType]::ParameterName, 'Override binary invoked by `--choose`')
             [CompletionResult]::new('--color', '--color', [CompletionResultType]::ParameterName, 'Print colorful output')

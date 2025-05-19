@@ -62,47 +62,55 @@ $VaultSearchParameters = @{
     }
 }
 
+$quickZoxide = {
+    param($key, $arg)
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
+        [ref]$cursor)
+    $searchFunction = "zi"
+    $SearchWithQuery = ""
+
+    $process_string = {
+        param($line)
+        $existedCd = "cd|z|zq"
+        if($line -match "^(${existedCd})i"){
+            $SearchWithQuery = $line
+        }
+        elseif ($line -match "^($existedCd)") {
+            $matchString = $Matches[0]
+            $SearchWithQuery = $line -replace "${matchString}","${matchString}i"
+        }
+        else {
+            $SearchWithQuery = "$searchFunction $line"
+        } 
+        return $SearchWithQuery
+    }
+    if ($line -match "[a-z]") {
+        $SearchWithQuery = $process_string.Invoke($line)
+    }
+    else {
+        $lineContent = $(Get-History -Count 1)
+        $SearchWithQuery = $process_string.Invoke($lineContent)
+    }       
+    [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery")
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+}
+
 $QuickZoxideParameters = @{
     # Key              = 'Ctrl+shift+z'
     Key              = 'alt+x'
     BriefDescription = 'Quick zoxide Mode'
     LongDescription  = 'quick zoxide opened.'
-    ScriptBlock      = {
-        param($key, $arg)
-        $line = $null
-        $cursor = $null
-        [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
-            [ref]$cursor)
-        $searchFunction = "zi"
-        $SearchWithQuery = ""
-
-        $process_string = {
-            param($line)
-            $existedCd = "cd|z|zq"
-            if($line -match "^(${existedCd})i"){
-                $SearchWithQuery = $line
-            }
-            elseif ($line -match "^($existedCd)") {
-                $matchString = $Matches[0]
-                $SearchWithQuery = $line -replace "${matchString}","${matchString}i"
-            }
-            else {
-                $SearchWithQuery = "$searchFunction $line"
-            } 
-            return $SearchWithQuery
-        }
-        if ($line -match "[a-z]") {
-            $SearchWithQuery = $process_string.Invoke($line)
-        }
-        else {
-            $lineContent = $(Get-History -Count 1)
-            $SearchWithQuery = $process_string.Invoke($lineContent)
-        }       
-        [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery")
-        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
-    }
+    ScriptBlock      = $quickZoxide
 }
 
+$QuickZoxide_2_Parameters = @{
+    Key              = 'Ctrl+shift+z'
+    BriefDescription = 'Quick zoxide Mode'
+    LongDescription  = 'quick zoxide opened.'
+    ScriptBlock      = $quickZoxide
+}
 
 # Setup for (!s) 
 $IterateCommandParameters = @{
@@ -821,7 +829,8 @@ $OptionsSwitchParameters = @{
         OptionsSwitch 
         setAllHandler
         # HACK: set the ctrl+r and ctrl+t
-        MoreTerminalModule
+        # MoreTerminalModule
+
         # INFO: this ensure some color is re-rendered so I can specify the mode.
         [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
     }
@@ -838,7 +847,7 @@ $OptionsSwitch_Command_Parameters = @{
         param($key, $arg)  
         OptionsSwitch 
         setAllHandler
-        MoreTerminalModule
+        # MoreTerminalModule
         [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
     }
 }
@@ -910,6 +919,7 @@ $HandlerParameters = @(
     $ggSearchParameters
     , $VaultSearchParameters
     , $QuickZoxideParameters
+    , $QuickZoxide_2_Parameters
     , $omniSearchParameters
     , $JrnlParameters 
     , $HistorySearchGlobalParameters
@@ -990,6 +1000,8 @@ function setAllHandler() {
         foreach ($handler in $ViHandlerParameters) {
             Set-PSReadLineKeyHandler @handler
         }
+	    Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
+	    Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
     }
 }
 
