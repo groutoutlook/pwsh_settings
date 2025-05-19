@@ -36,11 +36,25 @@ $VaultSearchParameters = @{
             [ref]$cursor)
         $searchFunction = "rgj" 
         $SearchWithQuery = ""
+
+        # WARN: First time I used ScriptBlock 
+        $process_string = {
+            param($line)
+            if($line -match "^$searchFunction"){
+                # TODO: further enhanced by adding different flag at this point.
+                $SearchWithQuery = "$line -w"
+            }
+            else{
+                $SearchWithQuery = "$searchFunction $line"
+            } 
+            return $SearchWithQuery
+        }
         if ($line -match "[a-z]") {
-            $SearchWithQuery = "$searchFunction $line"
+            $SearchWithQuery = $process_string.Invoke($line)
         }
         else {
-            $SearchWithQuery = "$searchFunction $(Get-History -Count 1)"
+            $lineContent = $(Get-History -Count 1)
+            $SearchWithQuery = $process_string.Invoke($lineContent)
         }       
         [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery")
         [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()

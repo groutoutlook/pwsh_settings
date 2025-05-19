@@ -156,17 +156,12 @@ function Restart-Job {
     }
 }
 
-function Remove-FullForce($path ) {
-    # [Alias("rmrf")]
-    $isPath = Test-Path $path
-    if ($isPath) {
-        Remove-Item $path -Recurse -Force
-    }
-    else {
-        Write-Error "$path not a local path" 
-    }
-}
 
+# INFO: for OSC 8
+function Format-Hyperlink($text, $url) {
+    $esc = [char]27
+    return "$esc]8;;$url$esc\$text$esc]8;;$esc\"
+}
 function isLink($currentPath = (Get-Location)) {
     $pathProperty = Get-Item $currentPath
     if ($pathProperty.LinkType -eq "SymbolicLink") {
@@ -183,6 +178,40 @@ function cdSymLink($currentPath = (Get-Location)) {
     }
 }
 
+function Remove-FullForce($path ) {
+    # [Alias("rmrf")]
+    $isPath = Test-Path $path
+    if ($isPath) {
+        Write-Host "$path gone." -ForegroundColor Magenta
+        Remove-Item $path -Recurse -Force
+    }
+    else {
+        Write-Error "$path not a local path" 
+    }
+}
+
+
+function Copy-FullForce($path = "$((gcb) -replace '"','')",$destination = "$pwd") {
+    # [Alias("cprf")]
+    $stripPath = Resolve-Path $path
+    $isPathHere = (gci (Split-Path $stripPath -Leaf) -ErrorAction SilentlyContinue) ?? $false
+    if ($isPathHere) {
+        Write-Host "$path is full force." -ForegroundColor Magenta
+        Copy-Item $stripPath $destination -Recurse -Force
+    }
+    else {
+        Write-Host "$path is not here..." -ForegroundColor Yellow
+        Copy-Item $stripPath $destination -Recurse -Force
+    }
+}
+function quickSymLink($path =(Get-Clipboard)){
+    if(Test-Path $path){
+        New-Item (Split-Path $path -leaf) -ItemType SymbolicLink -Value $path -Force 
+    }
+    else{
+        Write-Error "$path not a valid path."
+    }
+}
 Set-Alias -Name cdsl -Value cdSymLink	
 Set-Alias -Name rsjb -Value Restart-Job
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
@@ -190,10 +219,5 @@ Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name time -Value Measure-Command
 Set-Alias -Name rmrf -Value Remove-FullForce 
+Set-Alias -Name cprf -Value Copy-FullForce
 # Export-ModuleMember -Function * -Alias *
-
-# INFO: for OSC 8
-function Format-Hyperlink($text, $url) {
-    $esc = [char]27
-    return "$esc]8;;$url$esc\$text$esc]8;;$esc\"
-}

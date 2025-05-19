@@ -111,11 +111,14 @@ function :vs {
   
     if ($null -eq $processedString) {
         Write-Host "What do you want?" -ForegroundColor Yellow
-        :v ls "$args"
+        # :v ls "$args"
+        :vl
     }
     else {
         if ($null -eq $env:nvim_appname) {
-            nvim -c "lua require('resession').load `"$processedString`" "
+            # $codeEditor = "neovide --frame none -- "
+            $codeEditor = "nvim"
+            Invoke-Expression "$codeEditor -c `"lua require('resession').load '$processedString'`""
         }
         else {
             Invoke-Expression "$env:EDITOR ~/hw/$processedString"

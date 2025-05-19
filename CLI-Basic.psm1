@@ -28,7 +28,7 @@ function vr() {
 function rgj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -C1 $dashArgs"
+    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -A3 $dashArgs"
     Invoke-Expression $command
     # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
     if ($? -eq $false) {
@@ -165,6 +165,7 @@ function re {
 Set-Alias -Name r -Value just -Scope Global -Option AllScope
 
 # INFO: more alias.
+Set-Alias -Name b -Value bat
 Set-Alias -Name top -Value btm
 Set-Alias -Name du -Value dust
 Set-Alias -Name less -Value tspin
@@ -186,8 +187,6 @@ Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 function tree(){
     exa --hyperlink -T $args 
 }
-Set-Alias -Name b -Value bat
-
+# Set-Alias -Name pacman -Value pacaptr
 # HACK: hook this into scoop.
 Invoke-Expression (&sfsu hook)
-Set-Alias -Name pacman -Value pacaptr

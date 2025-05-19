@@ -200,6 +200,16 @@ function Set-LocationWhere(
 				Set-LocationWhere $definitionInfo.Name
 			}
 
+			"ExternalScript"
+			{
+				$definition = ($commandInfo).Source
+				$ModuleInfo = Get-Module $commandInfo.Source
+				$ModulePath = $ModuleInfo.Path
+				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
+				Write-Host "Script from $linkInfo module." -ForegroundColor Yellow -BackgroundColor DarkBlue
+				Set-Location (Split-Path $ModulePath -Parent)	
+			}
+
 			default 
 			{ 
 				Write-Host "shim files?" -ForegroundColor Red -BackgroundColor Yellow
