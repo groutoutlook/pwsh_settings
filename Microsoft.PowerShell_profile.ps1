@@ -64,6 +64,10 @@ function MoreTerminalModule
 	Import-Module -Name PSFzf -Scope Global 
 	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+	# $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+	# Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
+	# Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+	# carapace _carapace | Out-String | Invoke-Expression
 
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	foreach($module in $global:extraModuleList)

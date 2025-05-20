@@ -9,7 +9,7 @@ set unstable
 # set dotenv-required := true
 export JUST_ENV := "just_env" # WARN: this is also a method to export env var. 
 _default:
-    @just --list
+    @just --choose
 
 alias fmt := format
 format args="nothing":
