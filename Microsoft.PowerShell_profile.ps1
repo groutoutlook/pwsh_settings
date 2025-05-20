@@ -1,24 +1,10 @@
-# powershell-5.1
-Set-Alias -Name p5 -Value 'C:\WINDOWS\system32\WindowsPowerShell\v1.0\powershell.exe'
-function Dirs
-{
-	Get-Location -Stack
-}
-
-function Format-LimitLength($String,$limitString = 50)
-{
-	if($String.Length -gt $limitString)
-	{
-		$String = "(...)"+$String.Substring($String.Length - $limitString)
-	}
-	return $String
-}
 function global:Backup-Environment($Verbose = $null)
 {
-	Copy-Item "$env:p7settingDir\Microsoft.PowerShell_profile.ps1" $($PROFILE.CurrentUserCurrentHost) -Force
+	$ProfilePath = Split-Path $($PROFILE.CurrentUserCurrentHost) -Parent
+	Copy-Item "$env:p7settingDir\Microsoft.PowerShell_profile.ps1" $ProfilePath -Force
+	Copy-Item "$env:p7settingDir\Microsoft.WindowsPowerShell_profile.ps1" $ProfilePath -Force
 	Write-Host "[$(Get-Date)] Move Profile. CurrentUserCurrentHost" -ForegroundColor Green
 }
-Set-Alias -Name p7Backup -Value Backup-Environment
 
 function AppendPrompt
 {
@@ -30,7 +16,6 @@ function AppendPrompt
 		}
 		$null = __zoxide_hook
 	}
-
 }
 
 function P7()
@@ -68,7 +53,8 @@ function MoreTerminalModule
 	# Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
 	# Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 	# carapace _carapace | Out-String | Invoke-Expression
-
+	
+	Invoke-Expression (&sfsu hook)
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	foreach($module in $global:extraModuleList)
 	{
@@ -253,9 +239,9 @@ function addPath
 { 
 	param (# Parameter help description
   [Parameter(
-			# Mandatory = $true,
-			ValueFromPipeline = $true
-		)]
+	# Mandatory = $true,
+	ValueFromPipeline = $true
+)]
   [Alias("d")]
   $dirList = $pwd,
 
@@ -268,15 +254,12 @@ function addPath
 
 	foreach($dir in $dirList)
 	{
-		if($null -ne $parent)
-  {
+		if($null -ne $parent) {
 			$dir = Split-Path $dir -Parent
-		} else
-		{
+		} else {
 			$dir
 		}
 		$d = Resolve-Path $dir
-		
 		$Env:Path += ";"+$d;
 	}
 }
@@ -290,16 +273,14 @@ function global:initProfileEnv
 	$Env:ProgramDataD = "D:\ProgramDataD"
 	$Env:dotfilesRepo = "$Env:ProgramDataD\dotfiles"
 
-	$Env:p7settingDir = "$env:ProgramDataD/powershell\settings"
-	
+	$Env:p7settingDir = "D:\ProgramDataD\MiscLang\24.01-PowerShell\proj\powershellConfig"
 	$Env:pipxLocalDir = "~\.local\bin"
 	$Env:usrbinD="D:\usr\bin"
-	$Env:edgeDir = "${env:PROGRAMFILES(X86)}\Microsoft\Edge\Application\"
+	
 	$diradd = @(
 		$Env:usrbinD
 		,$Env:PhotoshopDir
 		,$Env:pipxLocalDir
-		,$Env:edgeDir
 	)
 	foreach($d in $diradd)
 	{

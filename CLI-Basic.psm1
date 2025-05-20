@@ -122,6 +122,10 @@ function zqi {
 function ze {
     Invoke-Expression "zoxide edit $($args -join " ")" 
 }
+function za {
+    Invoke-Expression "zoxide add $($args -join " ")" 
+}
+
 Set-Alias zo zq
 Set-Alias zoi zqi
 Set-Alias rgr scooter
@@ -187,6 +191,3 @@ Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 function tree() {
     exa --hyperlink -T $args 
 }
-# Set-Alias -Name pacman -Value pacaptr
-# HACK: hook this into scoop.
-Invoke-Expression (&sfsu hook)

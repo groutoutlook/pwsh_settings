@@ -74,12 +74,12 @@ $quickZoxide = {
     $process_string = {
         param($line)
         $existedCd = "cd|z|zq"
-        if($line -match "^(${existedCd})i"){
+        if ($line -match "^(${existedCd})i") {
             $SearchWithQuery = $line
         }
         elseif ($line -match "^($existedCd)") {
             $matchString = $Matches[0]
-            $SearchWithQuery = $line -replace "${matchString}","${matchString}i"
+            $SearchWithQuery = $line -replace "${matchString}", "${matchString}i"
         }
         else {
             $SearchWithQuery = "$searchFunction $line"
@@ -1000,8 +1000,8 @@ function setAllHandler() {
         foreach ($handler in $ViHandlerParameters) {
             Set-PSReadLineKeyHandler @handler
         }
-	    Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
-	    Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
+        Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
+        Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
     }
 }
 
