@@ -489,7 +489,7 @@ $quickEscParameters = @{
 }
 
 function Invoke-SudoPwsh {
-    sudo pwsh -Command "$args"
+    sudo --inline pwsh -Command "$args"
 }
 $sudoRunParameters = @{
     Key              = 'Ctrl+shift+x'

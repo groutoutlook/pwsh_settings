@@ -43,7 +43,14 @@ $global:extraModuleList = @(
 	"quickTerminalAction",
 	"quickFilePathAction"
 )
+
+$global:scriptingModuleList=@(
+	"PSTimers"
+	# and some more.
+)
+
 $global:personalModuleList = $global:initialModuleList + $global:extraModuleList
+
 function MoreTerminalModule
 {
 	Import-Module -Name PSFzf -Scope Global 
@@ -59,6 +66,10 @@ function MoreTerminalModule
 	foreach($module in $global:extraModuleList)
 	{
 		Import-Module -Name (Join-Path $env:p7settingDir $module) -Scope Global
+	}
+	foreach($module in $global:scriptingModuleList)
+	{
+		Import-Module -Name $module -Scope Global
 	}
 }
 Set-Alias -Name p7mod -Value MoreTerminalModule
@@ -120,17 +131,17 @@ function Set-LocationWhere(
 )
 {
 	$whichBackend = "scoop which" # INFO: default is `which` that windows provide. but this return a list.
-	# $whichBackend = "where.exe" 
 	try{
 		$tryWhichCommand = Invoke-Expression "$whichBackend $files" -ErrorAction SilentlyContinue
-		$commandInfo = Get-Command $tryWhichCommand 
+		# $initialInfo = Get-Command $files 
+		$commandInfo = Get-Command $tryWhichCommand -ErrorAction SilentlyContinue
 	}
 	catch {
-		$commandInfo = Get-Command $files
+		# $initialInfo = $null
+		$commandInfo = Get-Command $files -ErrorAction SilentlyContinue
 	}
 
 	# echo ($commandInfo).PSObject.TypeNames
-	# echo ($commandInfo).CommandType
 	if ($commandInfo.PSObject.TypeNames -notcontains "System.Object[]")
 	{
 		switch -Exact ($commandInfo.CommandType)
@@ -173,6 +184,7 @@ function Set-LocationWhere(
 				$ModuleInfo = Get-Module $commandInfo.Source
 				$ModulePath = $ModuleInfo.Path
 				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
+
 				Write-Host "function from $linkInfo module." -ForegroundColor Yellow -BackgroundColor DarkBlue
 				Set-Location (Split-Path $ModulePath -Parent)	
 			}
@@ -220,7 +232,7 @@ function Set-LocationWhere(
 							Get-PathFromFiles | cdcb
 				} catch
 				{
-				 Write-Error "Had tried, still failed on shim."
+				 Write-Error "Had tried, still failed."
 				}
 			}  # optional
 		} 

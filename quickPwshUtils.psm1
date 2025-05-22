@@ -217,7 +217,6 @@ Set-Alias -Name rsjb -Value Restart-Job
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.
 Set-Alias -Name mcm -Value Measure-Command
-Set-Alias -Name time -Value Measure-Command
 Set-Alias -Name rmrf -Value Remove-FullForce 
 Set-Alias -Name cprf -Value Copy-FullForce
 # Export-ModuleMember -Function * -Alias *
