@@ -101,27 +101,24 @@ function pwshOcr {
 }
 
 # HACK: abbreviate translation function to this.
-function tra {
-    $isClipboardString = (Get-Clipboard).Length
-    if ($isClipboardString -eq 0) {
-        # INFO: pwsh-ocr definitely.
-        pwshOcr 
-
-    }
-    else {
-        if ($args[0] -eq "zh") {
-            $translateFragment = "sl=en&tl=zh-CN"
-        }
-        else {
-            $translateFragment = "sl=zh-CN&tl=en"
-        }
-        $uri = "https://translate.google.com/?$translateFragment&text="
-        (Get-Clipboard).ToCharArray() | % { $uri += $_ }
-        $finalUri = $uri + '&op=translate'
-        Start-Process $finalUri
-    }
-}
-
+# function tra {
+#     $isClipboardString = (Get-Clipboard).Length
+#     if ($isClipboardString -eq 0) {
+#         pwshOcr 
+#     }
+#     else {
+#         if ($args[0] -eq "zh") {
+#             $translateFragment = "sl=en&tl=zh-CN"
+#         }
+#         else {
+#             $translateFragment = "sl=zh-CN&tl=en"
+#         }
+#         $uri = "https://translate.google.com/?$translateFragment&text="
+#         (Get-Clipboard).ToCharArray() | % { $uri += $_ }
+#         $finalUri = $uri + '&op=translate'
+#         Start-Process $finalUri
+#     }
+# }
 
 function Get-CodeStats($webui = 0) {
     $timeNow = Get-Date

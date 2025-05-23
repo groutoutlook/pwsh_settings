@@ -19,32 +19,33 @@ function openWebRemote {
     chrome (git remote get-url origin)
 }
 
-function gitCloneClipboard(
-    $finalDir = $null
-) {
-    $link = (Get-Clipboard)
+function gitCloneClipboard($finalDir = $null, $url = (Get-Clipboard)) 
+{
     # HACK: Real hack is extracting links from the Markdown links.
-    if ($link -match '^\[') {
-        $processedLink = $link -replace '^\[(.*)\]\(', "" -replace '\)$', "" 
+    if ($url -match '^\[') {
+        $processedLink = $url -replace '^\[(.*)\]\(', "" -replace '\)$', "" 
     }
     else {
-        $processedLink = $link 
+        $processedLink = $url 
     }
     $processedLink = $processedLink -replace "#.*", ""
-    if ($processedLink -match "([^/]+)$") {
-        $matchedPart = $matches[1]
-    }
+    $processedLink = $processedLink -replace "/issues\?.*", "" -replace "/pulls\?.*",""
 
     if ($processedLink -match "^https") {
         # INFO: here we trim the `?.*` queries part of the URL.
         $trimmedQueryURI = $processedLink -replace "\?.*", "" -replace "/tree/.*", ""
-        git clone  "--recursive" ($trimmedQueryURI) $finalDir && cd $matchedPart
+
+        # if ($processedLink -match "/.*$") {
+        #     $matchedPart = $matches[1]
+        # }
+        $repoName = Split-Path $trimmedQueryURI -Leaf
+
+        git clone  "--recursive" ($trimmedQueryURI) $finalDir && cd $repoName
     }
     else {
-        echo ($link).psobject
+        echo ($url).psobject
         Write-Host "Not a link." -ForegroundColor Red
     }
-
 }
 Set-Alias -Name gccb -Value gitCloneClipboard
 
