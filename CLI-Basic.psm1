@@ -188,6 +188,9 @@ function lsd {
 }
 Set-Alias -Name ls -Value lsd -Scope Global -Option AllScope
 
+# TODO: check if there are more than the default level (-L=2) of nesting directory.
+# NOTE: and echo it? 
 function tree() {
-    exa --hyperlink -T $args 
+    exa --hyperlink -T -L=2 $args 
+    Write-Host "depth flags : -L=2" -ForegroundColor Green
 }

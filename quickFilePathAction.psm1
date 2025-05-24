@@ -53,7 +53,12 @@ function Build-FromKeil($clean = $null) {
     Get-Content -Tail 10 $logfile
 }
 function Copy-Just($directory = "$(zq newplus templates)\justfile") {
-    Copy-Item $directory .
+    if (test-path "justfile"){
+        Copy-Item $directory -Confirm
+    }
+    else{
+        Copy-Item $directory 
+    }
 }
 Set-Alias -Name cpjust -Value Copy-Just
 # EmbedEnv
