@@ -19,7 +19,7 @@ function :a {
 }
 
 function :r {
-    p7 && p7mod && cd obs
+    p7 && p7mod 
 }
 
 function :m {

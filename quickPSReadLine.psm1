@@ -41,9 +41,14 @@ $VaultSearchParameters = @{
         # WARN: First time I used ScriptBlock 
         $process_string = {
             param($line)
-            if ($line -match "^$searchFunction") {
+            $matchesSearchFunction = "rgj|rgo"
+            if ($line -match "^($matchesSearchFunction)") {
                 # TODO: further enhanced by adding different flag at this point.
-                $SearchWithQuery = "$line -w"
+                switch -Regex ($line) {
+                    "^(?!.*-w$)" { $SearchWithQuery = "$line -w"; break }
+                    "^rgj" { $SearchWithQuery = $line -replace "^rgj","rgo"; break }
+                    "^rgo" { $SearchWithQuery = $line -replace "-w$",""; break }
+                }
             }
             else {
                 $SearchWithQuery = "$searchFunction $line"
