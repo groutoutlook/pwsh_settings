@@ -18,19 +18,19 @@ function omniSearchObsidian {
     Start-Process "obsidian://omnisearch?query=$query" &
 }
 
-function vr() {
-    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig $dashArgs `"$rgArgs`""
-    Invoke-Expression $command
-}
+# function ig() {
+#     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+#     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+#     $command = "ig $dashArgs `"$rgArgs`""
+#     Invoke-Expression $command
+# }
 
 function rgj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
     $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -A3 $dashArgs"
     Invoke-Expression $command
-    # [`$?` variable](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_automatic_variables?view=powershell-7.4#section-1)
+
     if ($? -eq $false) {
         Write-Host "not in those journal.md" -ForegroundColor Magenta
         rg "$($args -join " ")" -g !'*Journal.md' (zoxide query obs) -M 400
@@ -53,14 +53,14 @@ function rgo() {
 }
 
 # HACK: rg in vault's other files.
-function vro() { 
+function igo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
     $command = "ig `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) $dashArgs"
     Invoke-Expression $command
 }
 
-function vrj() {
+function igj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
     $command = "ig `"$rgArgs`"  -g '*Journal.md' (zoxide query obs) $dashArgs"
@@ -68,22 +68,31 @@ function vrj() {
 }
 
 # INFO: yazi quick call.
-function yy {
+function y {
     $tmp = [System.IO.Path]::GetTempFileName()
     yazi $args --cwd-file="$tmp"
-    $cwd = Get-Content -Path $tmp
+    $cwd = Get-Content -Path $tmp -Encoding UTF8
     if (-not [String]::IsNullOrEmpty($cwd) -and $cwd -ne $PWD.Path) {
-        Set-Location -Path $cwd
+        Set-Location -LiteralPath ([System.IO.Path]::GetFullPath($cwd))
     }
     Remove-Item -Path $tmp
 }
-Set-Alias -Name zz -Value yy
+Set-Alias -Name zz -Value y
 
+function Invoke-SudoPwsh {
+    sudo --inline pwsh -Command "$args"
+}
 # INFO: mousemaster or something related to mouse controlling
 function Invoke-KeyMouse {
-    Stop-Process -Name mousemaster*
-    ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
+    Invoke-SudoPwsh "Stop-Process -Name mousemaster*"
+    Start-Sleep -Seconds 1 
+    Set-LocationWhere mousemaster
+    sudo run mousemaster &
 }
+# function Invoke-KeyMouse {
+#     Stop-Process -Name mousemaster*
+#     ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
+# }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
 
 function Get-PathFromFiles() {
@@ -194,3 +203,6 @@ function tree() {
     exa --hyperlink -T -L=2 $args 
     Write-Host "depth flags : -L=2" -ForegroundColor Green
 }
+
+
+

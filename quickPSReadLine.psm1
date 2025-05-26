@@ -41,13 +41,14 @@ $VaultSearchParameters = @{
         # WARN: First time I used ScriptBlock 
         $process_string = {
             param($line)
-            $matchesSearchFunction = "rgj|rgo"
+            $matchesSearchFunction = "rgj|rgo|ig"
             if ($line -match "^($matchesSearchFunction)") {
                 # TODO: further enhanced by adding different flag at this point.
                 switch -Regex ($line) {
                     "^(?!.*-w$)" { $SearchWithQuery = "$line -w"; break }
                     "^rgj" { $SearchWithQuery = $line -replace "^rgj","rgo"; break }
                     "^rgo" { $SearchWithQuery = $line -replace "-w$",""; break }
+                    "^igj" { $SearchWithQuery = $line -replace "^igj","ig"; break }
                 }
             }
             else {
@@ -79,16 +80,22 @@ $quickZoxide = {
     $process_string = {
         param($line)
         $existedCd = "cd|z|zq"
-        if ($line -match "^(${existedCd})i") {
-            $SearchWithQuery = $line
+        switch -Regex ($line) {
+            "^(${existedCd})i\s" {
+                $matchString = $Matches[0]
+                $SearchWithQuery = $line -replace "${matchString}", "zz "
+                break;
+            }
+            "^(${existedCd})(\s|$)" {
+                $matchString = $Matches[1]
+                $SearchWithQuery = $line -replace "^${matchString}(\s|$)", "${matchString}i "
+                break
+            }
+            default {
+                $SearchWithQuery = "$searchFunction $line"
+                break;
+            }
         }
-        elseif ($line -match "^($existedCd)") {
-            $matchString = $Matches[0]
-            $SearchWithQuery = $line -replace "${matchString}", "${matchString}i"
-        }
-        else {
-            $SearchWithQuery = "$searchFunction $line"
-        } 
         return $SearchWithQuery
     }
     if ($line -match "[a-z]") {
@@ -408,7 +415,7 @@ $openEditorParameters = @{
 $rgToNvimParameters = @{
     Key              = 'Alt+v'
     BriefDescription = 'open `ig`'
-    LongDescription  = 'Invoke vr in place of rg.'
+    LongDescription  = 'Invoke ig in place of rg.'
     ScriptBlock      = {
         param($key, $arg)   # The arguments are ignored in this example
 
@@ -420,7 +427,7 @@ $rgToNvimParameters = @{
         if ($line -match '^rg') {
             # INFO: Replace could actually increase the length of original strings.
             # So I could be longer than the start.
-            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "ig")
         }
         else {
             # INFO: check history for the latest match commands
@@ -430,7 +437,7 @@ $rgToNvimParameters = @{
             | Select-Object -Index 0 `
 
             [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
-            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "vr")
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "ig")
         }
         [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
@@ -450,29 +457,28 @@ $rgToRggParameters = @{
         $cursor = $null
         [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line,
             [ref]$cursor)
-        if ($line -match '^rg ') {
-            # INFO: Replace could actually increase the length of original strings.
-            # So I could be longer than the start.
-            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
+        $matchFunction = "rg|rgj"
+        $injectSearch = {
+            param($command)
+            $command -match  "^($matchFunction)\s"
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $Matches[0].Length, "rgr ")
+        }
+        if ($line -match "^($matchFunction)") {
+            $injectSearch.Invoke($line)
         }
         else {
-            # INFO: check history for the latest match commands
             $SearchWithQuery = Get-History -Count 40 `
             | Sort-Object -Property Id -Descending `
-            | Where-Object { $_.CommandLine -match "^rg " }
+            | Where-Object { $_.CommandLine -match "^($matchFunction)" }
             | Select-Object -Index 0 `
 
             [Microsoft.PowerShell.PSConsoleReadLine]::Insert($SearchWithQuery)
-            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, 2, "rgr")
+            $injectSearch.Invoke($SearchWithQuery)
         }
         [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
       
     }
 }
-
-
-
-
 
 $quickEscParameters = @{
     Key              = 'Ctrl+k'
@@ -493,9 +499,6 @@ $quickEscParameters = @{
     }
 }
 
-function Invoke-SudoPwsh {
-    sudo --inline pwsh -Command "$args"
-}
 $sudoRunParameters = @{
     Key              = 'Ctrl+shift+x'
     BriefDescription = 'Execute as sudo (in pwsh).'

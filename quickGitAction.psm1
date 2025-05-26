@@ -49,26 +49,4 @@ function gitCloneClipboard($finalDir = $null, $url = (Get-Clipboard))
 }
 Set-Alias -Name gccb -Value gitCloneClipboard
 
-
-function copyFilesFromOnlineRepos($URI = "", $gitDoc = "" , $OutFile = "") {
-    if ($URI -eq "") {
-        $processedURI = [URI](Get-Clipboard)
-    }
-    else {
-        $processedURI = [URI]$URI 
-    }
-    if ($gitDoc -eq "") {
-        $finalName = $processedURI.Segments[-1]
-    }
-    else {
-        $finalName = $gitDoc
-    }
-    if ($OutFile -eq "") {
-        $destinationFile = $finalName
-    }
-    else {
-        $destinationFile = $OutFile
-    }
-    Invoke-WebRequest -Uri $processedURI -OutFile ./$destinationFile && bat ./$destinationFile
-}
-Set-Alias -Name cpGit -Value copyFilesFromOnlineRepos -Scope Global
+Set-Alias -Name gui -Value gitui
