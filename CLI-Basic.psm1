@@ -20,15 +20,15 @@ function omniSearchObsidian {
 
 # function ig() {
 #     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-#     $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-#     $command = "ig $dashArgs `"$rgArgs`""
+#     $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+#     $command = "ig $dashArgs `"$pureStringArgs`""
 #     Invoke-Expression $command
 # }
 
 function rgj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg `"$rgArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -A3 $dashArgs"
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "rg `"$pureStringArgs`" -g '*Journal.md' (zoxide query obs) -M 400 -A3 $dashArgs"
     Invoke-Expression $command
 
     if ($? -eq $false) {
@@ -47,23 +47,23 @@ function rgj() {
 # HACK: rg in vault's other files.
 function rgo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "rg `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C0 $dashArgs"
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "rg `"$pureStringArgs`"  -g !'*Journal.md' (zoxide query obs) -M 400 -C0 $dashArgs"
     Invoke-Expression $command
 }
 
 # HACK: rg in vault's other files.
 function igo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig `"$rgArgs`"  -g !'*Journal.md' (zoxide query obs) $dashArgs"
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "ig `"$pureStringArgs`"  -g !'*Journal.md' (zoxide query obs) $dashArgs"
     Invoke-Expression $command
 }
 
 function igj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig `"$rgArgs`"  -g '*Journal.md' (zoxide query obs) $dashArgs"
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "ig `"$pureStringArgs`"  -g '*Journal.md' (zoxide query obs) $dashArgs"
     Invoke-Expression $command
 }
 
@@ -85,14 +85,12 @@ function Invoke-SudoPwsh {
 # INFO: mousemaster or something related to mouse controlling
 function Invoke-KeyMouse {
     Invoke-SudoPwsh "Stop-Process -Name mousemaster*"
+    Invoke-SudoPwsh "Stop-Process -Name kanata*"
     Start-Sleep -Seconds 1 
     Set-LocationWhere mousemaster
     sudo run mousemaster &
+    sudo run kanata &
 }
-# function Invoke-KeyMouse {
-#     Stop-Process -Name mousemaster*
-#     ( Start-Sleep -Seconds 2 && mousemaster --configuration-file="$env:usrbinD\mousemaster.properties") &
-# }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
 
 function Get-PathFromFiles() {
@@ -186,8 +184,8 @@ Set-Alias -Name less -Value tspin
 # HACK: `f` for quicker `find`
 function f() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
-    $rgArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "fd $rgArgs --hyperlink $dashArgs"
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    $command = "fd $pureStringArgs --hyperlink $dashArgs"
     Invoke-Expression $command
 }
 
@@ -204,5 +202,16 @@ function tree() {
     Write-Host "depth flags : -L=2" -ForegroundColor Green
 }
 
-
-
+function Get-Navitldr(){
+    $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+    $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+    # HACK: have to manually null it out... since `navi` dont understand the ''..?
+    if($dashArgs -eq ""){$dashArgs = $null}
+    if($pureStringArgs -eq ""){
+        navi
+    }
+    else{
+        navi --tldr $pureStringArgs $dashArgs
+    }
+}
+Set-Alias -Name man -Value Get-Navitldr -Scope Global -Option AllScope
