@@ -86,10 +86,12 @@ function Invoke-SudoPwsh {
 function Invoke-KeyMouse {
     Invoke-SudoPwsh "Stop-Process -Name mousemaster*"
     Invoke-SudoPwsh "Stop-Process -Name kanata*"
-    Start-Sleep -Seconds 1 
-    Set-LocationWhere mousemaster
-    sudo run mousemaster &
-    sudo run kanata &
+    if($args.Length -ne 1){
+        Start-Sleep -Seconds 1 
+        Set-LocationWhere mousemaster
+        sudo run mousemaster &
+        sudo run kanata &
+    }
 }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
 
@@ -202,15 +204,15 @@ function tree() {
     Write-Host "depth flags : -L=2" -ForegroundColor Green
 }
 
-function Get-Navitldr(){
+function Get-Navitldr() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
     # HACK: have to manually null it out... since `navi` dont understand the ''..?
-    if($dashArgs -eq ""){$dashArgs = $null}
-    if($pureStringArgs -eq ""){
+    if ($dashArgs -eq "") { $dashArgs = $null }
+    if ($pureStringArgs -eq "") {
         navi
     }
-    else{
+    else {
         navi --tldr $pureStringArgs $dashArgs
     }
 }

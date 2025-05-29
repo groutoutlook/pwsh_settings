@@ -46,9 +46,9 @@ $VaultSearchParameters = @{
                 # TODO: further enhanced by adding different flag at this point.
                 switch -Regex ($line) {
                     "^(?!.*-w$)" { $SearchWithQuery = "$line -w"; break }
-                    "^rgj" { $SearchWithQuery = $line -replace "^rgj","rgo"; break }
-                    "^rgo" { $SearchWithQuery = $line -replace "-w$",""; break }
-                    "^igj" { $SearchWithQuery = $line -replace "^igj","ig"; break }
+                    "^rgj" { $SearchWithQuery = $line -replace "^rgj", "rgo"; break }
+                    "^rgo" { $SearchWithQuery = $line -replace "-w$", ""; break }
+                    "^igj" { $SearchWithQuery = $line -replace "^igj", "ig"; break }
                 }
             }
             else {
@@ -460,7 +460,7 @@ $rgToRggParameters = @{
         $matchFunction = "rg|rgj"
         $injectSearch = {
             param($command)
-            $command -match  "^($matchFunction)\s"
+            $command -match "^($matchFunction)\s"
             [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $Matches[0].Length, "rgr ")
         }
         if ($line -match "^($matchFunction)") {

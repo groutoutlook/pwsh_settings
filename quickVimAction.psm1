@@ -100,10 +100,10 @@ $sessionMap = @{
     "pw"  = "pwsh"
     "nv"  = "nvim"
     "nu"  = "nushell"
-    "m"   = "mouse"
     "ob"  = "obsidian"
     "es"  = "espanso"
     "vk"  = "vulkan-samples"
+    "m"   = "mouse"
     "wts" = "wt_shader"
 }
 function :vs {
@@ -322,26 +322,27 @@ function :obsidian(
     }
 }
 
-# INFO: switch workspace.
-$workspaceNameTable = @{
-    "j"  = "Journal-code-eda"
-    "jc" = "Journal-code-eda"
-    "o"  = "Obs-Nvim"
-    "on" = "Obs-Nvim"
-}
-function :ow {
-    $defaultWorkspace = "Obs-Nvim"
-
-    # Prepare arguments  
-    $argument = $args -join " "
-    $workspaceName = $workspaceNameTable[$argument] ?? "$defaultWorkspace"
-  
-    $originalURI = "obsidian://advanced-uri?vault=$global:vaultName&workspace=$workspaceName" 	
-    (Start-Process "$originalURI" &) | Out-Null
-}
-
+# # INFO: switch workspace.
+# $workspaceNameTable = @{
+#     "j"  = "Journal-code-eda"
+#     "jc" = "Journal-code-eda"
+#     "o"  = "Obs-Nvim"
+#     "on" = "Obs-Nvim"
+# }
+# function :ow {
+#     $defaultWorkspace = "Obs-Nvim"
+#
+#     # Prepare arguments  
+#     $argument = $args -join " "
+#     $workspaceName = $workspaceNameTable[$argument] ?? "$defaultWorkspace"
+#
+#     $originalURI = "obsidian://advanced-uri?vault=$global:vaultName&workspace=$workspaceName" 	
+#     (Start-Process "$originalURI" &) | Out-Null
+# }
+#
 Set-Alias -Name :o -Value :obsidian
-Set-Alias -Name :oo -Value obsidian-cli
+# Set-Alias -Name :oo -Value obsidian-cli
+#
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :jrnl {
     $argument = $args
@@ -399,6 +400,7 @@ function :jrnl {
     }
     Invoke-Expression "jrnl $argument"
 }
+Set-Alias -Name j -Value :jrnl
 
 # INFO: call `Get-UniqueEntryJrnl table` to get current jrnltable list.
 function Get-UniqueEntryJrnl {
@@ -436,42 +438,6 @@ function Get-UniqueEntryJrnl {
     }
     return $all_list
 }
-
-Set-Alias -Name j -Value :jrnl
-
-# WARN: recently I found symlink affects recursive tools like fzf and fd a lot... 
-# Might change that kind of add sy,links everywhere.
-$global:HighWay = "D:\ProgramDataD\1_AllActiveProject" 
-function :hw($destinationName = $null, $HighWaylinkName = "hw", $dir = $global:HighWay, $Remove = $null) {
-    $currentDir = (Get-Location)
-    $currentDirLeaf = Split-Path -Path $currentDir -Leaf
-    if ($Remove -ne $null) {
-        rm "$global:HighWay/$currentDirLeaf"
-        rm "$currentDir/$HighWaylinkName"
-    }
-    else {
-        # HACK: create highway symlink within $pwd. To be fair, avoid this altogether.
-        if ((Test-Path "$currentDir/$HighWaylinkName") -eq $false) {
-            # New-Item $HighWaylinkName -ItemType SymbolicLink -Value $dir
-            Write-Output "$HighWaylinkName`n" | Add-Content -Path .\.gitignore
-        }
-        else {
-            Write-Host "Symlink $HighWaylinkName Already Exist" -ForegroundColor Green
-        }
-
-        # INFO: source of highway.
-        if ($destinationName -eq $null) {
-            $destinationName = $currentDirLeaf
-        }
-        if ((Test-Path "$global:HighWay/$destinationName") -eq $false) {
-            New-Item "$global:HighWay/$destinationName" -ItemType SymbolicLink -Value $currentDir
-            Write-Output "$destinationName`n" | Add-Content -Path "$global:HighWay\.gitignore"
-        }
-        else {
-            Write-Host "Symlink $destinationName Already Exist" -ForegroundColor Green
-        }
-    }  
-}
 # NOTE: Espanso powershell wrapper.
 $espansoAlias = @{
     "st" = "status"
@@ -481,20 +447,37 @@ $espansoAlias = @{
 function :e {
     $argument = ""
     # Prepare arguments 
-    foreach ($arg in $args) {
-        $postProcessArgument = $espansoAlias[$arg] ?? $arg 
-        $argument += "$postProcessArgument "
-    }
-
-    if ($argument -eq "editInNvimSession ") {
-        $espansoNvimSession = "espanso"
-        nvim -c "lua require('resession').load `"$espansoNvimSession`""
+    $defaultArgs = $espansoAlias["e"]
+    if ($args.Length -eq 0) {
+        $argument = "$defaultArgs "
     }
     else {
-        Invoke-Expression "espansod $argument"
+        foreach ($arg in $args) {
+            $postProcessArgument = $espansoAlias[$arg] ?? $arg 
+            $argument += "$postProcessArgument "
+        }
+    }
+    if ($argument -eq "$defaultArgs ") {
+        $espansoNvimSession = "espanso"
+        $codeEditor = "neovide --frame none -- "
+        Invoke-Expression "$codeEditor -c 'lua require(`"resession`").load `"$espansoNvimSession`"'"
+    }
+    else {
+        Invoke-Expression "espanso $argument"
     }
 }
+
 # INFO: function to switch between applications. Right now it's based on the Show-Window function.
 function :s {
     Show-Window "$args"
+}
+function :k {
+    if ($args.Length -eq 0) {
+        kanata --helf
+    }
+    else {
+        $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
+        $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
+        Invoke-Expression "kanata $pureStringArgs $dashArgs"
+    }
 }

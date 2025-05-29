@@ -219,4 +219,5 @@ Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 Set-Alias -Name mcm -Value Measure-Command
 Set-Alias -Name rmrf -Value Remove-FullForce 
 Set-Alias -Name cprf -Value Copy-FullForce
+Set-Alias -Name cpcb -Value Copy-FullForce
 # Export-ModuleMember -Function * -Alias *

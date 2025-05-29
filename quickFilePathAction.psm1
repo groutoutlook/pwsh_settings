@@ -53,10 +53,10 @@ function Build-FromKeil($clean = $null) {
     Get-Content -Tail 10 $logfile
 }
 function Copy-Just($directory = "$(zq newplus templates)\justfile") {
-    if (test-path "justfile"){
+    if (Test-Path "justfile") {
         Copy-Item $directory -Confirm
     }
-    else{
+    else {
         Copy-Item $directory 
     }
 }
