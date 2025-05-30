@@ -56,14 +56,14 @@ function rgo() {
 function igo() { 
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig `"$pureStringArgs`"  -g !'*Journal.md' (zoxide query obs) $dashArgs"
+    $command = "ig `"$pureStringArgs`"  -g !'*Journal.md' (zoxide query obs) --context-viewer=horizontal $dashArgs"
     Invoke-Expression $command
 }
 
 function igj() {
     $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "
     $pureStringArgs = ($args | Where-Object { $_ -notlike '-*' }) -join " "
-    $command = "ig `"$pureStringArgs`"  -g '*Journal.md' (zoxide query obs) $dashArgs"
+    $command = "ig `"$pureStringArgs`"  -g '*Journal.md' (zoxide query obs) --context-viewer=horizontal $dashArgs"
     Invoke-Expression $command
 }
 
@@ -86,7 +86,7 @@ function Invoke-SudoPwsh {
 function Invoke-KeyMouse {
     Invoke-SudoPwsh "Stop-Process -Name mousemaster*"
     Invoke-SudoPwsh "Stop-Process -Name kanata*"
-    if($args.Length -ne 1){
+    if ($args.Length -ne 1) {
         Start-Sleep -Seconds 1 
         Set-LocationWhere mousemaster
         sudo run mousemaster &
