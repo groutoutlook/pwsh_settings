@@ -286,11 +286,10 @@ $JrnlParameters = @{
             [ref]$cursor)
         $defaultValue = 2
         $editPattern = '\d+e$'
-        if ($line -match "^j +") {
+        if ($line -match "^j\s+") {
             if ($line -match $editPattern) {
                 # INFO: if there are 
                 $defaultValue = 8
-        
                 $startPosition = $line `
                 | Select-String -Pattern  $editPattern `
                 | ForEach-Object { $_.Matches }
@@ -305,11 +304,11 @@ $JrnlParameters = @{
                 [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
             }
         }
-        elseif ($line -eq "j") {
+        elseif ($line -match "^j\s*$") {
             # INFO: most recent jrnl 
             $defaultValue = 8
             $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadLineOption).HistorySavePath `
-            | Where-Object { $_ -match '^j +' }
+            | Where-Object { $_ -match '^j\s+' }
             $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''
       
             [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")

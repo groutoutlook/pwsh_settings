@@ -1,15 +1,3 @@
-# INFO: numbat is a kind of bc in both Windows/Linux. There are also Julia if you want to try.
-function bc {
-    Write-Host "Numbat started." -ForegroundColor Red
-    if ($args) {
-        numbat -e "$args"
-    }
-    else {
-        Write-Host "Start shell instead" -ForegroundColor Yellow
-        numbat 
-    }
-}
-
 function omniSearchObsidian {
     $query = ""
     $args | % {
@@ -90,7 +78,7 @@ function Invoke-KeyMouse {
         Start-Sleep -Seconds 1 
         Set-LocationWhere mousemaster
         sudo run mousemaster &
-        sudo run kanata &
+        # sudo run kanata &
     }
 }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
@@ -165,16 +153,32 @@ function xcb {
         Write-Error "Not Path, check again."
     }
 }
-
-function rb {
+function rb{
     just build
+}
+function rt {
+    just test
 }
 function rr {
     just run
 }
+function rfmt {
+    just format
+}
+function rd {
+    just deploy
+}
+function rs {
+    just seek
+}
+function rw {
+    just watch
+}
+
 function re {
     just -e
 }
+
 Set-Alias -Name r -Value just -Scope Global -Option AllScope
 
 # INFO: more alias.
@@ -217,3 +221,6 @@ function Get-Navitldr() {
     }
 }
 Set-Alias -Name man -Value Get-Navitldr -Scope Global -Option AllScope
+
+Set-Alias -Name bc -Value fend -Scope Global -Option AllScope
+
