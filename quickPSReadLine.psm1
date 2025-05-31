@@ -286,7 +286,16 @@ $JrnlParameters = @{
             [ref]$cursor)
         $defaultValue = 2
         $editPattern = '\d+e$'
-        if ($line -match "^j\s+") {
+        if ($line -match "^j\s*$") {
+            # INFO: most recent jrnl 
+            $defaultValue = 8
+            $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadLineOption).HistorySavePath `
+            | Where-Object { $_ -match '^j\s+(?:\w|\:)' }
+            $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''
+      
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
+        }
+        elseif ($line -match "^j\s+") {
             if ($line -match $editPattern) {
                 # INFO: if there are 
                 $defaultValue = 8
@@ -304,15 +313,7 @@ $JrnlParameters = @{
                 [Microsoft.PowerShell.PSConsoleReadLine]::Insert(" $($defaultValue)e")
             }
         }
-        elseif ($line -match "^j\s*$") {
-            # INFO: most recent jrnl 
-            $defaultValue = 8
-            $SearchWithQuery = Get-Content -Tail 40 (Get-PSReadLineOption).HistorySavePath `
-            | Where-Object { $_ -match '^j\s+' }
-            $SearchWithQuery = $SearchWithQuery[-1] -replace $editPattern, ''
-      
-            [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
-        }
+        
         else {
 
             $finalOptions = $null
@@ -358,7 +359,7 @@ $HistorySearchGlobalParameters = @{
     
 
         Get-Content -Tail 200 (Get-PSReadLineOption).HistorySavePath `
-        | Select-String -Pattern '^j +' `
+        | Select-String -Pattern '^j\s+(?:\w|\:)' `
         | fzf --query '^j ' `
         | ForEach-Object { $finalOptions = $_ + " $($defaultValue)e" }
 
