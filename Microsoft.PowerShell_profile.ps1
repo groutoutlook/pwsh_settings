@@ -54,13 +54,13 @@ $global:personalModuleList = $global:initialModuleList + $global:extraModuleList
 function MoreTerminalModule
 {
 	Import-Module -Name PSFzf -Scope Global 
-	Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion -AltCCommand $null
 	Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion }
-	# $env:CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
-	# Set-PSReadLineOption -Colors @{ "Selection" = "`e[7m" }
-	# Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-	# carapace _carapace | Out-String | Invoke-Expression
-	
+
+	Invoke-Expression (&posh-fzf init | Out-String)
+  # Customize the key bindings to your liking
+	Set-PSReadLineKeyHandler -Key 'Ctrl+t' -ScriptBlock { Invoke-PoshFzfSelectItems }
+	Set-PSReadLineKeyHandler -Key 'Alt+c' -ScriptBlock { Invoke-PoshFzfChangeDirectory }
+	Set-PSReadLineKeyHandler -Key 'Ctrl+r' -ScriptBlock { Invoke-PoshFzfSelectHistory }
 	Invoke-Expression (&sfsu hook)
 	# Import-Module -Name VirtualDesktop -Scope Global -Verbose
 	foreach($module in $global:extraModuleList)
@@ -186,6 +186,7 @@ function Set-LocationWhere(
 				$linkInfo = Format-Hyperlink $commandInfo.Source $ModulePath
 
 				Write-Host "function from $linkInfo module." -ForegroundColor Yellow -BackgroundColor DarkBlue
+				Write-Host $commandInfo.Definition
 				Set-Location (Split-Path $ModulePath -Parent)	
 			}
 
@@ -211,7 +212,9 @@ function Set-LocationWhere(
 				$fileName = ($files)
 				try
 				{
-					Get-Content "$env:LOCALAPPDATA/shims/$fileName.ps1" |`
+					$ScriptContent = Get-Content "$env:LOCALAPPDATA/shims/$fileName.ps1" 
+					Write-Host $ScriptContent
+					Write-Output $ScriptContent |`
 							Select-Object -Index 0 |`
 							Get-PathFromFiles | cdcb
 				} catch

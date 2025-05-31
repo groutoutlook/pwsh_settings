@@ -476,7 +476,7 @@ function :s {
 }
 function :k {
     if ($args.Length -eq 0) {
-        kanata --helf
+        kanata --help
     }
     else {
         $dashArgs = ($args | Where-Object { $_ -like '-*' }) -join " "

@@ -56,7 +56,7 @@ function Search-DuckDuckGo {
     }
 
     if ($args[0] -match "^(?:cb|gcb)") {
-        $args[0] = (Get-Clipboard)
+        $args[0] = "$(Get-Clipboard)"
     }
     elseif ($args[0] -match "^ok$") {
         $args[0] = "PlaceholderQuery"
