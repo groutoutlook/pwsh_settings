@@ -109,6 +109,64 @@ $quickZoxide = {
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
 
+$DoubleQuotesNestedBracketParameter = @{
+    Key              = "ctrl+shift+Oem7"
+    BriefDescription = 'quote and parentheses the selection or nearest token'
+    LongDescription  = 'Wraps selected text in parentheses; if no selection, wraps the token nearest to the cursor. Cursor is placed after the closing parenthesis.'
+    ScriptBlock      = {
+        param($key, $arg)
+
+        $selectionStart = $null
+        $selectionLength = $null
+        [Microsoft.PowerShell.PSConsoleReadLine]::GetSelectionState([ref]$selectionStart, [ref]$selectionLength)
+
+        $line = $null
+        $cursor = $null
+        [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+        if ($selectionStart -ne -1) {
+            $selectedText = $line.SubString($selectionStart, $selectionLength)
+            [Microsoft.PowerShell.PSConsoleReadLine]::Replace($selectionStart, $selectionLength, "`"`$`($selectedText`)`"")
+            [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($selectionStart + $selectionLength + 4)
+        }
+        else {
+            $ast = $null
+            $tokens = $null
+            $errors = $null
+            $cursor = $null
+            [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$ast, [ref]$tokens, [ref]$errors, [ref]$cursor)
+            $line = if ($ast.Extent) { $ast.Extent.Text } else { '' }
+            $nearestToken = $tokens | Where-Object {
+                $_.Extent.StartOffset -le $cursor -and $_.Extent.EndOffset -ge $cursor
+            } | Select-Object -First 1
+
+            if (-not $nearestToken) {
+                # If no token is under the cursor, find the closest token
+                $nearestToken = $tokens | Sort-Object {
+                    [Math]::Abs($_.Extent.StartOffset - $cursor)
+                } | Select-Object -First 1
+            }
+
+            if ($nearestToken -and 
+                $nearestToken.Extent.StartOffset -ge 0 -and 
+                $nearestToken.Extent.StartOffset -le $line.Length -and 
+                $nearestToken.Extent.EndOffset -le $line.Length) {
+                $start = $nearestToken.Extent.StartOffset
+                $length = $nearestToken.Extent.EndOffset - $start
+                $text = $nearestToken.Extent.Text
+                [Microsoft.PowerShell.PSConsoleReadLine]::Replace($start, $length,"`"`$`($text`)`"")
+                [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($start + $length + 4)
+            }
+            else {
+                # Fallback: insert () at cursor
+                [Microsoft.PowerShell.PSConsoleReadLine]::Insert('"$()"')
+                [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($cursor + 3)
+            }
+        }
+    }
+}
+
+
+
 $QuickZoxideParameters = @{
     # Key              = 'Ctrl+shift+z'
     Key              = 'alt+x'
@@ -938,6 +996,7 @@ $HandlerParameters = @(
     , $ParenthesesParameter
     , $ParenthesesAllParameter
     , $DoubleQuotesParameter
+    , $DoubleQuotesNestedBracketParameter
     , $wrappipeparameter
     , $rgToNvimParameters
     , $rgToRggParameters
