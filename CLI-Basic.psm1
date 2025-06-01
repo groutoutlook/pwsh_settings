@@ -154,27 +154,26 @@ function xcb {
     }
 }
 
-# Remove-Item Alias:rd
 function rb{
-    just build $args.Length ? "$args -join ' '" : $null
+    just build ($args.Length ? "$args -join ' '" : $null)
 }
 function rt {
-    just test $args.Length ? "$args -join ' '" : $null
+    just test ($args.Length ? "$args -join ' '" : $null)
 }
 function rr {
-    just run $args.Length ? "$args -join ' '" : $null
+    just run ($args.Length ? "$args -join ' '" : $null)
 }
 function rfmt {
-    just format $args.Length ? "$args -join ' '" : $null
+    just format ($args.Length ? "$args -join ' '" : $null)
 }
 function rd {
-    just deploy $args.Length ? "$args -join ' '" : $null
+    just deploy ($args.Length ? "$args -join ' '" : $null)
 }
 function rs {
-    just seek $args.Length ? "$args -join ' '" : $null
+    just seek ($args.Length ? "$args -join ' '" : $null)
 }
 function rw {
-    just watch $args.Length ? "$args -join ' '" : $null
+    just watch ($args.Length ? "$args -join ' '" : $null)
 }
 
 function re {

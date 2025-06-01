@@ -20,12 +20,14 @@ function AppendPrompt
 
 function P7()
 {
+	$env:_ZO_FZF_OPTS = "--height=35% --bind one:accept"
+
 	Invoke-Expression (&starship init powershell)
-	# oh-my-posh init pwsh | Invoke-Expression
 	Invoke-Expression (& { (zoxide init powershell | Out-String) })
+	Remove-Item Alias:rd 
 	Set-Alias -Name cd -Value z -Scope Global -Option AllScope 
 	Set-Alias -Name cdi -Value zi -Scope Global -Option AllScope 
-	AppendPrompt
+	# AppendPrompt
 }
 
 $global:initialModuleList=@(
