@@ -153,26 +153,28 @@ function xcb {
         Write-Error "Not Path, check again."
     }
 }
+
+# Remove-Item Alias:rd
 function rb{
-    just build
+    just build $args.Length ? "$args -join ' '" : $null
 }
 function rt {
-    just test
+    just test $args.Length ? "$args -join ' '" : $null
 }
 function rr {
-    just run
+    just run $args.Length ? "$args -join ' '" : $null
 }
 function rfmt {
-    just format
+    just format $args.Length ? "$args -join ' '" : $null
 }
 function rd {
-    just deploy
+    just deploy $args.Length ? "$args -join ' '" : $null
 }
 function rs {
-    just seek
+    just seek $args.Length ? "$args -join ' '" : $null
 }
 function rw {
-    just watch
+    just watch $args.Length ? "$args -join ' '" : $null
 }
 
 function re {

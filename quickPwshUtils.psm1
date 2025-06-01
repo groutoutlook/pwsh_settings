@@ -27,23 +27,20 @@ function Show-Window {
         [string] $ProcessName
     )
     $ProcessName = $ProcessName -replace '\.exe$'
-    # WARN: This method return the latest windows which have title. many have titles but cant show.
-    # IF you want to switch between them, must use different method like powertoys run.
-    $procId = (Get-Process -ErrorAction Ignore "*$ProcessName*"
-    ).Where({ $_.MainWindowTitle }, 'First').Id
 
+    $b = (Get-Process -ErrorAction Ignore "*$ProcessName*").Where({ $_.MainWindowTitle })
+    $c = $b | % ProcessName | fzf --select-1 --exit-0 --bind one:accept | %{$b | ? Name -eq $_}
+    $procId = $c.ID
     if (-not $procId) {
         throw "No $ProcessName process with a non-empty window title found." 
         return 1
     }
-    $null = (New-Object -ComObject WScript.Shell).AppActivate($procId)
+    return (New-Object -ComObject WScript.Shell).AppActivate($procId)
 }
-Set-Alias -Name shw -Value Show-Window
+
 # Load the necessary assembly
 Add-Type -AssemblyName System.Windows.Forms
 
-
-# Define the user32.dll functions
 Add-Type @"
 using System;
 using System.Runtime.InteropServices;
