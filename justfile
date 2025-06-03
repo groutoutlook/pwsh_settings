@@ -16,5 +16,5 @@ format args="nothing":
     Import-Module ./Formatter.psm1 -Force && gci *.psm1 | % { Format-PowerShellFile $_ }
 
 alias d := deploy
-deploy *args="rap":
+deploy *args="cif":
     git {{args}}

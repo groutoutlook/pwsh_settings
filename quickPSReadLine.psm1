@@ -359,7 +359,7 @@ $JrnlParameters = @{
       
             [Microsoft.PowerShell.PSConsoleReadLine]::Replace(0, $line.Length, "$SearchWithQuery $($defaultValue)e")
         }
-        elseif ($line -match "^j\s+") {
+        elseif ($line -match "^j\s*") {
             if ($line -match $editPattern) {
                 # INFO: if there are 
                 $defaultValue = 8
