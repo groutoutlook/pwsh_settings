@@ -29,7 +29,7 @@ function Show-Window {
     $ProcessName = $ProcessName -replace '\.exe$'
 
     $b = (Get-Process -ErrorAction Ignore "*$ProcessName*").Where({ $_.MainWindowTitle })
-    $c = $b | % ProcessName | fzf --select-1 --exit-0 --bind one:accept | %{$b | ? Name -eq $_}
+    $c = $b | % ProcessName | fzf --select-1 --exit-0 --bind one:accept | % { $b | ? Name -EQ $_ }
     $procId = $c.ID
     if (-not $procId) {
         throw "No $ProcessName process with a non-empty window title found." 

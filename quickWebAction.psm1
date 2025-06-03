@@ -13,6 +13,7 @@ $global:lookupSite = @{
     "ms"         = "site%3Alearn.microsoft.com"
     "pwsh"       = "site%3Alearn.microsoft.com" # NOTE: Since it's the same to search pwsh in msdoc.
 }
+
 # FIXME: Reason I have to use that variable because of the broken state of some browser could..
 # affect my speed for accessing things.
 $global:defaultBrowser = "msedge"
@@ -24,7 +25,6 @@ function hashmapMatch($argsToMatch) {
         $argsToMatch = $appendix
     } 
     return $argsToMatch
-
 }
 
 function hvdic(
@@ -94,61 +94,7 @@ function compSearch {
 Set-Alias -Name comps -Value compSearch
 
 Add-Type -AssemblyName System.Windows.Forms
-function pwshOcr {
-    Start-Process "https://translate.google.com/?sl=zh-CN&tl=en&op=images"
-    Start-Sleep -Milliseconds 1000
-    [System.Windows.Forms.SendKeys]::SendWait("^v")
-}
 
-# HACK: abbreviate translation function to this.
-# function tra {
-#     $isClipboardString = (Get-Clipboard).Length
-#     if ($isClipboardString -eq 0) {
-#         pwshOcr 
-#     }
-#     else {
-#         if ($args[0] -eq "zh") {
-#             $translateFragment = "sl=en&tl=zh-CN"
-#         }
-#         else {
-#             $translateFragment = "sl=zh-CN&tl=en"
-#         }
-#         $uri = "https://translate.google.com/?$translateFragment&text="
-#         (Get-Clipboard).ToCharArray() | % { $uri += $_ }
-#         $finalUri = $uri + '&op=translate'
-#         Start-Process $finalUri
-#     }
-# }
-
-function Get-CodeStats($webui = 0) {
-    $timeNow = Get-Date
-    if ($webui -ne 0) {
-        msedge https://codestats.net/users/groutlloyd
-    }
-    else {
-        $global:currentCodeStats = (`
-                Invoke-RestMethod -Method GET -Uri http://codestats.net/api/users/groutlloyd -HttpVersion 1.1
-        )
-		
-        Write-Host "new_xp which is on streak: " -ForegroundColor Green -NoNewline
-        Write-Host " $($global:currentCodeStats.new_xp)" -ForegroundColor Red
-        Write-Output $global:currentCodeStats.languages
-        # $XPbyDate = $currentCodeStats.dates.PSobject.Members | Where { $_.MemberType -eq "NoteProperty" }
-        # $LatestDate = (Get-Date $XPbyDate[-1].Name)	
-     
-        $yesterday = (Get-Date).AddDays(-1)
-        $dateKeyvalue = ($yesterday).Date.ToString("yyyy-MM-dd")
-        $yesterdayXP = $global:currentCodeStats.dates.$dateKeyvalue
-        if ($yesterdayXP -lt 1000) {
-            Write-Output "Haven't code for a whole day you lazy ass."
-        }
-        else {
-            Write-Host "Yesterday XP " -NoNewline; Write-Host "$yesterdayXP" -ForegroundColor Red
-        }
-    }
-} 
-
-Set-Alias -Name cst -Value Get-CodeStats 
 # INFO: Streaming services quick-access
 # Twitch and Youtube.
 $dictStreamPage = @{

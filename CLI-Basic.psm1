@@ -74,12 +74,16 @@ function Invoke-SudoPwsh {
 function Invoke-KeyMouse {
     Invoke-SudoPwsh "Stop-Process -Name mousemaster*"
     Invoke-SudoPwsh "Stop-Process -Name kanata*"
+    Push-Location
     if ($args.Length -ne 1) {
         Start-Sleep -Seconds 1 
         Set-LocationWhere mousemaster
         sudo run mousemaster &
+        Set-LocationWhere kanata
+        sudo run kanata -p 127.0.0.1:4039
         # sudo run kanata &
     }
+    Pop-Location
 }
 Set-Alias -Name msmt -Value Invoke-KeyMouse
 
@@ -154,7 +158,7 @@ function xcb {
     }
 }
 
-function rb{
+function rb {
     just build ($args.Length ? "$args -join ' '" : $null)
 }
 function rt {
@@ -224,4 +228,3 @@ function Get-Navitldr() {
 Set-Alias -Name man -Value Get-Navitldr -Scope Global -Option AllScope
 
 Set-Alias -Name bc -Value fend -Scope Global -Option AllScope
-

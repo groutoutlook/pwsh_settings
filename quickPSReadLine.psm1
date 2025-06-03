@@ -52,7 +52,13 @@ $VaultSearchParameters = @{
                 }
             }
             else {
-                $SearchWithQuery = "$searchFunction $line"
+                # TODO: more term to replace with search.
+                if ($line -match "scoop\s\w+\b") { 
+                    $SearchWithQuery = $line -replace $Matches.Values[0], "rgj" 
+                }
+                else {
+                    $SearchWithQuery = "$searchFunction $line"
+                }
             } 
             return $SearchWithQuery
         }
@@ -153,7 +159,7 @@ $DoubleQuotesNestedBracketParameter = @{
                 $start = $nearestToken.Extent.StartOffset
                 $length = $nearestToken.Extent.EndOffset - $start
                 $text = $nearestToken.Extent.Text
-                [Microsoft.PowerShell.PSConsoleReadLine]::Replace($start, $length,"`"`$`($text`)`"")
+                [Microsoft.PowerShell.PSConsoleReadLine]::Replace($start, $length, "`"`$`($text`)`"")
                 [Microsoft.PowerShell.PSConsoleReadLine]::SetCursorPosition($start + $length + 4)
             }
             else {
