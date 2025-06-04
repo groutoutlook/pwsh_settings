@@ -168,10 +168,16 @@ function isLink($currentPath = (Get-Location)) {
     return  $pathProperty.Target
 }
 
-function cdSymLink($currentPath = (Get-Location)) {
+function Set-LocationSymLink($currentPath = (Get-Location)) {
     $currentPath = Resolve-Path $currentPath
     if (($targetDir = isLink($currentPath)) -ne $null) {
-        Set-Location $targetDir
+        $pathProperty = Get-ItemProperty $targetDir
+        if( $pathProperty.Attributes -contains "Directory") {
+            Set-Location $targetDir
+        }
+        else{
+            Set-Location (Split-Path $targetDir -Parent)
+        }
     }
 }
 
@@ -209,7 +215,7 @@ function quickSymLink($path = (Get-Clipboard)) {
         Write-Error "$path not a valid path."
     }
 }
-Set-Alias -Name cdsl -Value cdSymLink	
+Set-Alias -Name cdsl -Value Set-LocationSymLink	
 Set-Alias -Name rsjb -Value Restart-Job
 Set-Alias -Name jpa -Value Join-Path -Scope Global -Option AllScope
 # HACK: alias `Measure-Command`, it's hyperfine but in dotnet environment.

@@ -33,7 +33,7 @@ function :backup($Verbose = $null) {
 Set-Alias -Name :bak -Value :backup
 # NOTE: neovim trigger function.
 function :v {
-    if ($args[$args.Length - 1] -match "^g") {
+    if ($args[$args.Length - 1] -eq "g") {
         # "^gui")
         $codeEditor = "neovide --frame none -- "
         $parsedArgs = $args[0..($args.Length - 2)]
@@ -347,63 +347,43 @@ function :obsidian(
 #
 Set-Alias -Name :o -Value :obsidian
 # Set-Alias -Name :oo -Value obsidian-cli
-#
+
 # TODO: make the note taking add the #tag on it. so I could enter the note and start wrting on it right away without adding tag.
 function :jrnl {
     $argument = $args
-    $specialArgumentList = @{
-        "^\d+$" = 1
-        "^last" = 2
-        "^lt"   = 2
-        "^tg"   = 3
-        "^tag"  = 3
-        "^\d+e" = 4
-        "^\d+d" = 5
+    if ($argument.Count -eq 0) {
+        & jrnl
+        return
     }
-
-    foreach ( $specialArgument in $specialArgumentList.Keys) {
-        $argLast = $args[-1]
-  
-        if ($argLast -match $specialArgument) {
-            $matchValue_argLast = $Matches.0
-            $argument = $argument -replace $argLast
-            $flagRaise = $specialArgumentList[$specialArgument]
+    $argLast = $argument[-1]
+    switch -Regex ($argLast) {
+        "^\d+$" {
+            $matchValue = $_
+            $argument[-1] = " -$matchValue"
         }
-  
-        switch ($flagRaise) {
-            1 {
-                $match = (Select-String -InputObject $argLast -Pattern "^\d*")
-                $matchValue = $match.Matches.Value
-                $argument[-1] = " -$matchValue"
-            }
-            2 {
-                # regex way to match
-                $day = (Select-String -InputObject $argLast -Pattern "\d*$").Matches.Value ?? 2
-                $convertToInt = [int]$day #- [System.Char]"0"
-                $fromDate = (Get-Date).AddDays(-$convertToInt)
-                $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
-                $argument[-1] = " -from $trimDate"
-            }
-            3 {
-                echo "TAGGGG Work."
-            }
-            4 {
-                $match = (Select-String -InputObject $argLast -Pattern "^\d*")
-                $matchValue = $match.Matches.Value ?? 2
-                $argument[-1] = " -$matchValue --edit"
-            }
-            5 {
-                $match = (Select-String -InputObject $argLast -Pattern "^\d*")
-                # echo $match
-                $matchValue = $match.Matches.Value ?? 2
-                $argument[-1] = " -$matchValue --delete"
-            }
+        "^last|^lt" {
+            $day = [regex]::Match($argLast, "\d*$").Value
+            if ($day -eq "") { $day = 2 }
+            else { $day = [int]$day }
+            $fromDate = (Get-Date).AddDays(-$day)
+            $trimDate = Get-Date $fromDate -Format "yyyy/MM/dd"
+            $argument[-1] = " -from $trimDate"
         }
-        if ($null -ne $flagRaise) {
-            break
+        "^tg|^tag" {
+            Write-Output "TAGGGG Work."
+            # Additional logic for tags can be added here if needed
+        }
+        "^\d+e" {
+            $matchValue = [regex]::Match($argLast, "^\d+").Value
+            $argument[-1] = " -$matchValue --edit"
+        }
+        "^\d+d" {
+            $matchValue = [regex]::Match($argLast, "^\d+").Value
+            $argument[-1] = " -$matchValue --delete"
         }
     }
     Invoke-Expression "jrnl $argument"
+
 }
 Set-Alias -Name j -Value :jrnl
 
