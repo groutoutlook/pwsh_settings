@@ -153,7 +153,6 @@ function Restart-Job {
     }
 }
 
-
 # INFO: for OSC 8
 function Format-Hyperlink($text, $url) {
     $esc = [char]27

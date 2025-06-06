@@ -79,8 +79,8 @@ function Invoke-KeyMouse {
         Start-Sleep -Seconds 1 
         Set-LocationWhere mousemaster
         sudo run mousemaster &
-        Set-LocationWhere kanata
-        sudo run kanata -p 127.0.0.1:4039
+        sudo run D:\ProgramDataD\MiscLang\07.02-Rust\nightly\kanata\target\release\kanata.exe -p 127.0.0.1:4039
+        # sudo run kanata -p 127.0.0.1:4039
         # sudo run kanata &
     }
     Pop-Location
